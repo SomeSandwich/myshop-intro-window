@@ -9,3 +9,5 @@
     - Domain: [myshop.hieucckha.me](http://myshop.hieucckha.me/)
 
   - Database: **Ib vùng kín để biết thêm thông tin chi tiết**
+
+- Frontend: Chưa biết dùng gì hết
