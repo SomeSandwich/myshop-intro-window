@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    [Migration("20230327131522_InitDBV1")]
-    partial class InitDBV1
+    [Migration("20230407154838_InitDbV1")]
+    partial class InitDbV1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,7 +54,7 @@ namespace Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Accounts");
 
                     b.HasData(
                         new
