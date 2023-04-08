@@ -1,4 +1,4 @@
-namespace Api.Modules;
+namespace Api.Types;
 
 public static class GlobalConfig
 {
