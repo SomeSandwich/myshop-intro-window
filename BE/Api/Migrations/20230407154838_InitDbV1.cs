@@ -8,11 +8,27 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDBV1 : Migration
+    public partial class InitDbV1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Username = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -38,22 +54,6 @@ namespace Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Username = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Password = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,15 +101,15 @@ namespace Api.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
+                        name: "FK_Orders_Accounts_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Users",
+                        name: "FK_Orders_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -141,7 +141,7 @@ namespace Api.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
+                table: "Accounts",
                 columns: new[] { "Id", "Email", "Password", "Status", "Username" },
                 values: new object[] { 1, "admin@admin.com", "$2a$10$3kzeMxE/RIuXCnzNFUgC4uKMrANCNn9xtP9U9aCci2Ru0Enxp1eqK", 0, "root" });
 
@@ -179,10 +179,10 @@ namespace Api.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

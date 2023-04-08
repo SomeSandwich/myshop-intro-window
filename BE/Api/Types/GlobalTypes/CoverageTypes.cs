@@ -1,4 +1,4 @@
-namespace Api.Modules.GlobalTypes;
+namespace Api.Types.GlobalTypes;
 
 public class ResSuccess
 {
