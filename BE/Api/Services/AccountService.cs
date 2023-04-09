@@ -17,7 +17,7 @@ public interface IAccountService
 
     Task<int> CreateAsync(CreateAccountReq req);
 
-    Task<bool> UpdateAsync(int id, UpdateAccountReq req);
+    Task<bool> UpdateInfoAccAsync(int id, UpdateInfoAccReq req);
     Task<BaseResult> UpdatePasswordAsync(int id, string password);
     Task<BaseResult> ToggleLockAsync(int id);
 
@@ -64,7 +64,7 @@ public class AccountService : IAccountService
         return acc.Id;
     }
 
-    public async Task<bool> UpdateAsync(int id, UpdateAccountReq req)
+    public async Task<bool> UpdateInfoAccAsync(int id, UpdateInfoAccReq req)
     {
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 

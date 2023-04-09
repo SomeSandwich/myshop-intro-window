@@ -3,6 +3,7 @@ using Api.Types.GlobalTypes;
 using Api.Types.Objects;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
 
@@ -18,7 +19,17 @@ public class AccountController : ControllerBase
         _accSer = accSer;
     }
 
+    /// <summary>
+    /// Get All Accounts
+    /// </summary>
+    /// <returns>The list of all accounts</returns>
     [HttpGet]
+    [Route("")]
+    [SwaggerOperation(
+        Summary = "Get All Accounts",
+        Description = "",
+        OperationId = "Get")]
+    [SwaggerResponse(200, "The list of all accounts", typeof(IEnumerable<AccountRes>))]
     public async Task<ActionResult<IEnumerable<AccountRes>>> GetAll()
     {
         var listAcc = await _accSer.GetAsync();
@@ -36,6 +47,8 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<string>> Create([FromBody] CreateAccountReq req)
     {
         var acc = await _accSer.CreateAsync(req);
@@ -45,8 +58,10 @@ public class AccountController : ControllerBase
 
     [HttpPatch]
     [Route("info")]
-    public async Task<ActionResult> UpdateAsync([FromBody] UpdateAccountReq req)
+    public async Task<ActionResult> UpdateAsync([FromBody] UpdateInfoAccReq req)
     {
+        var abc = await _accSer.UpdateInfoAccAsync(req);
+
         return Ok(new ResSuccess());
     }
 
