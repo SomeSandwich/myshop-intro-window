@@ -27,5 +27,7 @@ public class MyShopDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     #endregion
 }
