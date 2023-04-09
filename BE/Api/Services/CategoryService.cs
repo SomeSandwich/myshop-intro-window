@@ -11,7 +11,7 @@ public interface ICategoryService
 
     Task<int> CreateAsync(CreateAccountReq req);
 
-    Task<bool> UpdateAsync(int id, UpdateAccountReq req);
+    Task<bool> UpdateAsync(int id, UpdateInfoAccReq req);
 
     Task<bool> DeleteAsync(int id);
 }
@@ -40,7 +40,7 @@ public class CategoryService : ICategoryService
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateAsync(int id, UpdateAccountReq req)
+    public async Task<bool> UpdateAsync(int id, UpdateInfoAccReq req)
     {
         throw new NotImplementedException();
     }
