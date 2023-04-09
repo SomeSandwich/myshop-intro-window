@@ -1,9 +1,11 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Api.App;
 using API.App;
 using Api.App.Extensions;
 using Asp.Versioning.Builder;
 using Asp.Versioning.Conventions;
+using Microsoft.AspNetCore.Mvc;
 using MMS.GateApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,12 +18,12 @@ builder.Services.ConfigureMinio(config, env);
 builder.Services.ConfigureVersion();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureJwt(config);
+builder.Services.ConfigureController();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.RegisterServices();
 builder.Services.RegisterModules();
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
