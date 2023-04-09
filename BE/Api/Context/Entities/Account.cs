@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Api.Context.Constants.Enums;
+using Api.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,7 +16,7 @@ public class Account
 
     [StringLength(20)] public string Username { get; set; } = string.Empty;
 
-    [StringLength(60)] public string Password { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 
     [StringLength(50)] public string Email { get; set; } = string.Empty;
 
@@ -33,7 +34,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         {
             Id = 1,
             Username = "root",
-            Password = "$2a$10$3kzeMxE/RIuXCnzNFUgC4uKMrANCNn9xtP9U9aCci2Ru0Enxp1eqK",
+            Password = "123".HashPassword(),
             Email = "admin@admin.com",
             Status = AccountStatus.Activate,
         });

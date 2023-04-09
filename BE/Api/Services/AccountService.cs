@@ -6,6 +6,7 @@ using Api.Types.Mapping;
 using Api.Types.Objects;
 using Api.Types.Results;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -39,9 +40,9 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<AccountRes>> GetAsync()
     {
-        var listAcc = _context.Accounts
+        var listAcc = await _context.Accounts
             .Where(e => e.Status != AccountStatus.Deleted)
-            .AsEnumerable();
+            .ToListAsync();
 
         return _mapper.Map<IEnumerable<Account>, IEnumerable<AccountRes>>(listAcc);
     }
@@ -83,14 +84,14 @@ public class AccountService : IAccountService
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult{Message = "Cập nhật mật khẩu thất bại"};
+            return new FailureResult { Message = "Cập nhật mật khẩu thất bại" };
 
         acc.Password = password;
 
         await _context.SaveChangesAsync();
 
 
-        return new SuccessResult{Message = "Cập nhật mật khẩu thành công"};
+        return new SuccessResult { Message = "Cập nhật mật khẩu thành công" };
     }
 
     public async Task<BaseResult> ToggleLockAsync(int id)
@@ -98,7 +99,7 @@ public class AccountService : IAccountService
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult{Message = $"Không tồn tại accountId: {id}"};
+            return new FailureResult { Message = $"Không tồn tại accountId: {id}" };
 
         acc.Status = acc.Status == AccountStatus.Activate ? AccountStatus.Locked : AccountStatus.Activate;
         await _context.SaveChangesAsync();
@@ -118,12 +119,12 @@ public class AccountService : IAccountService
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult{Message = $"Không tồn tại accountId: {id}"};
+            return new FailureResult { Message = $"Không tồn tại accountId: {id}" };
 
         acc.Status = AccountStatus.Deleted;
         await _context.SaveChangesAsync();
 
 
-        return new SuccessResult{Message = "Xo"};
+        return new SuccessResult { Message = "Xo" };
     }
 }
