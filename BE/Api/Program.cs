@@ -54,24 +54,22 @@ if (true)
         opt.DocumentTitle = "Swagger Demo Documentation";
         opt.SpecUrl = "/swagger/v1/swagger.json";
 
-        var stream = Assembly.GetExecutingAssembly()
-            .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html");
-
         // var resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
         // Console.WriteLine("--- Resource Name ---");
         // foreach (string name in resourceNames)
         // {
         //     Console.WriteLine($"--- {name} ---");
         // }
-
         Console.WriteLine($"""
                 *********
-                Stream is null {stream is null}
+                Stream is null {(Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html")) is null}
                 *********
             """);
 
         opt.IndexStream = () =>
-            stream;
+            Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html");
     });
 }
 
@@ -79,6 +77,6 @@ app.ConfigureErrorResponse();
 
 app.UseAuthorization();
 app.MapControllers();
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.Run();
