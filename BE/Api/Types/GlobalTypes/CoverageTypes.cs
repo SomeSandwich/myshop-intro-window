@@ -1,6 +1,10 @@
 namespace Api.Types.GlobalTypes;
 
-public class ResSuccess
+public class ResBase
+{
+}
+
+public class ResSuccess : ResBase
 {
     public string Message { get; set; } = "Success";
 }

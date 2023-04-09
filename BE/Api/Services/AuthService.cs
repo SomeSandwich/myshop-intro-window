@@ -39,10 +39,11 @@ public class AuthService : IAuthService
     public async Task<Account> LoginAsync(LoginReq req)
     {
         var account = await _context.Accounts
-            .FirstOrDefaultAsync(e => e.Email == req.Username);
+            .FirstOrDefaultAsync(e => e.Username == req.Username);
+
         if (account == null)
         {
-            throw new Exception($"Not found User with Email:{req.Username}");
+            throw new Exception($"Not found User with Username:{req.Username}");
         }
 
         if (account.Status == AccountStatus.Deleted)
@@ -92,7 +93,7 @@ public class AuthService : IAuthService
             IsRevoked = false,
             Token = jwtToken,
             IpAddress = ipv4,
-            UserId = account.Id
+            AccountId = account.Id
         };
         _context.RefreshTokens.Add(refreshToken);
         await _context.SaveChangesAsync();
@@ -109,7 +110,7 @@ public class AuthService : IAuthService
 
         var account = await _context.Accounts
             .Where(e =>
-                e.Id == oldToken.UserId &&
+                e.Id == oldToken.AccountId &&
                 e.Status != AccountStatus.Deleted)
             .FirstOrDefaultAsync();
 

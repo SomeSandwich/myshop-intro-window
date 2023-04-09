@@ -10,7 +10,9 @@ public class RefreshToken
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [ForeignKey("User")] public int UserId { get; set; }
+    [ForeignKey("Account")] public int AccountId { get; set; }
+    public virtual Account Account { get; set; }
+
     public string Token { get; set; } = string.Empty;
 
     public string JwtId { get; set; } = string.Empty; // Map the token with jwtId
@@ -25,6 +27,4 @@ public class RefreshToken
     public DateTime ExpiryDate { get; set; } // Refresh token is long lived it could last for months.
 
     public string IpAddress { get; set; } = string.Empty;
-
-    public virtual Account Account { get; set; }
 }
