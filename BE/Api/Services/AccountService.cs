@@ -5,6 +5,7 @@ using Api.Types;
 using Api.Types.Mapping;
 using Api.Types.Objects;
 using Api.Types.Results;
+using Api.Utils;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +18,8 @@ public interface IAccountService
 
     Task<int> CreateAsync(CreateAccountReq req);
 
-    Task<bool> UpdateInfoAccAsync(int id, UpdateInfoAccReq req);
-    Task<BaseResult> UpdatePasswordAsync(int id, string password);
+    Task<BaseResult> UpdateInfoAccAsync(int id, UpdateInfoAccReq req);
+    Task<BaseResult> UpdateSelfPasswordAsync(int id, SelfUpdatePasswordReq req);
     Task<BaseResult> ToggleLockAsync(int id);
 
     Task<BaseResult> DeleteAsync(int id);
@@ -64,34 +65,44 @@ public class AccountService : IAccountService
         return acc.Id;
     }
 
-    public async Task<bool> UpdateInfoAccAsync(int id, UpdateInfoAccReq req)
+    public async Task<BaseResult> UpdateInfoAccAsync(int id, UpdateInfoAccReq req)
     {
-        var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
+        var acc = await _context.Accounts
+            .FirstOrDefaultAsync(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return false;
+            return new FailureResult
+            {
+                Message = "Not found account with id:{id}"
+            };
 
-        acc.Username = string.IsNullOrEmpty(req.Username) ? acc.Username : req.Username;
+        // acc.Username = string.IsNullOrEmpty(req.Username) ? acc.Username : req.Username;
         acc.Email = string.IsNullOrEmpty(req.Email) ? acc.Email : req.Email;
 
         await _context.SaveChangesAsync();
 
-        return true;
+        return new SuccessResult();
     }
 
-    public async Task<BaseResult> UpdatePasswordAsync(int id, string password)
+    public async Task<BaseResult> UpdateSelfPasswordAsync(int id, SelfUpdatePasswordReq req)
     {
-        var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
+        var acc = _context.Accounts
+            .FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult { Message = "Cập nhật mật khẩu thất bại" };
+            return new FailureResult { Message = $"Not Found Account has id:{id}" };
 
-        acc.Password = password;
+        if (!req.OldPassword.ValidatePassword(acc.Password))
+            return new FailureResult { Message = $"The Old Password is wrong" };
+
+        if (string.IsNullOrEmpty(req.NewPassword))
+            return new FailureResult { Message = $"Password is null empty" };
+
+        acc.Password = req.NewPassword.HashPassword();
 
         await _context.SaveChangesAsync();
 
-
-        return new SuccessResult { Message = "Cập nhật mật khẩu thành công" };
+        return new SuccessResult { Message = "Update Password Success" };
     }
 
     public async Task<BaseResult> ToggleLockAsync(int id)
