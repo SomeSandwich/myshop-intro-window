@@ -1,8 +1,10 @@
+using System.Reflection;
 using Api.App;
 using API.App;
 using Api.App.Extensions;
 using Asp.Versioning.Builder;
 using Asp.Versioning.Conventions;
+using MMS.GateApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,25 +38,47 @@ app.MapEndpoints(versionSet);
 if (true)
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
+    app.UseSwaggerUI(opt =>
     {
         var descs = app.DescribeApiVersions();
         foreach (var desc in descs)
         {
             var url = $"/swagger/{desc.GroupName}/swagger.json";
             var name = desc.GroupName.ToUpperInvariant();
-            options.SwaggerEndpoint(url, name);
+            opt.SwaggerEndpoint(url, name);
         }
+    });
 
-        // options.RoutePrefix = string.Empty;
+    app.UseReDoc(opt =>
+    {
+        opt.DocumentTitle = "Swagger Demo Documentation";
+        opt.SpecUrl = "/swagger/v1/swagger.json";
+
+        var stream = Assembly.GetExecutingAssembly()
+            .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html");
+
+        // var resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+        // Console.WriteLine("--- Resource Name ---");
+        // foreach (string name in resourceNames)
+        // {
+        //     Console.WriteLine($"--- {name} ---");
+        // }
+
+        Console.WriteLine($"""
+                *********
+                Stream is null {stream is null}
+                *********
+            """);
+
+        opt.IndexStream = () =>
+            stream;
     });
 }
 
-// app.ConfigureErrorResponse();
+app.ConfigureErrorResponse();
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
+// app.UseHttpsRedirection();
 
 app.Run();

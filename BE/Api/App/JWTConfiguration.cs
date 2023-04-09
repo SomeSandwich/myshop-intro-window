@@ -8,23 +8,23 @@ public static class JwtConfiguration
 {
     public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(options =>
+        services.AddAuthentication(opt =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(opt =>
         {
-            options.SaveToken = true;
-            options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters
+            opt.SaveToken = true;
+            opt.RequireHttpsMetadata = false;
+            opt.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 // API Key
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"] ??= "abcabcabc123123123abcabcabc")),
                 ClockSkew = TimeSpan.Zero
             };
         });
