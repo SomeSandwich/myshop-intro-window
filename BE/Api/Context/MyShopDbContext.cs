@@ -1,4 +1,3 @@
-using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +14,7 @@ public class MyShopDbContext : DbContext
         base.OnModelCreating(builder);
 
         new AccountConfiguration().Configure(builder.Entity<Account>());
+        new CategoryConfiguration().Configure(builder.Entity<Category>());
         new OrderDetailConfiguration().Configure(builder.Entity<OrderDetail>());
     }
 
