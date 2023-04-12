@@ -93,10 +93,64 @@ import { BookSliceState } from '@/interfaces/stateBookSlice';
 //       console.error(error);
 //     }
 // });  
+const arr_test = [
+  {
+    Id:1,
+    Price: 15000,
+    Discount: 500,
+    Title: "Lap Trinh C++",
+    Description: "Lap Trinh Co Ban",
+    MediaPath: "meedia",
+    CreateAt: new Date(),
+    UpdateAt: new Date(),
+    Quantity: 5,
+    Status: 1,
+    CategpryId: 1,
+  },
+  {
+    Id:2,
+    Price: 5000,
+    Discount: 500,
+    Title: "Lap Trinh C#",
+    Description: "Lap Trinh Huong Doi Tuong",
+    MediaPath: "meedia",
+    CreateAt: new Date(),
+    UpdateAt: new Date(),
+    Quantity: 15,
+    Status: 1,
+    CategpryId: 1,
+  },
+  {
+    Id:3,
+    Price: 50000,
+    Discount: 500,
+    Title: "Lap Trinh Python",
+    Description: "Big Data",
+    MediaPath: "meedia",
+    CreateAt: new Date(),
+    UpdateAt: new Date(),
+    Quantity: 150,
+    Status: 1,
+    CategpryId: 1,
+  },
+  {
+    Id:4,
+    Price: 55000,
+    Discount: 5300,
+    Title: "Lap Trinh Unity",
+    Description: "Lap Trinh Game Thieu Nhi",
+    MediaPath: "meedia",
+    CreateAt: new Date(),
+    UpdateAt: new Date(),
+    Quantity: 15,
+    Status: 1,
+    CategpryId: 1,
+  }
+]
 const BookSlice = createSlice({
     name: 'books',
     initialState:  {
-        allBook: [],
+        allBook: arr_test,
         listSearch: [],
         listFilter: [],
         isLoading: false,
@@ -114,7 +168,7 @@ const BookSlice = createSlice({
         },
         updateBook(state, action){
             const newPost=action.payload;
-            const postIndex = state.allBook.findIndex(book=> book.Id===newPost.id)
+            const postIndex = state.allBook.findIndex(book=> book.Id===newPost.Id)
             if(postIndex>=0){
               state.allBook[postIndex] = newPost;
             }

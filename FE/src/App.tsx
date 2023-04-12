@@ -17,6 +17,7 @@ import Signup from "./pages/Signup";
 import Error from "./pages/Error";
 import RequireLogin from "./components/Auth/RequireLogin";
 import DashBoard from "./pages/DashBoard";
+import Home from "./pages/Home";
 
 console.log(
     "[App.tsx]",
@@ -32,7 +33,7 @@ function App() {
                 <Route element={<RequireLogin />}>
                     <Route path="/" element={<HomeLayout />} >
                         <Route path="/help" element={<div>Help</div>} />
-                        <Route path="/home" element={<div>Home</div>} />
+                        <Route path="/home" element={<Home/>} />
                         <Route path="/about-us" element={<div>About-Us</div>} />
                         <Route
                             path="/dashboard"
