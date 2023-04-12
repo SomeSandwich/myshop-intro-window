@@ -12,11 +12,11 @@ export default function Login() {
                                 <div className="d-flex justify-content-center py-4">
                                     <a
                                         href="index.html"
-                                        className="logo d-flex align-items-center w-auto"
+                                        className="logo justify-content-center d-flex align-items-center w-auto"
                                     >
-                                        <img src="assets/img/logo.png" />
-                                        <span className="d-none d-lg-block">
-                                            My shop
+                                        <img src="assects/logo.jpg" />
+                                        <span className="  d-none d-lg-block">
+                                            My Book Store
                                         </span>
                                     </a>
                                 </div>
@@ -36,14 +36,14 @@ export default function Login() {
                                             className="row g-3 needs-validation"
                                             noValidate
                                         >
-                                            <div className="col-12">
+                                            <div className="col-12 ">
                                                 <label
                                                     htmlFor="yourUsername"
-                                                    className="form-label"
+                                                    className="form-label "
                                                 >
                                                     Username
                                                 </label>
-                                                <div className="input-group has-validation">
+                                                <div className="input-group has-validation ">
                                                     <span
                                                         className="input-group-text"
                                                         id="inputGroupPrepend"

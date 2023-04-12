@@ -356,6 +356,7 @@ h6 {
 --------------------------------------------------------------*/
 .logo {
     line-height: 1;
+    font-size: large;
 }
 
 @media (min-width: 1200px) {
@@ -1180,7 +1181,7 @@ h6 {
 .error-404 h1 {
     font-size: 180px;
     font-weight: 700;
-    color: #4154f1;
+    color: #000;
     margin-bottom: 0;
     line-height: 150px;
 }
@@ -1188,7 +1189,7 @@ h6 {
 .error-404 h2 {
     font-size: 24px;
     font-weight: 700;
-    color: #012970;
+    color: #000;
     margin-bottom: 30px;
 }
 

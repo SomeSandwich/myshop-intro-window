@@ -1,116 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Seaweed+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Seaweed+Script&display=swap");
 
 :root {
-  line-height: 1.5;
-  font-weight: 400;
+    line-height: 1.5;
+    font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
 }
-body{
-  height: 100vh;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
+body {
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
 }
 #header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 300px;
-  transition: all ease-in-out 0.5s;
-  z-index: 9997;
-  transition: all 0.5s;
-  padding: 0 15px;
-  background: #040b14;
-  overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    transition: all ease-in-out 0.5s;
+    z-index: 9997;
+    transition: all 0.5s;
+    padding: 0 15px;
+    background: lightgray;
+    overflow-y: auto;
 }
 #header .side-bar img {
-  margin: 15px auto;
-  display: block;
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border: 8px solid #2c2f3f;
+    margin: 15px auto;
+    display: block;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 8px solid #2c2f3f;
 }
 #header .side-bar .store-name {
-  font-size: 48px;
-  margin: 0;
-  padding: 0;
-  font-weight: 600;
-  -moz-text-align-last: center;
-  text-align-last: center;
-  font-family: 'Seaweed Script', cursive;
+    font-size: 48px;
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    -moz-text-align-last: center;
+    text-align-last: center;
+    font-family: "Seaweed Script", cursive;
+    a {
+        color: #000;
+    }
 }
-  
 .main-container {
-  margin-left: 300px;
+    margin-left: 300px;
 }
 
 @media (max-width: 1199px) {
-  #header {
-    left: -300px;
-  }
+    #header {
+        left: -300px;
+    }
 
-  .main-container {
-    margin-left: 0;
-  }
+    .main-container {
+        margin-left: 0;
+    }
 }
 .nav-menu {
-  padding: 30px 0 0 0;
+    padding: 30px 0 0 0;
 }
 
 .nav-menu * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.nav-menu>ul>li {
-  position: relative;
-  white-space: nowrap;
-  span{
-    align-self: center;
-  }
+.nav-menu > ul > li {
+    position: relative;
+    white-space: nowrap;
+    span {
+        align-self: center;
+    }
 }
 
 .nav-menu a,
 .nav-menu a:focus {
-  display: flex;
-  align-items: center;
-  color: #a8a9b4;
-  padding: 12px 15px;
-  margin-bottom: 8px;
-  transition: 0.3s;
-  font-size: 15px;
+    display: flex;
+    align-items: center;
+    color: #000;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    transition: 0.3s;
+    font-size: 15px;
 }
 
 .nav-menu a i,
 .nav-menu a:focus i {
-  font-size: 24px;
-  padding-right: 8px;
-  color: #6f7180;
+    font-size: 24px;
+    padding-right: 8px;
+    color: #6f7180;
 }
 
 .nav-menu a:hover,
 .nav-menu .active,
 .nav-menu .active:focus,
-.nav-menu li:hover>a {
-  text-decoration: none;
-  color: #fff;
+.nav-menu li:hover > a {
+    text-decoration: none;
+    color: #fff;
 }
 
 .nav-menu a:hover i,
 .nav-menu .active i,
 .nav-menu .active:focus i,
-.nav-menu li:hover>a i {
-  color: #149ddd;
+.nav-menu li:hover > a i {
+    color: #149ddd;
 }
