@@ -110,7 +110,7 @@ public class AccountService : IAccountService
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult { Message = $"Không tồn tại accountId: {id}" };
+            return new FailureResult { Message = $"Not Found Account has id:{id}" };
 
         acc.Status = acc.Status == AccountStatus.Activate ? AccountStatus.Locked : AccountStatus.Activate;
         await _context.SaveChangesAsync();
@@ -118,8 +118,8 @@ public class AccountService : IAccountService
         var result = new SuccessResult
         {
             Message = acc.Status == AccountStatus.Activate
-                ? "Kích hoạt tài khoản thành công"
-                : "Khoá tài khoản thành công"
+                ? "Enable Account Success"
+                : "Disable Account Success"
         };
 
         return result;
@@ -130,7 +130,7 @@ public class AccountService : IAccountService
         var acc = _context.Accounts.FirstOrDefault(e => e.Id == id && e.Status != AccountStatus.Deleted);
 
         if (acc is null)
-            return new FailureResult { Message = $"Không tồn tại accountId: {id}" };
+            return new FailureResult { Message = $"Not Found Account has id:{id}" };
 
         acc.Status = AccountStatus.Deleted;
         await _context.SaveChangesAsync();

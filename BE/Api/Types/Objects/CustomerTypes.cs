@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Api.Context.Entities;
 
 namespace Api.Types.Objects;
 
@@ -59,6 +60,11 @@ public class CustomerRes
     /// Date of join
     /// </summary>
     /// <example>2022-01-01</example>
-    public DateTime JoinDate { get; set; }
+    public DateOnly JoinDate { get; set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual ICollection<Order> Orders { get; set; }
+
 }

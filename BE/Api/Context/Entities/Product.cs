@@ -107,15 +107,25 @@ public class Product
             ? null
             : JsonConvert.SerializeObject(Dimension);
 
-        set => Dimension = string.IsNullOrEmpty(DimensionJSON)
-            ? null
-            : JsonConvert.DeserializeObject<Dimensions>(DimensionJSON);
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+                Dimension = null;
+            else Dimension = JsonConvert.DeserializeObject<Dimensions>(value);
+        }
     }
 
     /// <summary>
-    /// Hardcover of book
+    /// Number of pages
     /// </summary>
-    public int Hardcover { get; set; }
+    /// <example>100</example>
+    public int NumPages { get; set; }
+
+    /// <summary>
+    /// Cover type
+    /// </summary>
+    /// <example>1</example>
+    public CoverType CoverType { get; set; }
 
     /// <summary>
     /// CategoryId
@@ -132,20 +142,23 @@ public class Product
     public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 }
 
-public struct Dimensions
+public class Dimensions
 {
     /// <summary>
     /// Chiều cao
     /// </summary>
-    public double Height { get; set; }
+    /// <example>10</example>
+    public double? Height { get; set; }
 
     /// <summary>
     /// Chiều rộng
     /// </summary>
-    public double Width { get; set; }
+    /// <example>10</example>
+    public double? Width { get; set; }
 
     /// <summary>
     /// Chiều dài
     /// </summary>
-    public double Length { get; set; }
+    /// <example>10</example>
+    public double? Length { get; set; }
 }

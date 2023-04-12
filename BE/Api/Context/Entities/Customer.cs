@@ -13,7 +13,7 @@ public class Customer
 
     [StringLength(11)] public string PhoneNumber { get; set; } = string.Empty;
 
-    // public DateTime JoinDate { get; set; }
+    public DateOnly JoinDate { get; set; }
     
     public virtual ICollection<Order> Orders { get; set; }
 }

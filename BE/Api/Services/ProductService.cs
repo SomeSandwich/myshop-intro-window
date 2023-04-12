@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Text.Json;
 using Api.Context;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
@@ -7,6 +8,7 @@ using Api.Types.Mapping;
 using Api.Types.Objects;
 using Api.Types.Results;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
@@ -28,12 +30,14 @@ public class ProductService : IProductService
     private readonly MyShopDbContext _context;
     private readonly IMapper _mapper;
 
-    public ProductService(MyShopDbContext context)
+    public ProductService(MyShopDbContext context, IMapper mapper)
     {
         _context = context;
 
-        var config = new MapperConfiguration(opt => { opt.AddProfile<ProductProfile>(); });
-        _mapper = config.CreateMapper();
+        // var config = new MapperConfiguration(opt => { opt.AddProfile<ProductProfile>(); });
+        // _mapper = config.CreateMapper();
+
+        _mapper = mapper;   
     }
 
     public async Task<IEnumerable<ProductRes>> GetAsync()
@@ -47,9 +51,9 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductRes>> GetByCategoryAsync(int cateId)
     {
-        var listAcc = _context.Products
+        var listAcc = await _context.Products
             .Where(e => e.Status != ProductStatus.Deleted && e.CategoryId == cateId)
-            .AsEnumerable();
+            .ToListAsync();
 
         return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(listAcc);
     }
@@ -92,6 +96,19 @@ public class ProductService : IProductService
         product.Description = arg.Description ?? product.Description;
         product.Quantity = arg.Quantity ?? product.Quantity;
         product.CategoryId = arg.CategoryId ?? product.CategoryId;
+        product.Author = arg.Author ?? product.Author;
+        product.Isbn10 = arg.Isbn10 ?? product.Isbn10;
+        product.Isbn13 = arg.Isbn13 ?? product.Isbn13;
+        product.Publisher = arg.Publisher ?? product.Publisher;
+        product.PublicationDate = arg.PublicationDate ?? product.PublicationDate;
+        product.NumPages = arg.NumPages ?? product.NumPages;
+        product.CoverType = arg.CoverType ?? product.CoverType;
+
+        if (arg.Dimension is not null 
+            && arg.Dimension.Width is not null 
+            && arg.Dimension.Height is not null 
+            && arg.Dimension.Length is not null)
+            product.DimensionJSON = JsonSerializer.Serialize(arg.Dimension);
 
         if (arg.MediaFilesDel is not null)
             foreach (var filePath in arg.MediaFilesDel)
@@ -119,7 +136,7 @@ public class ProductService : IProductService
         if (prod is null)
             return new FailureResult { Message = $"Not found productId: {id}" };
 
-        _context.Products.Remove(prod);
+        prod.Status = ProductStatus.Deleted;
         await _context.SaveChangesAsync();
         
         return new SuccessResult();

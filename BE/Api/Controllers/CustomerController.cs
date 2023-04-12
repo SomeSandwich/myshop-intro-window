@@ -3,7 +3,6 @@ using Api.Types.GlobalTypes;
 using Api.Types.Objects;
 using Api.Types.Results;
 using Asp.Versioning;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -15,7 +14,7 @@ namespace Api.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{v:ApiVersion}/customer")]
-public class CustomerController:ControllerBase
+public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _cusSer;
 
@@ -23,6 +22,7 @@ public class CustomerController:ControllerBase
     {
         _cusSer = cusSer;
     }
+
 
     [HttpGet]
     [Route("")]
@@ -39,9 +39,9 @@ public class CustomerController:ControllerBase
     }
 
     [HttpGet]
-    [Route("{id;int}")]
+    [Route("{id:int}")]
     [SwaggerOperation(
-        Summary = "Get Product By Id",
+        Summary = "Get Customer By Id",
         Description = "",
         OperationId = "Get")]
     [SwaggerResponse(200, "Customer information", typeof(CustomerRes))]
@@ -54,6 +54,23 @@ public class CustomerController:ControllerBase
 
         return Ok(customer);
     }
+
+    [HttpGet]
+    [Route("{phoneNum}")]
+    [SwaggerOperation(
+        Summary = "Get Customer By Id",
+        Description = "",
+        OperationId = "Get")]
+    [SwaggerResponse(200, "Customer information", typeof(CustomerRes))]
+    [SwaggerResponse(400, "Not found customer with phone number", typeof(ResFailure))]
+    public async Task<ActionResult<ProductRes>> GetOne([FromRoute] string phoneNum)
+    {
+        var customer = await _cusSer.GetByPhoneNumber(phoneNum);
+        if (customer is null)
+            return BadRequest(new ResFailure { Message = $"Not found customer with phone number: {phoneNum}" });
+    
+        return Ok(customer);
+    }
     
     [HttpPost]
     [Route("")]
@@ -62,11 +79,15 @@ public class CustomerController:ControllerBase
         Description = "",
         OperationId = "Post")]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [SwaggerResponse(400, "Exists customer with phone number")]
     public async Task<ActionResult<string>> Create([FromBody] CreateCustomerReq req)
     {
         var customerId = await _cusSer.CreateAsync(req);
 
-        return CreatedAtAction(nameof(GetOne), new { id = $"{customerId}" }, new ResSuccess());
+        if (customerId is null)
+            return BadRequest(new ResFailure { Message = $"Exists customer with phone number: {req.PhoneNumber}" });
+
+        return CreatedAtAction(nameof(GetOne), new { id = customerId }, new ResSuccess());
     }
 
     [HttpPatch]
@@ -76,15 +97,16 @@ public class CustomerController:ControllerBase
         Description = "",
         OperationId = "Patch")]
     [SwaggerResponse(200, "Success Response", typeof(ResSuccess))]
-    public async Task<ActionResult<ResBase>> UpdateCustomer([FromRoute] int id, [FromBody]UpdateCustomerReq req)
+    [SwaggerResponse(400, "Not found customerId | Exists phone number", typeof(ResFailure))]
+    public async Task<ActionResult<ResBase>> UpdateCustomer([FromRoute] int id, [FromBody] UpdateCustomerReq req)
     {
         var result = await _cusSer.UpdateAsync(id, req);
         if (result is FailureResult)
             return BadRequest(new ResFailure { Message = result.Message });
-        
+
         return Ok(new ResSuccess());
     }
-    
+
     [HttpDelete]
     [Route("{id:int}")]
     [SwaggerOperation(

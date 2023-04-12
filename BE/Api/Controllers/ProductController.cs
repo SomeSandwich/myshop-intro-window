@@ -32,20 +32,20 @@ public class ProductController : ControllerBase
         _mapper = config.CreateMapper();
     }
 
-    // [HttpGet]
-    // [Route("")]
-    // [SwaggerOperation(
-    //     Summary = "Get All Products",
-    //     Description = "",
-    //     OperationId = "Get")]
-    // [SwaggerResponse(200, "List information product", typeof(IEnumerable<ProductRes>))]
-    // public async Task<ActionResult<IEnumerable<ProductRes>>> GetAll()
-    // {
-    //     var list = await _productSer.GetAsync();
-    //
-    //     return Ok(list);
-    // }
-    //
+    [HttpGet]
+    [Route("")]
+    [SwaggerOperation(
+        Summary = "Get All Products",
+        Description = "",
+        OperationId = "Get")]
+    [SwaggerResponse(200, "List information product", typeof(IEnumerable<ProductRes>))]
+    public async Task<ActionResult<IEnumerable<ProductRes>>> GetAll()
+    {
+        var list = await _productSer.GetAsync();
+    
+        return Ok(list);
+    }
+    
     [HttpGet]
     [Route("{id:int}")]
     [SwaggerOperation(
@@ -62,20 +62,20 @@ public class ProductController : ControllerBase
     
         return Ok(prod);
     }
-    //
-    // [HttpGet]
-    // [Route("/category/{cateId:int}")]
-    // [SwaggerOperation(
-    //     Summary = "Get Product By Category Id",
-    //     Description = "",
-    //     OperationId = "Get")]
-    // [SwaggerResponse(200, "List product by category", typeof(IEnumerable<ProductRes>))]
-    // public async Task<ActionResult<IEnumerable<ProductRes>>> GetByCategoryId([FromRoute] int cateId)
-    // {
-    //     var lsProduct = await _productSer.GetByCategoryAsync(cateId);
-    //
-    //     return Ok(lsProduct);
-    // }
+    
+    [HttpGet]
+    [Route("/category/{cateId:int}")]
+    [SwaggerOperation(
+        Summary = "Get Product By Category Id",
+        Description = "",
+        OperationId = "Get")]
+    [SwaggerResponse(200, "List product by category", typeof(IEnumerable<ProductRes>))]
+    public async Task<ActionResult<IEnumerable<ProductRes>>> GetByCategoryId([FromRoute] int cateId)
+    {
+        var lsProduct = await _productSer.GetByCategoryAsync(cateId);
+    
+        return Ok(lsProduct);
+    }
 
     [HttpPost]
     [Route("")]
@@ -96,59 +96,59 @@ public class ProductController : ControllerBase
 
         return CreatedAtAction(nameof(GetOne), new { id = $"{prodId}" }, new ResSuccess());
     }
-    //
-    // [HttpPatch]
-    // [Route("{id:int}")]
-    // [SwaggerOperation(
-    //     Summary = "UpdateProduct",
-    //     Description = "",
-    //     OperationId = "Patch")]
-    // [SwaggerResponse(200, "Success Response", typeof(ResSuccess))]
-    // [SwaggerResponse(400, "Not found productId", typeof(ResFailure))]
-    // [SwaggerResponse(401, "Not login", typeof(ResFailure))]
-    // public async Task<ActionResult<ResBase>> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductReq req)
-    // {
-    //     if (HttpContext.User.Identity is not ClaimsIdentity identity)
-    //         return Unauthorized();
-    //
-    //     var selfIdStr = identity.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
-    //     if (selfIdStr is null)
-    //         return Unauthorized();
-    //
-    //     if (!int.TryParse(selfIdStr, out var accId))
-    //     {
-    //         return Unauthorized();
-    //     }
-    //
-    //     // todo upload file
-    //     var listUpload = new List<string>();
-    //     // todo delete file
-    //
-    //     var arg = _mapper.Map<UpdateProductReq, UpdateProductArg>(req);
-    //
-    //     var result = await _productSer.UpdateAsync(id, arg);
-    //
-    //     if (result is FailureResult)
-    //         return BadRequest(new ResFailure { Message = result.Message });
-    //
-    //     return Ok(new ResSuccess());
-    // }
-    //
-    // [HttpDelete]
-    // [Route("{id:int}")]
-    // [SwaggerOperation(
-    //     Summary = "Delete Product",
-    //     Description = "",
-    //     OperationId = "Delete")]
-    // [SwaggerResponse(200, "Success Response", typeof(ResSuccess))]
-    // [SwaggerResponse(400, "Not found productId", typeof(ResFailure))]
-    // public async Task<ActionResult<ResBase>> DeleteProduct([FromRoute] int id)
-    // {
-    //     var result = await _productSer.DeleteAsync(id);
-    //
-    //     if (result is not SuccessResult)
-    //         return BadRequest(new ResFailure { Message = result.Message });
-    //
-    //     return Ok(result);
-    // }
+    
+    [HttpPatch]
+    [Route("{id:int}")]
+    [SwaggerOperation(
+        Summary = "UpdateProduct",
+        Description = "",
+        OperationId = "Patch")]
+    [SwaggerResponse(200, "Success Response", typeof(ResSuccess))]
+    [SwaggerResponse(400, "Not found productId", typeof(ResFailure))]
+    [SwaggerResponse(401, "Not login", typeof(ResFailure))]
+    public async Task<ActionResult<ResBase>> UpdateProduct([FromRoute] int id, [FromForm] UpdateProductReq req)
+    {
+        if (HttpContext.User.Identity is not ClaimsIdentity identity)
+            return Unauthorized();
+    
+        var selfIdStr = identity.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
+        if (selfIdStr is null)
+            return Unauthorized();
+    
+        if (!int.TryParse(selfIdStr, out var accId))
+        {
+            return Unauthorized();
+        }
+    
+        // todo upload file
+        var listUpload = new List<string>();
+        // todo delete file
+    
+        var arg = _mapper.Map<UpdateProductReq, UpdateProductArg>(req);
+    
+        var result = await _productSer.UpdateAsync(id, arg);
+    
+        if (result is FailureResult)
+            return BadRequest(new ResFailure { Message = result.Message });
+    
+        return Ok(new ResSuccess());
+    }
+    
+    [HttpDelete]
+    [Route("{id:int}")]
+    [SwaggerOperation(
+        Summary = "Delete Product",
+        Description = "",
+        OperationId = "Delete")]
+    [SwaggerResponse(200, "Success Response", typeof(ResSuccess))]
+    [SwaggerResponse(400, "Not found productId", typeof(ResFailure))]
+    public async Task<ActionResult<ResBase>> DeleteProduct([FromRoute] int id)
+    {
+        var result = await _productSer.DeleteAsync(id);
+    
+        if (result is not SuccessResult)
+            return BadRequest(new ResFailure { Message = result.Message });
+    
+        return Ok(new ResSuccess());
+    }
 }
