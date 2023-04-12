@@ -67,6 +67,15 @@ export default function NavBar() {
                                 <span>About Us</span>
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink
+                                to={"/login"}
+                                className="nav-link scrollto"
+                            >
+                                <i className="fa-solid fa-right-from-bracket"></i>
+                                <span>Log Out</span>
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
             </div>
