@@ -24,3 +24,30 @@
         color: black;  
     }
 }
+.card-amount{
+    width: 250px;
+    height: 100px;
+    margin-left: 3px;
+    margin-right: 0px;
+    border-radius: 20px;
+    padding: 25px 0px 25px;
+    overflow: hidden;
+    h5,h6{
+        color: white ;
+        font-weight: 400;
+    }
+    span {
+        font-weight: 700;
+        font-size: 29px;
+        color: white;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;  // <- you can change rows number
+        -webkit-box-orient: vertical;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    i{
+        color: black;  
+    }
+}
