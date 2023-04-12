@@ -2,6 +2,7 @@ import React from "react";
 import "./styles/pages.scss";
 
 export default function Login() {
+    
     return (
         <main>
             <div className="container">
