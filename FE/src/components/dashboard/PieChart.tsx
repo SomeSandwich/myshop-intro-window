@@ -24,7 +24,7 @@ export default function PieChart(props:{data:Number[],cate: String[]}) {
     const parts = props.data;
     if(parts.length==0) return <></>
 
-    const theme :String[] = [];
+    const theme :string[] = [];
     parts.forEach(x=>{
         theme.push(`rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`)
     })
