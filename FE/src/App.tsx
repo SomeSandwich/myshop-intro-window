@@ -1,38 +1,32 @@
 import nodeLogo from './assets/node.svg'
 import { useState } from 'react'
+import {Routes,Route,useMatches, useMatch, useLocation, Router } from "react-router-dom"
 import Update from '@/components/update'
 import './App.scss'
+import HomeLayout from './features/HomeLayout'
 
 console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`)
 
 function App() {
   const [count, setCount] = useState(0)
   return (
-    <div className='App'>
-      <div className='logo-box'>
-        <a href='https://github.com/electron-vite/electron-vite-react' target='_blank'>
-          <img src='./vite.svg' className='logo vite' alt='Electron + Vite logo' />
-          <img src='./electron.svg' className='logo electron' alt='Electron + Vite logo' />
-        </a>
-      </div>
-      <h1>Electron + Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Electron + Vite logo to learn more
-      </p>
-      <div className='flex-center'>
-        Place static files into the<code>/public</code> folder <img style={{ width: '5em' }} src={nodeLogo} alt='Node logo' />
-      </div>
+    <div className="containerWeb">
 
-      <Update />
+        <Routes>
+        <Route path='/' element={<HomeLayout/>} >
+          <Route path='/help' element={<div>Help</div>}/>
+          <Route path='/home' element={<div>Home</div>}/>
+          <Route path='/about-us' element={<div>About-Us</div>}/>
+          <Route path='/dashboard' element={<div>DashBoard</div>}/>
+          <Route path='/order' element={<div>Order</div>}/>
+          <Route path='/add-product' element={<div>Add product</div>}/>
+        </Route>
+        <Route path='/login' element={<div>Login</div>}/>
+        
+      </Routes>
     </div>
+    
+    
   )
 }
 
