@@ -59,7 +59,7 @@ export default function Login() {
                         <div className="d-flex justify-content-center links">
                             Don't have an account?{" "}
                             <NavLink to={"/signup"}>
-                                <span> Signup</span>
+                                <span>Signup</span>
                             </NavLink>
                         </div>
                     </div>

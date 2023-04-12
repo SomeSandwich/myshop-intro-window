@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./styles/pages.scss";
 
 export default function Signup() {
@@ -30,6 +31,19 @@ export default function Signup() {
                                 />
                             </div>
 
+                            <div className="input-group mb-3">
+                                <div className="input-group-append">
+                                    <span className="input-group-text">
+                                        <i className="fas fa-envelope" />
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    className="form-control input_user"
+                                    placeholder="Email"
+                                />
+                            </div>
+
                             <div className="input-group mb-2">
                                 <div className="input-group-append">
                                     <span className="input-group-text">
@@ -49,20 +63,17 @@ export default function Signup() {
                                     name="button"
                                     className="btn login_btn"
                                 >
-                                    Login
+                                    Signup
                                 </button>
                             </div>
                         </form>
                     </div>
                     <div className="mt-4">
                         <div className="d-flex justify-content-center links">
-                            Don't have an account?{" "}
-                            <a href="#" className="ml-2">
-                                Sign Up
-                            </a>
-                        </div>
-                        <div className="d-flex justify-content-center links">
-                            <a href="#">Forgot your password?</a>
+                            Have an account?{" "}
+                            <NavLink className="ml-2" to={"/login"}>
+                                <span>Login</span>
+                            </NavLink>
                         </div>
                     </div>
                 </div>
