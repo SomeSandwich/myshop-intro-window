@@ -1,11 +1,6 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
 using Api.App;
 using API.App;
 using Api.App.Extensions;
-using Asp.Versioning.Builder;
-using Asp.Versioning.Conventions;
-using Microsoft.AspNetCore.Mvc;
 using MMS.GateApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,56 +24,20 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-ApiVersionSet versionSet = app.NewApiVersionSet()
-    .HasApiVersion(1)
-    .HasApiVersion(2)
-    .ReportApiVersions()
-    .Build();
+// var versionSet = app.NewApiVersionSet()
+//     .HasApiVersion(1)
+//     .HasApiVersion(2)
+//     .ReportApiVersions()
+//     .Build();
 
-app.MapEndpoints(versionSet);
-
-if (true)
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(opt =>
-    {
-        var descs = app.DescribeApiVersions();
-        foreach (var desc in descs)
-        {
-            var url = $"/swagger/{desc.GroupName}/swagger.json";
-            var name = desc.GroupName.ToUpperInvariant();
-            opt.SwaggerEndpoint(url, name);
-        }
-    });
-
-    app.UseReDoc(opt =>
-    {
-        opt.DocumentTitle = "Swagger Demo Documentation";
-        opt.SpecUrl = "/swagger/v1/swagger.json";
-
-        // var resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-        // Console.WriteLine("--- Resource Name ---");
-        // foreach (string name in resourceNames)
-        // {
-        //     Console.WriteLine($"--- {name} ---");
-        // }
-        Console.WriteLine($"""
-                *********
-                Stream is null {(Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html")) is null}
-                *********
-            """);
-
-        opt.IndexStream = () =>
-            Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html");
-    });
-}
+// app.MapEndpoints(versionSet);
 
 app.ConfigureErrorResponse();
 
+app.UseSwaggerAndRedoc();
 app.UseAuthorization();
-app.MapControllers();
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

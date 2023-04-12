@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    partial class MyShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230411165553_SandBoxBook")]
+    partial class SandBoxBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Api.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            Password = "$2a$11$Un43S5xq029T1pnUW1U9s.mCq6Jq/Tmnkie43PmN4vmLyMC4pt5c.",
+                            Password = "$2a$11$QAy9dS.DfYHZL5J0DDDUDeJkSBYFGzCzTD3gXqLnJlyjaAvZqfaDW",
                             Status = 0,
                             Username = "root"
                         });
@@ -88,6 +91,9 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -176,6 +182,9 @@ namespace Api.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DimensionJSON")
                         .HasColumnType("text");
 
                     b.Property<int>("Discount")

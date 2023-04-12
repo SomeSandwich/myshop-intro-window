@@ -73,7 +73,7 @@ public class AccountService : IAccountService
         if (acc is null)
             return new FailureResult
             {
-                Message = "Not found account with id:{id}"
+                Message = $"Not found account with id:{id}"
             };
 
         // acc.Username = string.IsNullOrEmpty(req.Username) ? acc.Username : req.Username;
