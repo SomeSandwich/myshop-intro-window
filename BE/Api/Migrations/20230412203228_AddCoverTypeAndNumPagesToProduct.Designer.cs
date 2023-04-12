@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    partial class MyShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230412203228_AddCoverTypeAndNumPagesToProduct")]
+    partial class AddCoverTypeAndNumPagesToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Api.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            Password = "$2a$11$X6vXoFHzOLv4dFk5oFg/jekiLynsvQZSJGJE11F3CvWyHa6sYXxva",
+                            Password = "$2a$11$KXaziE0kbjZ5CZMT0CMhpeV0av2rTAMlbTQf9/SG4HRI1HF1rd.3a",
                             Status = 0,
                             Username = "root"
                         });
@@ -175,9 +178,6 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("JoinDate")
-                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()

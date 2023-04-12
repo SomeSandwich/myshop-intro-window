@@ -7,7 +7,7 @@ namespace Api.Services;
 public interface IOrderService
 {
     Task<IEnumerable<OrderRes>> GetAsync();
-    Task<OrderRes> GetAsync(int id);
+    Task<OrderRes?> GetAsync(int id);
 
     Task<int> CreateAsync(CreateOrderReq req);
 
@@ -30,7 +30,7 @@ public class OrderService : IOrderService
         throw new NotImplementedException();
     }
 
-    public async Task<OrderRes> GetAsync(int id)
+    public async Task<OrderRes?> GetAsync(int id)
     {
         throw new NotImplementedException();
     }

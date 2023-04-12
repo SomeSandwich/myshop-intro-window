@@ -7,6 +7,7 @@ public class MyShopDbContext : DbContext
 {
     public MyShopDbContext(DbContextOptions<MyShopDbContext> options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -15,6 +15,8 @@ public class OrderDetail
     public int UnitPrice { get; set; } = default;
 
     public int Discount { get; set; } = default;
+
+    public int Quantity { get; set; } = default;
 }
 
 public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    partial class MyShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230411170041_RemoveTestSandBox")]
+    partial class RemoveTestSandBox
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Api.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            Password = "$2a$11$X6vXoFHzOLv4dFk5oFg/jekiLynsvQZSJGJE11F3CvWyHa6sYXxva",
+                            Password = "$2a$11$Un43S5xq029T1pnUW1U9s.mCq6Jq/Tmnkie43PmN4vmLyMC4pt5c.",
                             Status = 0,
                             Username = "root"
                         });
@@ -79,93 +82,6 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Adventure"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Comic Book"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Detective"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "Mystery"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Fantasy"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Description = "Horror"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Description = "Literary Fiction"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Description = "Romance"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Description = "Science Fiction"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Description = "Short Stories"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Description = "Suspense"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Description = "Thrillers"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Description = "Biographies"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Description = "History"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Description = "Memoir"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Description = "Poetry"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Description = "Self-Help"
-                        });
                 });
 
             modelBuilder.Entity("Api.Context.Entities.Customer", b =>
@@ -175,9 +91,6 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("JoinDate")
-                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -240,9 +153,6 @@ namespace Api.Migrations
                     b.Property<int>("Discount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
                     b.Property<int>("UnitPrice")
                         .HasColumnType("integer");
 
@@ -261,14 +171,7 @@ namespace Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CoverType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreateAt")
@@ -278,36 +181,15 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("DimensionJSON")
-                        .HasColumnType("text");
-
                     b.Property<int>("Discount")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Isbn10")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Isbn13")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<List<string>>("MediaPath")
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<int>("NumPages")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Price")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("PublicationDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Publisher")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
