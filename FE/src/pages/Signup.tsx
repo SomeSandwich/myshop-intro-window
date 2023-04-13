@@ -1,8 +1,50 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useRef } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./styles/pages.scss";
 
 export default function Signup() {
+    const userref = React.useRef<HTMLInputElement>(null);
+    const passref = React.useRef<HTMLInputElement>(null);
+    const emailref = React.useRef<HTMLInputElement>(null);
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+        const user = {
+            username: userref.current?.value,
+            email: emailref.current?.value,
+            password: passref.current?.value,
+        };
+        if (
+            !userref.current?.value ||
+            !passref.current?.value ||
+            !emailref.current?.value
+        ) {
+            alert("Please fill all the fields");
+        }
+        //email validation
+        else if (!regex.test(emailref.current?.value)) {
+            alert("Please enter a valid email");
+        } else if (
+            containsSpecialChars(userref.current?.value) ||
+            containsSpecialChars(passref.current?.value)
+        ) {
+            alert(
+                "Username and Password not allowed to contain special characters"
+            );
+        }
+
+        // Perform login process here, e.g. by making an API call or validating user credentials
+        // For now, just redirect to the home page
+        // const navigate = useNavigate();
+        // navigate("/home");
+    };
+
+    const containsSpecialChars = (input: string): boolean => {
+        const regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        return regex.test(input);
+    };
+
     return (
         <div className="h-100 mt-5 align-items-center ">
             <div className="d-flex  justify-content-center h-100">
@@ -17,7 +59,7 @@ export default function Signup() {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center form_container">
-                        <form>
+                        <form onSubmit={handleLogin}>
                             <div className="input-group mb-3">
                                 <div className="input-group-append">
                                     <span className="input-group-text">
@@ -28,6 +70,7 @@ export default function Signup() {
                                     type="text"
                                     className="form-control input_user"
                                     placeholder="username"
+                                    ref={userref}
                                 />
                             </div>
 
@@ -41,6 +84,7 @@ export default function Signup() {
                                     type="text"
                                     className="form-control input_user"
                                     placeholder="Email"
+                                    ref={emailref}
                                 />
                             </div>
 
@@ -54,12 +98,13 @@ export default function Signup() {
                                     type="password"
                                     className="form-control input_pass"
                                     placeholder="password"
+                                    ref={passref}
                                 />
                             </div>
 
                             <div className="d-flex justify-content-center mt-3 login_container">
                                 <button
-                                    type="button"
+                                    type="submit"
                                     name="button"
                                     className="btn login_btn"
                                 >
