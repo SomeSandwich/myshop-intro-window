@@ -162,9 +162,11 @@ const BookSlice = createSlice({
           state.allBook.push(action.payload)
         },
         removeBook(state, action) {
-            const removePostID = action.payload;
+            const removeBookID = action.payload;
             //axios xoa o server
-            state = {...state,allBook:state.allBook.filter(book=> book.Id !== removePostID)};
+            state.allBook = state.allBook.filter(book=> book.Id !== removeBookID)
+            console.log(state.allBook)
+            // state = {...state,allBook:};
         },
         updateBook(state, action){
             const newPost=action.payload;

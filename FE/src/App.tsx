@@ -18,6 +18,8 @@ import Error from "./pages/Error";
 import RequireLogin from "./components/Auth/RequireLogin";
 import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
+import ManageCate from "./features/Categories/manageCate";
+import CateLayout from "./features/Categories/CateLayout";
 
 console.log(
     "[App.tsx]",
@@ -35,6 +37,10 @@ function App() {
                         <Route path="/help" element={<div>Help</div>} />
                         <Route path="/home" element={<Home/>} />
                         <Route path="/about-us" element={<div>About-Us</div>} />
+                        <Route path="categories" element={<CateLayout/>}>
+                            <Route path="view" element={<ManageCate/>} />
+                            <Route path="edit/:id" element={<ManageCate/>} />
+                        </Route>
                         <Route
                             path="/dashboard"
                             element={<DashBoard/>}

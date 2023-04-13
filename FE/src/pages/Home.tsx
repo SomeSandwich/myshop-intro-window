@@ -1,5 +1,6 @@
+import CateLineFilter from '@/features/Categories/CateLineFilter'
 import BookList from '@/features/posts/BookList'
-import { updateBook } from '@/features/posts/BookSlice'
+import { removeBook, updateBook } from '@/features/posts/BookSlice'
 import { addBook } from '@/features/posts/BookSlice'
 import { RootState } from '@/store'
 import React from 'react'
@@ -38,6 +39,9 @@ export default function Home() {
             CategpryId: 1,
         }))
     }
+    const handelDeleteBook = (bookId:Number)=>{
+        dispatch(removeBook(bookId))
+    }
   return (
     <div>
         <div className='row'>
@@ -47,7 +51,10 @@ export default function Home() {
             </form>
         </div>
         <div className='row'>
-            <BookList booklist={bookList}/>
+           <CateLineFilter/>
+        </div>
+        <div className='row'>
+            <BookList booklist={bookList} handleDeleteBook={handelDeleteBook}/>
         </div>
         <div className='row'>
             <button onClick={()=>handleAddBtnClick()}>Add</button>
