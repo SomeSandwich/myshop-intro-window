@@ -5,6 +5,7 @@ import { addBook } from '@/features/posts/BookSlice'
 import { RootState } from '@/store'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 export default function Home() {
     const bookList = useSelector((state:RootState)=>state.book.allBook) 
     console.log(bookList)
@@ -52,6 +53,7 @@ export default function Home() {
         </div>
         <div className='row'>
            <CateLineFilter/>
+           
         </div>
         <div className='row'>
             <BookList booklist={bookList} handleDeleteBook={handelDeleteBook}/>

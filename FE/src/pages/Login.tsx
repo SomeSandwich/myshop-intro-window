@@ -1,39 +1,9 @@
-import React, { useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import "./styles/login.scss";
 
 export default function Login() {
-    const userref = React.useRef<HTMLInputElement>(null);
-    const passref = React.useRef<HTMLInputElement>(null);
-
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const user = {
-            username: userref.current?.value,
-            password: passref.current?.value,
-        };
-        if (!userref.current?.value || !passref.current?.value) {
-            alert("Please enter both a username and a password");
-        } else if (
-            containsSpecialChars(userref.current?.value) ||
-            containsSpecialChars(passref.current?.value)
-        ) {
-            alert(
-                "Username and Password not allowed to contain special characters"
-            );
-        }
-
-        // Perform login process here, e.g. by making an API call or validating user credentials
-        // For now, just redirect to the home page
-        // const navigate = useNavigate();
-        // navigate("/home");
-    };
-
-    const containsSpecialChars = (input: string): boolean => {
-        const regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-        return regex.test(input);
-    };
-
+    
     return (
         <div className="h-100 mt-5 align-items-center ">
             <div className="d-flex  justify-content-center h-100">
@@ -48,7 +18,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center form_container">
-                        <form onSubmit={handleLogin}>
+                        <form>
                             <div className="input-group mb-3">
                                 <div className="input-group-append">
                                     <span className="input-group-text">
@@ -56,7 +26,6 @@ export default function Login() {
                                     </span>
                                 </div>
                                 <input
-                                    ref={userref}
                                     type="text"
                                     className="form-control input_user"
                                     placeholder="username"
@@ -70,7 +39,6 @@ export default function Login() {
                                     </span>
                                 </div>
                                 <input
-                                    ref={passref}
                                     type="password"
                                     className="form-control input_pass"
                                     placeholder="password"
@@ -79,7 +47,7 @@ export default function Login() {
 
                             <div className="d-flex justify-content-center mt-3 login_container">
                                 <button
-                                    type="submit"
+                                    type="button"
                                     name="button"
                                     className="btn login_btn"
                                 >

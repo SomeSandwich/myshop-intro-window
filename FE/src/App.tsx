@@ -20,6 +20,7 @@ import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
 import ManageCate from "./features/Categories/manageCate";
 import CateLayout from "./features/Categories/CateLayout";
+import Help from "./pages/Help";
 
 console.log(
     "[App.tsx]",
@@ -32,9 +33,10 @@ function App() {
     return (
         <div className="containerWeb">
             <Routes>
+                <Route index element={<HomeLayout />} />
                 <Route element={<RequireLogin />}>
                     <Route path="/" element={<HomeLayout />} >
-                        <Route path="/help" element={<div>Help</div>} />
+                        <Route path="/help" element={<Help/>} />
                         <Route path="/home" element={<Home/>} />
                         <Route path="/about-us" element={<div>About-Us</div>} />
                         <Route path="categories" element={<CateLayout/>}>
