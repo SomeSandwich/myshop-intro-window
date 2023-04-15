@@ -20,6 +20,9 @@ import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
 import ManageCate from "./features/Categories/manageCate";
 import CateLayout from "./features/Categories/CateLayout";
+import DetailBook from "./components/Book/DetailBook";
+import CardBook from "./components/Book/CardBook";
+import BookLayout from "./features/posts/BookLayout";
 import Help from "./pages/Help";
 
 console.log(
@@ -35,18 +38,22 @@ function App() {
             <Routes>
                 <Route index element={<HomeLayout />} />
                 <Route element={<RequireLogin />}>
-                    <Route path="/" element={<HomeLayout />} >
-                        <Route path="/help" element={<Help/>} />
-                        <Route path="/home" element={<Home/>} />
+                    <Route path="/" element={<HomeLayout />}>
+                        <Route path="/help" element={<Help />} />
+                        <Route path="/home" element={<Home />} />
                         <Route path="/about-us" element={<div>About-Us</div>} />
-                        <Route path="categories" element={<CateLayout/>}>
-                            <Route path="view" element={<ManageCate/>} />
-                            <Route path="edit/:id" element={<ManageCate/>} />
+                        <Route path="categories" element={<CateLayout />}>
+                            <Route path="view" element={<ManageCate />} />
+                            <Route path="edit/:id" element={<ManageCate />} />
                         </Route>
-                        <Route
-                            path="/dashboard"
-                            element={<DashBoard/>}
-                        />
+                        <Route path="books" element={<BookLayout />}>
+                            <Route
+                                path="viewDetail/:id"
+                                element={<DetailBook />}
+                            />
+                            <Route path="edit/:id" element={<ManageCate />} />
+                        </Route>
+                        <Route path="/dashboard" element={<DashBoard />} />
                         <Route path="/order" element={<div>Order</div>} />
                         <Route
                             path="/add-product"
@@ -58,7 +65,6 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="*" element={<Error />} />
             </Routes>
-            
         </div>
     );
 }

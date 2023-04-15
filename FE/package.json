@@ -27,6 +27,7 @@
         "jwt-decode": "^3.1.2",
         "react-chartjs-2": "^5.2.0",
         "react-icons": "^4.8.0",
+        "react-multi-select-component": "^4.3.4",
         "react-router-dom": "^6.10.0",
         "semantic-ui-react": "^2.1.4"
     },
