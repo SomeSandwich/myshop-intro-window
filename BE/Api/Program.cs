@@ -1,6 +1,7 @@
 using Api.App;
 using API.App;
 using Api.App.Extensions;
+using API.Configurations;
 using MMS.GateApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.ConfigureVersion();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureJwt(config);
 builder.Services.ConfigureController();
+builder.Services.ConfigCors();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.RegisterServices();
@@ -37,7 +39,7 @@ app.ConfigureErrorResponse();
 app.UseSwaggerAndRedoc();
 app.UseAuthorization();
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.Run();
