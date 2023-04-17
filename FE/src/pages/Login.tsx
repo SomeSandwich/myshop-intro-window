@@ -1,38 +1,58 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./styles/login.scss";
 import { useDispatch } from "react-redux";
-import { login } from "@/components/Auth/AuthSlice";
+import { isLogin, login } from "@/components/Auth/AuthSlice";
 import { ILoginInput } from "@/interfaces/IAuth";
-import { useAppDispatch } from "@/Hooks/apphooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
+import axios from "axios";
+import { env } from "process";
+import useLocalStore from "@/Hooks/useLocalStore";
 
 export default function Login() {
-    const userref = React.useRef<HTMLInputElement>(null);
-    const passref = React.useRef<HTMLInputElement>(null);
+    // const userref = React.useRef<HTMLInputElement>(null);
+    // const passref = React.useRef<HTMLInputElement>(null);
+    const [username, setUsername] = useLocalStore({key:"name",initialValue: ""});
+    const [password, setPassword] = useLocalStore({key:"pass",initialValue: ""});
+    const navigate = useNavigate()
+    const isValid = useAppSelector(isLogin);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+        // if (
+        //     !userref.current?.value ||
+        //     !passref.current?.value 
+        // ) {
+        //     alert("Please fill all the fields");
+        // }
         if (
-            !userref.current?.value ||
-            !passref.current?.value 
+            username=="" ||
+            password==""
         ) {
             alert("Please fill all the fields");
         }
         //email validation
         else if (
-            containsSpecialChars(userref.current?.value) ||
-            containsSpecialChars(passref.current?.value)
+            containsSpecialChars(username) ||
+            containsSpecialChars(password)
         ) {
             alert(
                 "Username and Password not allowed to contain special characters"
             );
         } else {
             const user : ILoginInput= {
-                username: userref.current?.value,
-                password: passref.current?.value,
+                username: username,
+                password: password,
             }
-            dispatch(login(user))
+            console.log(user)
+            const logRes = await dispatch(login(user)).then((res)=>{
+                console.log(res)
+                if(res.type == "auth/login/fulfilled")
+                {
+                    navigate("/home")
+                }
+            })
         }
 
         // Perform login process here, e.g. by making an API call or validating user credentials
@@ -80,7 +100,9 @@ export default function Login() {
                                     type="text"
                                     className="form-control input_user"
                                     placeholder="username"
-                                    ref={userref}
+                                    // ref={userref}
+                                    value={username}
+                                    onChange={(e)=>{setUsername(e.currentTarget.value)}}
                                 />
                             </div>
                             <div className="input-group mb-2">
@@ -93,7 +115,9 @@ export default function Login() {
                                     type="password"
                                     className="form-control input_pass"
                                     placeholder="password"
-                                    ref={passref}
+                                    // ref={passref}
+                                    value={password}
+                                    onChange={(e)=>{setPassword(e.currentTarget.value)}}
                                 />
                             </div>
 

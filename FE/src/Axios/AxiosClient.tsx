@@ -8,9 +8,9 @@ const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
   headers: {
     "Content-type": "application/json",
-    'Access-Control-Allow-Credentials':'true',
+    // 'Access-Control-Allow-Credentials':'true',
     'Access-Control-Allow-Origin' : '*',
-    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    // 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   },
   withCredentials: true,
 });

@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./styles/pages.scss";
 import { SignUpAsync } from "@/services/acount.service";
 import { ISignUpInput } from "@/interfaces/Acount";
+import axios from "axios";
 
 export default function Signup() {
     const userref = React.useRef<HTMLInputElement>(null);
@@ -36,7 +37,16 @@ export default function Signup() {
                 email: emailref.current?.value,
                 password: passref.current?.value,
             };
+            console.log(user)
             const isSucess = await SignUpAsync(user);
+            
+            // const client = axios.create({
+            //     baseURL: `https://pokeapi.co/api/v2/pokemon/ditto`
+            // })
+            // client.get("").then((res)=>{
+            //     console.log(res.data)
+            // });
+
             console.log(isSucess)
         }
         

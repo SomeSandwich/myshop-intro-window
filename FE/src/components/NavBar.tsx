@@ -2,7 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { RiBillLine } from "react-icons/ri";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import { logout } from "./Auth/AuthSlice";
+import { useAppDispatch } from "@/Hooks/apphooks";
 export default function NavBar() {
+    const dispatch = useAppDispatch()
     return (
         <header id="header">
             <div className="d-flex flex-column">
@@ -71,6 +74,9 @@ export default function NavBar() {
                             <NavLink
                                 to={"/login"}
                                 className="nav-link scrollto"
+                                onClick={(e)=>{
+                                    dispatch(logout);
+                                }}
                             >
                                 <i className="fa-solid fa-right-from-bracket"></i>
                                 <span>Log Out</span>
