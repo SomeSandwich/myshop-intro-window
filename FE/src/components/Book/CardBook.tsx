@@ -18,13 +18,18 @@ export default function CardBook(props: {
         <article
             onClick={handleOnClick}
             className="card-book card depth--two"
-            style={{ maxHeight: "400px", maxWidth: "300px", margin: "4px" }}
+            style={{ maxHeight: "400px", maxWidth: "300px"}}
         >
             <figure className="image">
                 <img
                     style={{ maxHeight: "200px", maxWidth: "300px" }}
-                    src={props.imgUrl}
+                    // src={props.imgUrl}
+                    src={props.imgUrl?props.imgUrl:"https://react.semantic-ui.com/images/wireframe/square-image.png"}
                     alt={props.title}
+                    onError={({currentTarget}) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src ='https://react.semantic-ui.com/images/wireframe/square-image.png'
+                      }}
                 />
             </figure>
             <div className="card__body">

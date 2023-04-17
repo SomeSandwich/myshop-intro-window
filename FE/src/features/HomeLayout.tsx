@@ -8,12 +8,12 @@ export default function HomeLayout() {
   return (
 
     <div>
-      <div className="container-fluid mt-4">
-        <div className="row">
+      <div className="container-fluid">
+        <div className="row d-flex flex-column justify-content-center pr-4">
             <div className="navigation">
                 <NavBar/>
             </div>
-            <div className="main-container">
+            <div className="main-container mt-4">
                 <Outlet/>
             </div>
         </div>

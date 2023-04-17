@@ -21,7 +21,7 @@ export default function NavBar() {
                     <ul>
                         <li>
                             <NavLink
-                                to={"/dashboard"}
+                                to={"/"}
                                 className="nav-link scrollto"
                             >
                                 <i className="fa-sharp fa-solid fa-chart-simple"></i>

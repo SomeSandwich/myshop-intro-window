@@ -36,9 +36,9 @@ function App() {
     return (
         <div className="containerWeb">
             <Routes>
-                <Route index element={<HomeLayout />} />
                 <Route element={<RequireLogin />}>
                     <Route path="/" element={<HomeLayout />}>
+                        <Route index element={<DashBoard />} />
                         <Route path="/help" element={<Help />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/about-us" element={<div>About-Us</div>} />
@@ -53,7 +53,7 @@ function App() {
                             />
                             <Route path="edit/:id" element={<ManageCate />} />
                         </Route>
-                        <Route path="/dashboard" element={<DashBoard />} />
+                        {/* <Route path="/dashboard" element={<DashBoard />} /> */}
                         <Route path="/order" element={<div>Order</div>} />
                         <Route
                             path="/add-product"

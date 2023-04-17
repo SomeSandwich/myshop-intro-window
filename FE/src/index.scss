@@ -56,6 +56,7 @@ body {
 .main-container {
     margin-left: 300px;
     min-height: fit-content;
+    
 }
 
 @media (max-width: 1199px) {
@@ -143,5 +144,11 @@ body {
     .filter-year{
         margin-left: 100px;
         max-width: 150px;
+    }
+}
+.home-view{
+    >.row{
+        // max-width: 950px;
+        margin-top: 15px;
     }
 }

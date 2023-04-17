@@ -6,10 +6,12 @@ import { RootState } from "@/store";
 import React from "react";
 import MultiSelect from "@/components/ReactNPM/MultitySelect";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 export default function Home() {
     const bookList = useSelector((state: RootState) => state.book.allBook);
     console.log(bookList);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleAddBtnClick = () => {
         dispatch(
             addBook({
@@ -48,7 +50,7 @@ export default function Home() {
         dispatch(removeBook(bookId));
     };
     return (
-        <div>
+        <div className="home-view">
             <div className="row">
                 <form className="form-inline">
                     <input
@@ -68,16 +70,49 @@ export default function Home() {
             <div className="row">
                 {/* <CateLineFilter/> */}
                 <MultiSelect />
+                <button style={{width: "150px"}}
+                    className="ml-4 btn btn-success"
+                    onClick={()=>{
+                        navigate('/categories/view')
+                    }}>
+                    <span style={{color:"white"}}>Manage Genre</span>
+                </button>
             </div>
-            <div className="row">
+            <div className="row d-flex justify-content-center">
                 <BookList
                     booklist={bookList}
                     handleDeleteBook={handelDeleteBook}
                 />
             </div>
-            <div className="row">
+            {/* <div className="row">
                 <button onClick={() => handleAddBtnClick()}>Add</button>
                 <button onClick={() => handleUpdateBtnClick()}>Update</button>
+            </div> */}
+            <div className="row d-flex justify-content-between"
+                style={{
+                    bottom: 0,
+                    right: 10,
+                    left:350,
+                    paddingTop:"10px",
+                    paddingLeft:"10px",
+                    paddingRight:"10px",
+                    paddingBottom:"0px",
+                    alignContent:"center",
+                    backgroundColor: "rgba(255, 251, 251,1)",
+                    }}
+                >
+                <div>Hiển thị {} trong tổng số {} kết quả</div>
+                <ul className="pagination justify-content-center">
+                    <li className="page-item disabled">
+                    <a className="page-link" href="#" tabIndex={-1} >Previous</a>
+                    </li>
+                    <li className="page-item"><a className="page-link" href="#">1</a></li>
+                    <li className="page-item"><a className="page-link" href="#">2</a></li>
+                    <li className="page-item"><a className="page-link" href="#">3</a></li>
+                    <li className="page-item">
+                    <a className="page-link" href="#">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
     );
