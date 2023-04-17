@@ -62,6 +62,8 @@ public class AccountService : IAccountService
 
         await _context.Accounts.AddAsync(acc);
 
+        await _context.SaveChangesAsync();
+
         return acc.Id;
     }
 
