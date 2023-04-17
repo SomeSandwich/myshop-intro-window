@@ -1,4 +1,4 @@
-import { logOut } from "@/components/Auth/AuthSlice";
+import { logout, refreshToken } from "@/components/Auth/AuthSlice";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
@@ -8,8 +8,11 @@ const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
   headers: {
     "Content-type": "application/json",
+    'Access-Control-Allow-Credentials':'true',
+    'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   },
-  withCredentials: false,
+  withCredentials: true,
 });
 
 export const setupInterceptors = (store: any) => {
@@ -36,11 +39,11 @@ export const setupInterceptors = (store: any) => {
               null
             );
             console.log("::::::", rs);
-            // store.dispatch(refreshToken(rs.data));
+            store.dispatch(refreshToken(rs.data));
 
             return axiosClient(originalConfig);
           } catch (_error) {
-            store.dispatch(logOut(""));
+            store.dispatch(logout());
             window.location.href = "/login";
             return Promise.reject(_error);
           }

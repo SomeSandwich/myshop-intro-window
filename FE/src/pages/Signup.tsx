@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./styles/pages.scss";
+import { SignUpAsync } from "@/services/acount.service";
+import { ISignUpInput } from "@/interfaces/Acount";
 
 export default function Signup() {
     const userref = React.useRef<HTMLInputElement>(null);
@@ -10,11 +12,7 @@ export default function Signup() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
-        const user = {
-            username: userref.current?.value,
-            email: emailref.current?.value,
-            password: passref.current?.value,
-        };
+        
         if (
             !userref.current?.value ||
             !passref.current?.value ||
@@ -32,8 +30,16 @@ export default function Signup() {
             alert(
                 "Username and Password not allowed to contain special characters"
             );
+        }else{
+            const user : ISignUpInput = {
+                username: userref.current?.value,
+                email: emailref.current?.value,
+                password: passref.current?.value,
+            };
+            const isSucess = await SignUpAsync(user);
+            console.log(isSucess)
         }
-
+        
         // Perform login process here, e.g. by making an API call or validating user credentials
         // For now, just redirect to the home page
         // const navigate = useNavigate();

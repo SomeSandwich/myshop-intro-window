@@ -87,6 +87,7 @@ const authSlice = createSlice({
     builder.addCase(
         login.pending,
         (state, action) => {
+            console.log("loading");
             state.isLoading = true;
             state.hasError = false;
         }
