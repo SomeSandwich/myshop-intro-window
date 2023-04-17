@@ -1,117 +1,142 @@
 import React from "react";
+import { NumericFormat } from "react-number-format";
+import { Tab } from "semantic-ui-react";
 import "./styles/DetailBook.scss";
 export default function () {
+    const bookDetail = {
+        title: "Sách 1",
+        author: "Nguyễn Văn A",
+        price: 100000,
+        description: "Sách hay",
+        mediaPath:
+            "https://react.semantic-ui.com/images/wireframe/square-image.png",
+        quantity: 10,
+        numPages: 100,
+        publisher: "NXB A",
+        publishDate: "2021-01-01",
+        coverType: "Bìa mềm",
+        discount: 10,
+        categoryDescription: "Sách văn học",
+        updateAt: "2021-01-01",
+    };
     return (
-        <section className="panel">
-            <div className="panel-body">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="pro-img-details">
-                            <img
-                                src="https://www.bootdey.com/image/550x380/FFB6C1/000000"
-                                className="img-fluid"
-                                alt="Product Image"
-                            />
-                        </div>
-                        <div className="pro-img-list">
-                            <a href="#">
+        <div className="card">
+            <div className="container-fliud">
+                <div className="wrapper row">
+                    <div className="preview col-md-6">
+                        <div className="preview-pic tab-content">
+                            <div className="tab-pane active" id="pic-1">
                                 <img
-                                    src="https://www.bootdey.com/image/115x100/87CEFA/000000"
-                                    className="img-fluid"
-                                    alt="Product Thumbnail"
+                                    src={
+                                        bookDetail.mediaPath
+                                            ? bookDetail.mediaPath
+                                            : "https://react.semantic-ui.com/images/wireframe/square-image.png"
+                                    }
                                 />
-                            </a>
-                            <a href="#">
-                                <img
-                                    src="https://www.bootdey.com/image/115x100/FF7F50/000000"
-                                    className="img-fluid"
-                                    alt="Product Thumbnail"
-                                />
-                            </a>
-                            <a href="#">
-                                <img
-                                    src="https://www.bootdey.com/image/115x100/20B2AA/000000"
-                                    className="img-fluid"
-                                    alt="Product Thumbnail"
-                                />
-                            </a>
-                            <a href="#">
-                                <img
-                                    src="https://www.bootdey.com/image/120x100/20B2AA/000000"
-                                    className="img-fluid"
-                                    alt="Product Thumbnail"
-                                />
-                            </a>
+                            </div>
+                            {/* <div className="tab-pane" id="pic-2">
+                                <img src="http://placekitten.com/400/252" />
+                            </div>
+                            <div className="tab-pane" id="pic-3">
+                                <img src="http://placekitten.com/400/252" />
+                            </div>
+                            <div className="tab-pane" id="pic-4">
+                                <img src="http://placekitten.com/400/252" />
+                            </div>
+                            <div className="tab-pane" id="pic-5">
+                                <img src="http://placekitten.com/400/252" />
+                            </div> */}
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <h4 className="pro-d-title">
-                            <a href="#">Leopard Shirt Dress</a>
-                        </h4>
-                        <p>
-                            Praesent ac condimentum felis. Nulla at nisl orci,
-                            at dignissim dolor, The best product descriptions
-                            address your ideal buyer directly and personally.
-                            The best product descriptions address your ideal
-                            buyer directly and personally.
+                    <div className="details col-md-6">
+                        <h3 className="product-title">{bookDetail.title}</h3>
+                        <div className="rating">
+                            {/* <div className="stars">
+                                <span className="fa fa-star checked" />
+                                <span className="fa fa-star checked" />
+                                <span className="fa fa-star checked" />
+                                <span className="fa fa-star" />
+                                <span className="fa fa-star" />
+                            </div> */}
+                            <span className="review-no">
+                                <strong>Tác giả: {bookDetail.author}</strong>
+                            </span>
+                        </div>
+                        <p className="product-description">
+                            {bookDetail.description}
                         </p>
-                        <div className="product-meta">
-                            <span className="posted_in">
-                                <strong>Categories:</strong>
-                                <a rel="tag" href="#">
-                                    Jackets
-                                </a>
-                                ,
-                                <a rel="tag" href="#">
-                                    Men
-                                </a>
-                                ,
-                                <a rel="tag" href="#">
-                                    Shirts
-                                </a>
-                                ,
-                                <a rel="tag" href="#">
-                                    T-shirt
-                                </a>
-                                .
-                            </span>
-                            <span className="tagged_as">
-                                <strong>Tags:</strong>
-                                <a rel="tag" href="#">
-                                    mens
-                                </a>
-                                ,
-                                <a rel="tag" href="#">
-                                    womens
-                                </a>
-                                .
-                            </span>
+                        <div className="d-flex bd-highlight">
+                            <h6 className="p-1 flex-fill bd-highlight">
+                                Giá bán:{" "}
+                                <strong>
+                                    <NumericFormat
+                                        displayType="text"
+                                        value={bookDetail.price}
+                                        thousandSeparator={true}
+                                        suffix="đ"
+                                    />{" "}
+                                </strong>
+                            </h6>
+                            <h6 className="p-1 flex-fill bd-highlight">
+                                Giá khuyến mãi:
+                                <strong>
+                                    <NumericFormat
+                                        displayType="text"
+                                        value={
+                                            bookDetail.price -
+                                            (bookDetail.discount *
+                                                bookDetail.price) /
+                                                100
+                                        }
+                                        thousandSeparator={true}
+                                        suffix="đ"
+                                    />
+                                </strong>
+                            </h6>
                         </div>
-                        <div className="m-bot15">
-                            <strong>Price : </strong>
-                            <span className="amount-old">$544</span>
-                            <span className="pro-price"> $300.00</span>
+                        <div className="d-flex bd-highlight">
+                            <p className="p-1 flex-fill bd-highlight">
+                                SL Hiện tại:{" "}
+                                <strong>{bookDetail.quantity}</strong>
+                            </p>
+                            <p className="p-1 flex-fill bd-highlight">
+                                Số trang: <strong>{bookDetail.numPages}</strong>
+                            </p>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="quantity">Quantity</label>
-                            <input
-                                type="number"
-                                id="quantity"
-                                className="form-control quantity"
-                            />
+                        <div className="d-flex bd-highlight">
+                            <p className="p-1 flex-fill bd-highlight">
+                                Ngày xuất bản:{" "}
+                                <strong>{bookDetail.publishDate}</strong>
+                            </p>
+                            <p className="p-1 flex-fill bd-highlight">
+                                Ngày cập nhật:{" "}
+                                <strong>{bookDetail.updateAt}</strong>
+                            </p>
                         </div>
-                        <p>
+                        <div className="d-flex bd-highlight">
+                            <p className="p-1 flex-fill bd-highlight">
+                                Nhà xuất bản:{" "}
+                                <strong>{bookDetail.publisher}</strong>
+                            </p>
+                            <p className="p-1 flex-fill bd-highlight">
+                                Thể loại:{" "}
+                                <strong>
+                                    {bookDetail.categoryDescription}
+                                </strong>
+                            </p>
+                        </div>
+
+                        <div className="action">
                             <button
-                                className="btn btn-danger btn-round"
+                                className="add-to-cart btn btn-default"
                                 type="button"
                             >
-                                <i className="fa fa-shopping-cart" /> Add to
-                                Cart
+                                add to cart
                             </button>
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 }

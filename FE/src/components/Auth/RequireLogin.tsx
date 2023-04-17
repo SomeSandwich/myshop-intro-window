@@ -4,7 +4,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import { isLogin } from "./AuthSlice";
 
 export default function RequireLogin() {
-    
     const isValid = useAppSelector(isLogin);
 
     const renderContent = isValid ? (
