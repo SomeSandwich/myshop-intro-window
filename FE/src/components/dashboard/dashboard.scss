@@ -1,4 +1,4 @@
-.card-detail-dashboard{
+.card-detail-dashboard {
     width: 250px;
     height: 100px;
     margin-left: 3px;
@@ -6,7 +6,8 @@
     border-radius: 20px;
     padding: 25px 0px 25px;
     overflow: hidden;
-    h5,h6{
+    h5,
+    h6 {
         color: white;
         font-weight: 400;
     }
@@ -14,17 +15,17 @@
         font-size: large;
         color: white;
         display: -webkit-box;
-        -webkit-line-clamp: 2;  // <- you can change rows number
+        -webkit-line-clamp: 2; // <- you can change rows number
         -webkit-box-orient: vertical;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    i{
-        color: black;  
+    i {
+        color: black;
     }
 }
-.card-amount{
+.card-amount {
     width: 250px;
     height: 100px;
     margin-left: 3px;
@@ -32,8 +33,9 @@
     border-radius: 20px;
     padding: 25px 0px 25px;
     overflow: hidden;
-    h5,h6{
-        color: white ;
+    h5,
+    h6 {
+        color: white;
         font-weight: 400;
     }
     span {
@@ -41,13 +43,13 @@
         font-size: 29px;
         color: white;
         display: -webkit-box;
-        -webkit-line-clamp: 1;  // <- you can change rows number
+        -webkit-line-clamp: 1; // <- you can change rows number
         -webkit-box-orient: vertical;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    i{
-        color: black;  
+    i {
+        color: black;
     }
 }

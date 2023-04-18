@@ -26,6 +26,8 @@ import BookLayout from "./features/posts/BookLayout";
 import Help from "./pages/Help";
 import EditCate from "./features/Categories/EditCate";
 import AddCate from "./features/Categories/AddCate";
+import OrderForm from "./components/Order/OrderForm";
+import AddBook from "./components/Book/AddBook";
 
 console.log(
     "[App.tsx]",
@@ -61,11 +63,8 @@ function App() {
                             <Route path="edit/:id" element={<ManageCate />} />
                         </Route>
                         {/* <Route path="/dashboard" element={<DashBoard />} /> */}
-                        <Route path="/order" element={<div>Order</div>} />
-                        <Route
-                            path="/add-product"
-                            element={<div>Add product</div>}
-                        />
+                        <Route path="/order" element={<OrderForm />} />
+                        <Route path="/add-product" element={<AddBook />} />
                     </Route>
                 </Route>
                 <Route path="/login" element={<Login />} />

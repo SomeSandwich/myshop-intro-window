@@ -5,7 +5,7 @@ import { SignUpAsync } from "@/services/account.service";
 import { ISignUpInput } from "@/interfaces/Acount";
 import axios from "axios";
 import useLocalStore from "@/Hooks/useLocalStore";
-import swal from "sweetalert";
+import swal2 from "sweetalert2";
 
 export default function Signup() {
     const userref = React.useRef<HTMLInputElement>(null);
@@ -42,7 +42,7 @@ export default function Signup() {
 
             const Msg = await SignUpAsync(user);
 
-            swal({
+            swal2.fire({
                 title: "Success!",
                 text: Msg.message,
                 icon: "success",
