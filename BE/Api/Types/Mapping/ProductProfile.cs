@@ -1,17 +1,19 @@
 ﻿using Api.Context.Entities;
 using Api.Types.Objects;
+using Api.Types.Objects.Product;
 using AutoMapper;
 
 namespace Api.Types.Mapping;
 
-public class ProductProfile: Profile
+public class ProductProfile : Profile
 {
     public ProductProfile()
     {
         CreateMap<Dimensions, Dimensions>();
-        
-        CreateMap<Product, ProductRes>();
-        
+
+        CreateMap<Product, ProductRes>()
+            .ForMember(des => des.CategoryDescription, opt => opt.MapFrom(src => src.Category.Description));
+
         CreateMap<CreateProductReq, CreateProductArg>();
         CreateMap<CreateProductArg, Product>();
 

@@ -1,11 +1,8 @@
-﻿using System.Security.Cryptography;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Api.Context;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
-using Api.Types;
-using Api.Types.Mapping;
-using Api.Types.Objects;
+using Api.Types.Objects.Product;
 using Api.Types.Results;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -28,21 +25,20 @@ public interface IProductService
 public class ProductService : IProductService
 {
     private readonly MyShopDbContext _context;
+
     private readonly IMapper _mapper;
 
     public ProductService(MyShopDbContext context, IMapper mapper)
     {
         _context = context;
 
-        // var config = new MapperConfiguration(opt => { opt.AddProfile<ProductProfile>(); });
-        // _mapper = config.CreateMapper();
-
-        _mapper = mapper;   
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<ProductRes>> GetAsync()
     {
         var list = _context.Products
+            .Include(e => e.Category)
             .Where(e => e.Status != ProductStatus.Deleted)
             .AsEnumerable();
 
@@ -52,6 +48,7 @@ public class ProductService : IProductService
     public async Task<IEnumerable<ProductRes>> GetByCategoryAsync(int cateId)
     {
         var listAcc = await _context.Products
+            .Include(e => e.Category)
             .Where(e => e.Status != ProductStatus.Deleted && e.CategoryId == cateId)
             .ToListAsync();
 
@@ -61,6 +58,7 @@ public class ProductService : IProductService
     public async Task<ProductRes?> GetAsync(int id)
     {
         var acc = _context.Products
+            .Include(e => e.Category)
             .FirstOrDefault(e => e.Status != ProductStatus.Deleted && e.Id == id);
 
         return acc is null ? null : _mapper.Map<Product, ProductRes>(acc);
@@ -104,9 +102,9 @@ public class ProductService : IProductService
         product.NumPages = arg.NumPages ?? product.NumPages;
         product.CoverType = arg.CoverType ?? product.CoverType;
 
-        if (arg.Dimension is not null 
-            && arg.Dimension.Width is not null 
-            && arg.Dimension.Height is not null 
+        if (arg.Dimension is not null
+            && arg.Dimension.Width is not null
+            && arg.Dimension.Height is not null
             && arg.Dimension.Length is not null)
             product.DimensionJSON = JsonSerializer.Serialize(arg.Dimension);
 
@@ -138,7 +136,7 @@ public class ProductService : IProductService
 
         prod.Status = ProductStatus.Deleted;
         await _context.SaveChangesAsync();
-        
+
         return new SuccessResult();
     }
 }

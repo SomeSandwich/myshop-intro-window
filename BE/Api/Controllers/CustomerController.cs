@@ -1,6 +1,8 @@
 ﻿using Api.Services;
 using Api.Types.GlobalTypes;
 using Api.Types.Objects;
+using Api.Types.Objects.Customer;
+using Api.Types.Objects.Product;
 using Api.Types.Results;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -68,10 +70,10 @@ public class CustomerController : ControllerBase
         var customer = await _cusSer.GetByPhoneNumber(phoneNum);
         if (customer is null)
             return BadRequest(new ResFailure { Message = $"Not found customer with phone number: {phoneNum}" });
-    
+
         return Ok(customer);
     }
-    
+
     [HttpPost]
     [Route("")]
     [SwaggerOperation(

@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices.JavaScript;
 using Api.Context.Constants.Enums;
-using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Api.Context.Entities;
 
@@ -105,14 +104,9 @@ public class Product
     {
         get => Dimension is null
             ? null
-            : JsonConvert.SerializeObject(Dimension);
+            : JsonSerializer.Serialize(Dimension);
 
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-                Dimension = null;
-            else Dimension = JsonConvert.DeserializeObject<Dimensions>(value);
-        }
+        set => Dimension = string.IsNullOrEmpty(value) ? null : JsonSerializer.Deserialize<Dimensions>(value);
     }
 
     /// <summary>
@@ -153,12 +147,12 @@ public class Dimensions
     /// <summary>
     /// Chiều rộng
     /// </summary>
-    /// <example>10</example>
+    /// <example>27</example>
     public double? Width { get; set; }
 
     /// <summary>
     /// Chiều dài
     /// </summary>
-    /// <example>10</example>
+    /// <example>38</example>
     public double? Length { get; set; }
 }
