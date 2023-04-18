@@ -52,6 +52,10 @@ function App() {
                                 path="viewDetail/:id"
                                 element={<DetailBook />}
                             />
+                            <Route
+                                path="update/:id"
+                                element={<div>Update</div>}
+                            />
                             <Route path="edit/:id" element={<ManageCate />} />
                         </Route>
                         {/* <Route path="/dashboard" element={<DashBoard />} /> */}

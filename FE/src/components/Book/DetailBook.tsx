@@ -1,9 +1,11 @@
 import React from "react";
 import { NumericFormat } from "react-number-format";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Tab } from "semantic-ui-react";
 import "./styles/DetailBook.scss";
 export default function () {
     const bookDetail = {
+        id: "1",
         title: "Sách 1",
         author: "Nguyễn Văn A",
         price: 100000,
@@ -18,6 +20,10 @@ export default function () {
         discount: 10,
         categoryDescription: "Sách văn học",
         updateAt: "2021-01-01",
+    };
+    const navigate = useNavigate();
+    const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        navigate("/books/update/" + bookDetail.id);
     };
     return (
         <div className="card">
@@ -131,7 +137,15 @@ export default function () {
                                 className="add-to-cart btn btn-default"
                                 type="button"
                             >
-                                add to cart
+                                Add to cart
+                            </button>
+
+                            <button
+                                className="add-to-cart btn btn-default"
+                                type="button"
+                                onClick={handleUpdateBtnClick}
+                            >
+                                Update
                             </button>
                         </div>
                     </div>
