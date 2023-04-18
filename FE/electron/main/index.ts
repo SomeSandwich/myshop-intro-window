@@ -50,6 +50,7 @@ async function createWindow() {
         minHeight: 800,
         maxHeight: 800,
         webPreferences: {
+            webSecurity: false,
             preload,
             // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
             // Consider using contextBridge.exposeInMainWorld

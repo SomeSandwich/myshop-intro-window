@@ -5,6 +5,7 @@ import { isLogin } from "./AuthSlice";
 
 export default function RequireLogin() {
     const isValid = useAppSelector(isLogin);
+    console.log(isValid);
 
     const renderContent = isValid ? (
         <Outlet />

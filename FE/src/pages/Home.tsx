@@ -3,14 +3,23 @@ import BookList from "@/features/posts/BookList";
 import { removeBook, updateBook } from "@/features/posts/BookSlice";
 import { addBook } from "@/features/posts/BookSlice";
 import { RootState } from "@/store";
-import React from "react";
+import React, { useEffect } from "react";
 import MultiSelect from "@/components/ReactNPM/MultitySelect";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { getAllCategory } from "@/features/Categories/CateSlice";
+import { useAppDispatch } from "@/Hooks/apphooks";
 export default function Home() {
     const bookList = useSelector((state: RootState) => state.book.allBook);
+    const cateLoading =  useSelector((state: RootState) => state.cate.isLoading);
     console.log(bookList);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch()
+    useEffect(()=>{
+        const getData = async ()=>{
+            await dispatch(getAllCategory())
+        }
+        getData();
+    },[])
     const navigate = useNavigate();
     const handleAddBtnClick = () => {
         dispatch(
@@ -69,7 +78,13 @@ export default function Home() {
             </div>
             <div className="row">
                 {/* <CateLineFilter/> */}
-                <MultiSelect />
+                {
+                    cateLoading ?
+                        <button className="buttonload">
+                            <i className="fa fa-refresh fa-spin"></i>Loading
+                        </button> : <MultiSelect />
+                }
+                
                 <button style={{width: "150px"}}
                     className="ml-4 btn btn-success"
                     onClick={()=>{

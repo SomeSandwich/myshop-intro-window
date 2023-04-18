@@ -6,9 +6,9 @@ import "./styles/cateCard.scss"
 export default function CateLineFilter() {
     const [listGenre,setlistGenre] = useState<string[]>([]);
     const [isClickCheckBox,setisClickCheckBox] = useState<boolean>(false);
-    const cateList = useSelector((state:RootState)=>state.cate) 
+    const cateList = useSelector((state:RootState)=>state.cate.listCate) 
     const dispatch = useDispatch()
-    const handleClickCheckBox =(genre: string)=>{
+    const handleClickCheckBox = (genre:string) => {
         console.log(genre)
         if(listGenre.some(type=>type==genre))
         {
@@ -37,10 +37,10 @@ export default function CateLineFilter() {
                     {cateList.map((cate,index)=>{
                             return(
                                 <li><input onClick={(e)=>{
-                                    handleClickCheckBox(cate.Description)
-                                }}  value={cate.Description} type="checkbox" />
+                                    handleClickCheckBox(cate.description)
+                                }}  value={cate.description} type="checkbox" />
                                     <span>
-                                        {cate.Description} 
+                                        {cate.description} 
                                     </span>
                                 </li>
                             )
