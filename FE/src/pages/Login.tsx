@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./styles/login.scss";
 import { useDispatch } from "react-redux";
-import { isLogin, login } from "@/components/Auth/AuthSlice";
+import { isLoading, isLogin, login } from "@/components/Auth/AuthSlice";
 import { ILoginInput } from "@/interfaces/IAuth";
 import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function Login() {
     const [username, setUsername] = useLocalStore({key:"name",initialValue: ""});
     const [password, setPassword] = useLocalStore({key:"pass",initialValue: ""});
     const navigate = useNavigate()
-    const isValid = useAppSelector(isLogin);
+    const Loading = useAppSelector(isLoading);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,12 +47,16 @@ export default function Login() {
             }
             console.log(user)
             const logRes = await dispatch(login(user)).then((res)=>{
-                console.log(res)
                 if(res.type == "auth/login/fulfilled")
                 {
                     navigate("/home")
                 }
+            }).catch(e=>{
+            
+                alert(e)
             })
+
+            
         }
 
         // Perform login process here, e.g. by making an API call or validating user credentials
@@ -127,7 +131,7 @@ export default function Login() {
                                     name="button"
                                     className="btn login_btn"
                                 >
-                                    LogIn
+                                    {Loading?<i className="fa fa-spinner fa-spin"></i>:"Login"}
                                 </button>
                             </div>
                         </form>

@@ -30,6 +30,7 @@ export const login = createAsyncThunk(
     //   dispatch(setLoading(false));
       return response;
     } catch (error: any) {
+      alert("Wrong username or password")
       return rejectWithValue(error);
     }
   }
@@ -107,6 +108,7 @@ const {  reducer ,actions } = authSlice;
 export const { logout, getMe, refreshToken } = authSlice.actions;
 
 export const isLogin = (state: RootState) => state.auth.isLogin;
+export const isLoading = (state: RootState) => state.auth.isLoading;
 export  const getToken = (state: RootState) => state.auth.token;
 export const getName = (state: RootState) => state.auth.name;
 export const getRole = (state: RootState) => state.auth.role;
