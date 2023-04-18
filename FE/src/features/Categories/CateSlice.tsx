@@ -4,7 +4,7 @@ import { Book } from '@/interfaces/bookDetail';
 import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
-import { getAllCate } from '@/services/categories.service';
+import { deleteCateService, getAllCate } from '@/services/categories.service';
 export interface ICateState {
   listCate: Category[];
   isLoading: boolean;
@@ -32,6 +32,18 @@ export const getAllCategory = createAsyncThunk(
     }
   }
 );
+export const DeleteCate = createAsyncThunk(
+  "category/delete",
+  async (data : string, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await deleteCateService(data);
+ 
+      return {response,data};
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
 const CateSlice = createSlice({
     name: 'cate',
     initialState:  initialState,
@@ -40,12 +52,10 @@ const CateSlice = createSlice({
         { 
           state.listCate.push(action.payload)
         },
-        removeCate(state, action) {
-            const removeCateID = action.payload;
-            //axios xoa o server
-            state.listCate.filter(cate=> cate.id !== removeCateID)
-            console.log(state)
-            // state = {...state,allBook:};
+        removeCate(state, action){
+          console.log(action.payload)
+          state.listCate = state.listCate.filter(cate=> cate.id.toString() !== action.payload)
+          console.log(state.listCate)
         },
         updateCate(state, action){
             const newCate = action.payload;
@@ -88,10 +98,16 @@ const CateSlice = createSlice({
             state.hasError = true;
         }
       );
+      builder.addCase(
+        DeleteCate.fulfilled,
+        (state, action) => {
+          state.listCate = state.listCate.filter(cate=> cate.id.toString() !== action.payload.data)
+        }
+      );
     }
 });
 
 
 const { actions, reducer } = CateSlice;
-export const { addCate, removeCate,updateCate,getCateById} = actions;
+export const { addCate,removeCate,updateCate,getCateById} = actions;
 export default reducer;
