@@ -73,8 +73,9 @@ public class CategoryService : ICategoryService
                 Message = $"Not Found Category With Id:{id}"
             };
 
-        if (cate.Description != req.Description)
-            cate.Description = req.Description;
+        if (req.Description is not null)
+            if (cate.Description != req.Description)
+                cate.Description = req.Description;
 
         await _context.SaveChangesAsync();
 

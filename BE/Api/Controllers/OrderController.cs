@@ -1,6 +1,7 @@
 ﻿using Api.Services;
 using Api.Types.GlobalTypes;
 using Api.Types.Objects;
+using Api.Types.Objects.Order;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

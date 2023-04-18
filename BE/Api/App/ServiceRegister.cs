@@ -1,4 +1,5 @@
 ﻿using Api.Services;
+using API.Services;
 
 namespace Api.App;
 
@@ -12,5 +13,6 @@ public static class ServiceRegister
         builder.AddScoped<ICustomerService, CustomerService>();
         builder.AddScoped<IOrderService, OrderService>();
         builder.AddScoped<IProductService, ProductService>();
+        builder.AddScoped<IMinioFileService, MinioFileService>();
     }
 }

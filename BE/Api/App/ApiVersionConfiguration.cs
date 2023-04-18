@@ -1,10 +1,16 @@
 using Asp.Versioning;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.App;
 
+/// <summary>
+/// 
+/// </summary>
 public static class ApiVersionConfiguration
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
     public static void ConfigureVersion(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>

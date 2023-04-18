@@ -3,6 +3,7 @@ using Api.Context.Entities;
 using Api.Types;
 using Api.Types.Mapping;
 using Api.Types.Objects;
+using Api.Types.Objects.Customer;
 using Api.Types.Results;
 using AutoMapper;
 using Bogus;
@@ -46,7 +47,7 @@ public class CustomerService : ICustomerService
     public async Task<CustomerRes?> GetAsync(int id)
     {
         var customer = _context.Customers
-            .Include(e=>e.Orders)
+            .Include(e => e.Orders)
             .FirstOrDefault(e => e.Id == id);
 
         return customer is null ? null : _mapper.Map<Customer, CustomerRes>(customer);
@@ -55,7 +56,7 @@ public class CustomerService : ICustomerService
     public async Task<CustomerRes?> GetByPhoneNumber(string phoneNum)
     {
         var customer = _context.Customers.FirstOrDefault(e => e.PhoneNumber == phoneNum);
-        
+
         return customer is null ? null : _mapper.Map<Customer, CustomerRes>(customer);
     }
 
@@ -65,6 +66,7 @@ public class CustomerService : ICustomerService
         {
             return null;
         }
+
         var customer = _mapper.Map<CreateCustomerReq, Customer>(req);
         customer.JoinDate = DateOnly.FromDateTime(DateTime.Now);
 
@@ -79,10 +81,10 @@ public class CustomerService : ICustomerService
         var customer = _context.Customers.FirstOrDefault(e => e.Id == id);
         if (customer is null)
             return new FailureResult { Message = $"Not found customerId: {id}" };
-        
+
         if (GetByPhoneNumber(req.PhoneNumber) is not null)
             return new FailureResult { Message = $"Exists phone number {req.PhoneNumber}" };
-        
+
         customer.PhoneNumber = req.PhoneNumber ?? customer.PhoneNumber;
         customer.Name = req.Name ?? customer.Name;
 

@@ -1,14 +1,22 @@
 ﻿using System.ComponentModel;
 using System.Security.Claims;
+using System.Web;
 using Api.Services;
+using API.Services;
+using Api.Types.Constant;
 using Api.Types.GlobalTypes;
 using Api.Types.Mapping;
 using Api.Types.Objects;
+using Api.Types.Objects.File;
+using Api.Types.Objects.Product;
 using Api.Types.Results;
 using Asp.Versioning;
 using AutoMapper;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using shortid;
+using shortid.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
@@ -22,14 +30,16 @@ namespace Api.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productSer;
+    private readonly IMinioFileService _fileSer;
+
     private readonly IMapper _mapper;
 
-    public ProductController(IProductService productSer)
+    public ProductController(IProductService productSer, IMinioFileService fileSer, IMapper mapper)
     {
         _productSer = productSer;
+        _fileSer = fileSer;
 
-        var config = new MapperConfiguration(opt => { opt.AddProfile<ProductProfile>(); });
-        _mapper = config.CreateMapper();
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -42,10 +52,10 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<IEnumerable<ProductRes>>> GetAll()
     {
         var list = await _productSer.GetAsync();
-    
+
         return Ok(list);
     }
-    
+
     [HttpGet]
     [Route("{id:int}")]
     [SwaggerOperation(
@@ -59,10 +69,10 @@ public class ProductController : ControllerBase
         var prod = await _productSer.GetAsync(id);
         if (prod is null)
             return BadRequest(new ResFailure { Message = $"Not found productId: {id}" });
-    
+
         return Ok(prod);
     }
-    
+
     [HttpGet]
     [Route("/category/{cateId:int}")]
     [SwaggerOperation(
@@ -73,7 +83,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<IEnumerable<ProductRes>>> GetByCategoryId([FromRoute] int cateId)
     {
         var lsProduct = await _productSer.GetByCategoryAsync(cateId);
-    
+
         return Ok(lsProduct);
     }
 
@@ -86,17 +96,47 @@ public class ProductController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<string>> Create([FromForm] CreateProductReq req)
     {
-        // Todo Upload File
-        var listFileUpload = new List<string>();
+        var filesSuccess = new List<string>();
+        var filesFail = new List<string>();
 
-        var accArg = _mapper.Map<CreateProductReq, CreateProductArg>(req);
-        accArg.MediaPath = listFileUpload;
+        if (req.MediaFiles is not null)
+        {
+            foreach (var file in req.MediaFiles)
+            {
+                var key = $"product/{ShortId.Generate(GenHashOptions.FileKey)}";
+
+                if (await _fileSer.UploadSmallFileAsync(new UploadFileDto
+                    {
+                        Key = key,
+                        Stream = file.OpenReadStream(),
+                        ContentType = file.ContentType,
+                        Metadata = new Dictionary<string, string>
+                        {
+                            { "OldName", HttpUtility.UrlEncode(file.FileName) }
+                        }
+                    }))
+                    filesSuccess.Add(key);
+                else
+                    filesFail.Add(file.FileName);
+            }
+        }
+
+        if (filesFail.Count > 0)
+            return StatusCode(500, new ResFailureWithData
+            {
+                Messsage = "Some File Upload Failed, Please ReUpload",
+                Data = filesFail
+            });
+
+
+        var accArg = _mapper.Map<CreateProductReq, CreateProductArg>(req,
+            opt => opt.AfterMap((src, des) => { des.MediaPath = filesSuccess; }));
 
         var prodId = await _productSer.CreateAsync(accArg);
 
         return CreatedAtAction(nameof(GetOne), new { id = $"{prodId}" }, new ResSuccess());
     }
-    
+
     [HttpPatch]
     [Route("{id:int}")]
     [SwaggerOperation(
@@ -110,30 +150,30 @@ public class ProductController : ControllerBase
     {
         if (HttpContext.User.Identity is not ClaimsIdentity identity)
             return Unauthorized();
-    
+
         var selfIdStr = identity.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
         if (selfIdStr is null)
             return Unauthorized();
-    
+
         if (!int.TryParse(selfIdStr, out var accId))
         {
             return Unauthorized();
         }
-    
+
         // todo upload file
         var listUpload = new List<string>();
         // todo delete file
-    
+
         var arg = _mapper.Map<UpdateProductReq, UpdateProductArg>(req);
-    
+
         var result = await _productSer.UpdateAsync(id, arg);
-    
+
         if (result is FailureResult)
             return BadRequest(new ResFailure { Message = result.Message });
-    
+
         return Ok(new ResSuccess());
     }
-    
+
     [HttpDelete]
     [Route("{id:int}")]
     [SwaggerOperation(
@@ -145,10 +185,10 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ResBase>> DeleteProduct([FromRoute] int id)
     {
         var result = await _productSer.DeleteAsync(id);
-    
+
         if (result is not SuccessResult)
             return BadRequest(new ResFailure { Message = result.Message });
-    
+
         return Ok(new ResSuccess());
     }
 }
