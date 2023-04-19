@@ -26,7 +26,6 @@ export const getAllCategoryThunk = createAsyncThunk(
   async (data, { dispatch, rejectWithValue }) => {
     try {
     //   dispatch(setLoading(true));
-    console.log("Call Service")
     const response = await getAllCate();
     //   dispatch(setLoading(false));
       return response;
@@ -84,9 +83,7 @@ const CateSlice = createSlice({
           state.listCate.push(action.payload)
         },
         removeCate(state, action){
-          console.log(action.payload)
           state.listCate = state.listCate.filter(cate=> cate.id.toString() !== action.payload)
-          console.log(state.listCate)
         },
         updateCate(state, action){
             const newCate = action.payload;
@@ -98,8 +95,6 @@ const CateSlice = createSlice({
         getCateById(state,action){
           const cateid = action.payload
           const indexOfCate = state.listCate.findIndex(cate=>cate.id==cateid);
-          console.log(cateid)
-          console.log(indexOfCate)
           state.editCate = state.listCate[indexOfCate]
         }
     },
@@ -115,7 +110,7 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllCategoryThunk.fulfilled,
         (state, action) => {
-            console.log("done");
+            console.log("Get all cate done");
             if(arraysEqual(state.listCate,action.payload))
             {
               console.log("Not Change")

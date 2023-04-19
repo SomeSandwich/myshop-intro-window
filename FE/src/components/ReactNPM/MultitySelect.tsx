@@ -31,7 +31,6 @@ const MultiSelectCategory = () => {
             console.log(selected)
             await dispatch(filterBookbyGenre(selected))
           }else{
-            console.log("Empty")
             await dispatch(filterBookbyCate(cateList))
           }
         }

@@ -18,7 +18,6 @@ export default function Home() {
     const total = useSelector((state: RootState) => state.book.total);
     const sizeOfCurrentPage = useSelector((state: RootState) => state.book.sizeOfCurrentPage);
     const cateLoading =  useSelector((state: RootState) => state.cate.isLoading);
-
     const dispatch = useAppDispatch()
     useEffect(()=>{
         const getData = async ()=>{

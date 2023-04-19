@@ -15,6 +15,7 @@ export default function CardBook(props: {
     return (
         // <div className="container">
         <article
+            id={props.id.toString()+"cardbook"}
             onClick={handleOnClick}
             className="card-book card depth--two"
             style={{ maxHeight: "400px", maxWidth: "300px" }}

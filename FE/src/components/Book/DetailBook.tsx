@@ -16,7 +16,9 @@ export default function () {
 
     useEffect(() => {
         const getDetail = async () => {
-            const respone = await GetDetailBookService(id)
+            const respone = await GetDetailBookService(id).catch(err=>{
+                navigate("/*");
+            })
             setCurBook(respone)
         }
         getDetail();
@@ -166,7 +168,9 @@ export default function () {
                         </div>
                     </div>
                 ) : (
-                    <></>
+                    <>
+                        
+                    </>
                 )}
             </div>
         </div>

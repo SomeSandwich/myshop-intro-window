@@ -1,7 +1,6 @@
 import React from "react";
 import MultiSelect from "@/components/ReactNPM/MultitySelect";
 import "./styles/AddBook.scss";
-import MultiSelectCategory from "../ReactNPM/MultitySelectCreateBook";
 import { useAppSelector } from "@/Hooks/apphooks";
 export default function AddBook() {
     const listCate = useAppSelector(state=>state.cate.listCate)

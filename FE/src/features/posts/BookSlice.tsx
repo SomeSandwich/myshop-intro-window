@@ -109,7 +109,6 @@ const BookSlice = createSlice({
       state.pageCurrent = page
       state.listPaging = state.listFilter.slice(start, end);
       state.sizeOfCurrentPage = state.listPaging.length
-      console.log(state.listPaging)
     },
     filterBookbyGenre(state, action: PayloadAction<Genre[]>) {
       const catelist = action.payload;
@@ -120,12 +119,14 @@ const BookSlice = createSlice({
       });
 
       state.listFilter = arrayfilter
-      console.log(state.listFilter)
       state.total = state.listFilter.length
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      if(size)
+        state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      else 
+        state.maxPage = 1
       console.log(state.listPaging)
       state.pageCurrent = 1;
     },
@@ -137,12 +138,14 @@ const BookSlice = createSlice({
         subarr.forEach(book => arrayfilter.push(book))
       });
       state.listFilter = arrayfilter
-      console.log(state.listFilter)
       state.total = state.listFilter.length
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      if(size)
+        state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      else
+        state.maxPage = 1
     }
 
   },

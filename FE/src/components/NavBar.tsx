@@ -12,7 +12,12 @@ export default function NavBar() {
                 <div className="side-bar">
                     <img
                         src="./assects/logo.jpg"
-                        alt=""
+                        alt="Logo Book Store"
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null;
+                            currentTarget.src =
+                                "https://react.semantic-ui.com/images/wireframe/square-image.png";
+                        }}
                         className="img-fluid rounded-circle avatar"
                     />
                     <h1 className="store-name">
