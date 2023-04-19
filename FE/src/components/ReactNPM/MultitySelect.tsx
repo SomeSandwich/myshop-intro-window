@@ -13,7 +13,6 @@ const Example = () => {
     const cateList = useSelector((state:RootState)=>state.cate.listCate) 
     const [selected, setSelected] = useState([]);
     const [options, setOptions] = useState<Genre[]>([]);
-   console.log(cateList)
     useEffect(() => {
         const changeOption = ()=>{
             const newoptions : Genre[]= [];

@@ -14,14 +14,14 @@ export default function BookList(props: {
             {booklist ? (
                 booklist.map((book) => (
                     <CardBook
-                        id={book.id.toString()}
+                        id={book.id.toString()+"cardbook"}
                         title={book.title}
                         price={book.price.toString()}
-                        imgUrl={book.MediaPath}
+                        imgUrl={book.mediaPath}
                     />
                 ))
             ) : (
-                <div></div>
+                <></>
             )}
         </div>
     );

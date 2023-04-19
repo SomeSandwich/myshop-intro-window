@@ -1,6 +1,6 @@
 import CateLineFilter from "@/features/Categories/CateLineFilter";
 import BookList from "@/features/posts/BookList";
-import { getAllBookThunk, removeBook, updateBook } from "@/features/posts/BookSlice";
+import { changePageBookFilter, getAllBookThunk, removeBook, updateBook } from "@/features/posts/BookSlice";
 import { addBook } from "@/features/posts/BookSlice";
 import { RootState } from "@/store";
 import React, { useEffect } from "react";
@@ -18,7 +18,7 @@ export default function Home() {
     const total = useSelector((state: RootState) => state.book.total);
     const sizeOfCurrentPage = useSelector((state: RootState) => state.book.sizeOfCurrentPage);
     const cateLoading =  useSelector((state: RootState) => state.cate.isLoading);
-    console.log(bookList);
+
     const dispatch = useAppDispatch()
     useEffect(()=>{
         const getData = async ()=>{
@@ -62,11 +62,23 @@ export default function Home() {
             })
         );
     };
-    const moveNextPage = ()=>{
+    const moveNextPage = async ()=>{
+        if((curentPage<maxPage)){
+            const nextPage = parseInt(curentPage.toString())+1
+            await dispatch(changePageBookFilter(nextPage))
+        }
 
+        
+    }
+    const movePrePage = async()=>{
+        if( parseInt(curentPage.toString())> 1){
+            const prePage = parseInt(curentPage.toString())-1
+            await dispatch(changePageBookFilter(prePage))
+        }
+        
     }
     const handelDeleteBook = (bookId: Number) => {
-        dispatch(removeBook(bookId));
+        dispatch(removeBook(bookId));   
     };
    
     return (
@@ -129,12 +141,12 @@ export default function Home() {
                 >
                 <div>Hiển thị {sizeOfCurrentPage.toString()} trong tổng số {total.toString()} kết quả</div>
                 <ul className="pagination justify-content-center">
-                    <li className="page-item disabled">
+                    <li className={"page-item "+(curentPage==1?"disabled":"")} onClick={movePrePage}>
                     <a className="page-link" href="#" tabIndex={-1} >Previous</a>
                     </li>
                     <li className="page-item"><a className="page-link" href="#">{curentPage.toString()}</a></li>
-                    <li className="page-item">
-                        <a className="page-link">Next</a>
+                    <li className={"page-item "+(curentPage<maxPage?"":"disabled")} onClick={moveNextPage}>
+                        <a className="page-link" href="#" tabIndex={-1} >Next</a>
                     </li>
                 </ul>
                 

@@ -45,7 +45,6 @@ export default function Login() {
                 username: username,
                 password: password,
             }
-            console.log(user)
             const logRes = await dispatch(login(user)).then((res)=>{
                 if(res.type == "auth/login/fulfilled")
                 {

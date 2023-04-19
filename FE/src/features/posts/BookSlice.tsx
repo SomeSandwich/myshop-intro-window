@@ -4,12 +4,12 @@ import { Book } from '@/interfaces/bookDetail';
 import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { DeleteBookService, addBookService, getAllBookService, updateBookService } from '@/services/book.service';
+const numberPaging = 2;
 export const getAllBookThunk = createAsyncThunk(
   "books",
   async (data, { dispatch, rejectWithValue }) => {
     try {
     //   dispatch(setLoading(true));
-    console.log("Call Service")
     const response = await getAllBookService();
     //   dispatch(setLoading(false));
       return response;
@@ -81,7 +81,6 @@ const BookSlice = createSlice({
             const removeBookID = action.payload;
             //axios xoa o server
             state.listAllBook = state.listAllBook.filter(book=> book.id !== removeBookID)
-            console.log(state.listAllBook)
             // state = {...state,allBook:};
         },
         updateBook(state, action){
@@ -90,13 +89,30 @@ const BookSlice = createSlice({
             if(postIndex>=0){
               state.listAllBook[postIndex] = newPost;
             }
+        },
+        changePageBookFilter(state, action){
+            const page=action.payload;
+            var start = 0
+            var end = 0
+
+            if(page<state.maxPage.valueOf()){
+              start = (page-1)*numberPaging;
+              end = (page-1)*numberPaging+numberPaging;
+            }else{
+              start = (page-1)*state.sizeOfCurrentPage.valueOf();
+              end = (page-1)*state.sizeOfCurrentPage.valueOf() + state.sizeOfCurrentPage.valueOf()
+            }
+            state.pageCurrent = page
+            state.listPaging = state.listFilter.slice(start,end);
+            console.log(state.listPaging)
+           
         }
     },
     extraReducers: (builder) => {
       builder.addCase(
         getAllBookThunk.pending,
         (state, action) => {
-            console.log("loading");
+            console.log("loading get all Books");
             state.isLoading = true;
             state.hasError = false;
         }
@@ -104,15 +120,15 @@ const BookSlice = createSlice({
       builder.addCase(
         getAllBookThunk.fulfilled,
         (state, action) => {
-            console.log("done");
+            console.log("get all Books done");
             state.listAllBook = action.payload
             state.listSearch = action.payload
             state.listFilter = action.payload
             state.total = state.listFilter.length
-            state.sizeOfCurrentPage = state.listFilter.length>8?8:state.listFilter.length
+            state.sizeOfCurrentPage = (state.listFilter.length>numberPaging)?numberPaging:state.listFilter.length
             const size = state.sizeOfCurrentPage.valueOf()
             state.listPaging = state.listFilter.slice(0,size);
-            state.maxPage = (state.listAllBook.length+7)/size
+            state.maxPage = (state.listAllBook.length+numberPaging-1)/size
             state.isLoading = false;
             state.hasError = false;
         }
@@ -120,7 +136,7 @@ const BookSlice = createSlice({
       builder.addCase(
         getAllBookThunk.rejected,
         (state, action) => {
-            console.log("reject");
+            console.log("get all book reject");
             state.isLoading = false;
             state.hasError = true;
         }
@@ -128,13 +144,13 @@ const BookSlice = createSlice({
       builder.addCase(
         DeleteBookThunk.fulfilled,
         (state, action) => {
-          console.log("Delete Success")
+          console.log("Delete Book Success")
         }
       );
       builder.addCase(
         AddBookThunk.fulfilled,
         (state, action) => {
-          console.log("Add Success")
+          console.log("Add Book Success")
         }
       );
     }
@@ -142,5 +158,5 @@ const BookSlice = createSlice({
 
 
 const { actions, reducer } = BookSlice;
-export const { addBook, removeBook,updateBook,} = actions;
+export const { addBook, removeBook,updateBook,changePageBookFilter} = actions;
 export default reducer;

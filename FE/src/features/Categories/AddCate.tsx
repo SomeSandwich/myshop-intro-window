@@ -6,7 +6,6 @@ import { ExistCate } from './EditCate'
 
 export default function AddCate() {
     const listCate = useAppSelector(state=>state.cate.listCate)
-    console.log(listCate)
     const desRef = React.useRef<HTMLInputElement>(null);
     const dispatch = useAppDispatch()
     const [duplicate,setDuplicate] = useState(false)

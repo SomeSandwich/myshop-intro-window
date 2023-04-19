@@ -88,14 +88,13 @@ const authSlice = createSlice({
     builder.addCase(
         login.pending,
         (state, action) => {
-            console.log("loading");
+            console.log("Login loading");
             state.isLoading = true;
             state.hasError = false;
         }
       );
     builder.addCase(login.rejected, (state) => {
         sessionStorage.removeItem("token");
-        console.log("test");
         state.isLogin = false;
         state.token = null;
         state.isLoading = false;

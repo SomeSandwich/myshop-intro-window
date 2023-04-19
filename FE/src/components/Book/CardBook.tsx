@@ -10,7 +10,6 @@ export default function CardBook(props: {
 }) {
     const navigate = useNavigate();
     const handleOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("click");
         navigate("/books/viewDetail/" + props.id);
     };
     return (

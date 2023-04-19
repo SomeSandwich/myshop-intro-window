@@ -17,7 +17,6 @@ export default function () {
     useEffect(() => {
         const getDetail = async () => {
             const respone = await GetDetailBookService(id)
-            console.log(respone)
             setCurBook(respone)
         }
         getDetail();
