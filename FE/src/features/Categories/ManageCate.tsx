@@ -17,8 +17,12 @@ export default function ManageCate() {
   }
   return (
     <div>
-      <h2>List of Category</h2>
-      <table className="table">
+      <div className='row d-fles justify-content-between' >        
+        <h2 className=''  ></h2>
+        <h2 className='' style={{ marginRight: 50 }} >List of Category</h2>
+        <button className='btn btn-success' onClick={() => { navigate('/categories/add') }} > Add</button>
+      </div>
+      <table className="table mt-4">
         <thead className="thead-light">
           <tr>
             <th>Categories ID</th>

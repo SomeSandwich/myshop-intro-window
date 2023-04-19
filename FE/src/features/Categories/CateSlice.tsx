@@ -4,7 +4,7 @@ import { Book } from '@/interfaces/bookDetail';
 import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
-import { deleteCateService, getAllCate } from '@/services/categories.service';
+import { addCateService, deleteCateService, getAllCate, updateCateService } from '@/services/categories.service';
 export interface ICateState {
   listCate: Category[];
   isLoading: boolean;
@@ -32,12 +32,40 @@ export const getAllCategory = createAsyncThunk(
     }
   }
 );
+export const AddCateControl = createAsyncThunk(
+  "category/add",
+  async (description : string, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await addCateService(description);
+      alert(`Add new Category name "${description} success"`)
+      dispatch(getAllCategory())
+      return response;
+    } catch (error: any) {
+      alert(`Add new Category name "${description} Fail"`)
+      return rejectWithValue(error);
+    }
+  }
+);
+export const UpdateCateControl = createAsyncThunk(
+  "category/add",
+  async (data :{id:string,description:string}, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await updateCateService(data.id,data.description);
+      alert(`Update Category name "${data.description} success"`)
+      dispatch(getAllCategory())
+      return response;
+    } catch (error: any) {
+      alert(`Update new Category name "${data.description} Fail"`)
+      return rejectWithValue(error);
+    }
+  }
+);
 export const DeleteCate = createAsyncThunk(
   "category/delete",
   async (data : string, { dispatch, rejectWithValue }) => {
     try {
       const response = await deleteCateService(data);
- 
+      dispatch(getAllCategory())
       return {response,data};
     } catch (error: any) {
       return rejectWithValue(error);
@@ -101,7 +129,13 @@ const CateSlice = createSlice({
       builder.addCase(
         DeleteCate.fulfilled,
         (state, action) => {
-          state.listCate = state.listCate.filter(cate=> cate.id.toString() !== action.payload.data)
+          console.log("Delete Success")
+        }
+      );
+      builder.addCase(
+        AddCateControl.fulfilled,
+        (state, action) => {
+          console.log("Add Success")
         }
       );
     }

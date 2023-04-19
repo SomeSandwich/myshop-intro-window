@@ -10,3 +10,13 @@ export const deleteCateService = async (id:string) => {
 	const response = await axiosClient.delete(`/category/${id}`);
 	return response.data;
 };
+export const addCateService = async (description:string) => {
+	// console.log(data);
+	const response = await axiosClient.post(`/category`,description);
+	return response.data;
+};
+export const updateCateService = async (id:string,description:string) => {
+	// console.log(data);
+	const response = await axiosClient.patch(`/category/${id}`,{description});
+	return response.data;
+};
