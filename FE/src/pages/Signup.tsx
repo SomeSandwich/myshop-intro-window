@@ -5,6 +5,7 @@ import { SignUpAsync } from "@/services/account.service";
 import { ISignUpInput } from "@/interfaces/Acount";
 import axios from "axios";
 import useLocalStore from "@/Hooks/useLocalStore";
+import swal from "sweetalert";
 
 export default function Signup() {
     const userref = React.useRef<HTMLInputElement>(null);
@@ -14,7 +15,7 @@ export default function Signup() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
-        
+
         if (
             !userref.current?.value ||
             !passref.current?.value ||
@@ -32,16 +33,20 @@ export default function Signup() {
             alert(
                 "Username and Password not allowed to contain special characters"
             );
-        }else{
-            const user : ISignUpInput = {
+        } else {
+            const user: ISignUpInput = {
                 username: userref.current?.value,
                 email: emailref.current?.value,
                 password: passref.current?.value,
             };
-            console.log(user)
-            const Msg = await SignUpAsync(user)
-            console.log(Msg.message)
-            alert(Msg.message)
+
+            const Msg = await SignUpAsync(user);
+
+            swal({
+                title: "Success!",
+                text: Msg.message,
+                icon: "success",
+            });
 
             // const client = axios.create({
             //     baseURL: `https://pokeapi.co/api/v2/pokemon/ditto`
@@ -49,9 +54,8 @@ export default function Signup() {
             // client.get("").then((res)=>{
             //     console.log(res.data)
             // });
-
         }
-        
+
         // Perform login process here, e.g. by making an API call or validating user credentials
         // For now, just redirect to the home page
         // const navigate = useNavigate();
