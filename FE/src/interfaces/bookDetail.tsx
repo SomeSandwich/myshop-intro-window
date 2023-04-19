@@ -6,14 +6,14 @@ export interface Book{
     title: string;
     description: string;
     mediaPath: string;
-    createAt: Date;
+    createAt: string;
     updateAt: string;
     quantity: Number;
-    status: Number;
-    CategpryId: Number;
+    status: string;
+    categoryId: Number;
     author: string,
     publisher: string,
-    publishDate: string,
+    publicationDate: string,
     coverType: string,
     categoryDescription: string,
     numPages: Number

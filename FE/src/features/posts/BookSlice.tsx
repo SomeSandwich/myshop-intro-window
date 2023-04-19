@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Book } from '@/interfaces/bookDetail';
 import { current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
-import { DeleteBookService, addBookService, getAllBookService, updateBookService } from '@/services/book.service';
+import { DeleteBookService, addBookService, getAllBookService, searchBookService, updateBookService } from '@/services/book.service';
 import { Genre } from '@/interfaces/Genre';
 import { CategoryScale } from 'chart.js';
 import { Category } from '@/interfaces/category';
@@ -15,6 +15,19 @@ export const getAllBookThunk = createAsyncThunk(
     try {
       //   dispatch(setLoading(true));
       const response = await getAllBookService();
+      //   dispatch(setLoading(false));
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
+export const searchBookThunk = createAsyncThunk(
+  "books/search",
+  async (key:string, { dispatch, rejectWithValue }) => {
+    try {
+      //   dispatch(setLoading(true));
+      const response = await searchBookService(key);
       //   dispatch(setLoading(false));
       return response;
     } catch (error: any) {
@@ -74,7 +87,8 @@ const BookSlice = createSlice({
     total: 0,
     sizeOfCurrentPage: 0,
     isLoading: false,
-    hasError: false
+    hasError: false,
+    isRefresh: false
   } as BookSliceState,
   reducers: {
     addBook: (state, action) => {
@@ -93,6 +107,16 @@ const BookSlice = createSlice({
         state.listAllBook[postIndex] = newPost;
       }
     },
+    refreshBook(state, action){
+      state.isRefresh = true;
+      state.listSearch = state.listAllBook
+    }
+    ,
+    releaseRefreshBook(state, action){
+      state.isRefresh = false;
+
+    }
+    ,
     changePageBookFilter(state, action) {
       const page = action.payload;
       var start = 0
@@ -123,29 +147,43 @@ const BookSlice = createSlice({
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      if(size)
-        state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      if(size>0)
+      {
+        state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
+        console.log(state.maxPage)
+        console.log(state.listFilter.length)
+      }
       else 
+      {
         state.maxPage = 1
-      console.log(state.listPaging)
-      state.pageCurrent = 1;
+      }
+      // state.pageCurrent = 1;
+      
     },
     filterBookbyCate(state, action: PayloadAction<Category[]>) {
       const catelist = action.payload;
       const arrayfilter = state.listSearch.filter(book => book.categoryDescription == "")
       catelist.forEach(cate => {
-        const subarr = state.listSearch.filter(book => book.categoryDescription == cate.description)
+        const subarr = state.listSearch.filter(book => book.categoryId == cate.id)
         subarr.forEach(book => arrayfilter.push(book))
       });
+      console.log(state.listSearch);
       state.listFilter = arrayfilter
+      console.log(state.listFilter);
       state.total = state.listFilter.length
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      if(size)
-        state.maxPage = (state.listAllBook.length + numberPaging - 1) / size
+      if(size>0){
+        
+        state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
+       
+      }
       else
         state.maxPage = 1
+      
+      console.log(state.listPaging);
+      // state.pageCurrent = 1;
     }
 
   },
@@ -198,10 +236,23 @@ const BookSlice = createSlice({
         console.log("Add Book Success")
       }
     );
+    builder.addCase(
+      searchBookThunk.fulfilled,
+      (state, action) => {
+        if (arraysEqual(state.listSearch, action.payload)) {
+          console.log("Not Change")
+        } else {
+          console.log("search Book Success")
+          state.listSearch = action.payload
+          state.isRefresh = true;
+        }
+        
+      }
+    );
   }
 });
 
 
 const { actions, reducer } = BookSlice;
-export const { addBook, removeBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate } = actions;
+export const { addBook, removeBook,refreshBook,releaseRefreshBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate } = actions;
 export default reducer;

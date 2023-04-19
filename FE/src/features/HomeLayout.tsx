@@ -5,13 +5,14 @@ import NavBar from '@/components/NavBar'
 import useLocalStore from '@/Hooks/useLocalStore'
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import { getAllCategoryThunk } from './Categories/CateSlice'
-import { filterBookbyCate, getAllBookThunk } from './posts/BookSlice'
+import { filterBookbyCate, filterBookbyGenre, getAllBookThunk } from './posts/BookSlice'
 import { RootState } from '@/store'
 export default function HomeLayout() {
   const location = useLocation()
   const [lastDomand, setLastDomand] = useLocalStore({ key: "lastDomand", initialValue: "" })
   const bookList = useAppSelector((state: RootState) => state.book.listAllBook);
   const cateList = useAppSelector((state: RootState) => state.cate.listCate);
+  
   console.log(location)
   useEffect(() => {
     setLastDomand(location.pathname)
@@ -21,6 +22,7 @@ export default function HomeLayout() {
     const getData = async () => {
       await dispatch(getAllCategoryThunk())
       await dispatch(getAllBookThunk())
+      
     }
     getData();
   }, [])

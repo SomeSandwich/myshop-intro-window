@@ -1,5 +1,5 @@
 import nodeLogo from "./assets/node.svg";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {
     Routes,
     Route,
@@ -28,6 +28,7 @@ import EditCate from "./features/Categories/EditCate";
 import AddCate from "./features/Categories/AddCate";
 import OrderForm from "./components/Order/OrderForm";
 import AddBook from "./components/Book/AddBook";
+import useLocalStore from "./Hooks/useLocalStore";
 
 console.log(
     "[App.tsx]",
@@ -36,7 +37,11 @@ console.log(
 
 function App() {
     const [count, setCount] = useState(0);
-
+    const [storeSelected, setStoreSelected] = useLocalStore({ key: "genreSelect", initialValue: "[]" });
+    useEffect(() => {
+        setStoreSelected(JSON.stringify([]))
+    }, [])
+    
     return (
         <div className="containerWeb">
             <Routes>

@@ -128,7 +128,7 @@ export default function () {
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
                                         Ngày xuất bản:{" "}
-                                        <strong>{curBook.publishDate}</strong>
+                                        <strong>{curBook.publicationDate}</strong>
                                     </p>
                                     <p className="p-1 flex-fill bd-highlight">
                                         Ngày cập nhật:{" "}

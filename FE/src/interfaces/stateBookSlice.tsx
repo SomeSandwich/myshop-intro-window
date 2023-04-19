@@ -10,5 +10,6 @@ export interface BookSliceState{
     sizeOfCurrentPage: Number,
     maxPage: Number,
     isLoading: boolean,
-    hasError: boolean
+    hasError: boolean,
+    isRefresh: boolean
 }
