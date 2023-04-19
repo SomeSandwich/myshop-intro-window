@@ -24,7 +24,7 @@ export const getAllCategoryThunk = createAsyncThunk(
     try {
     //   dispatch(setLoading(true));
     console.log("Call Service")
-      const response = await getAllCate();
+    const response = await getAllCate();
     //   dispatch(setLoading(false));
       return response;
     } catch (error: any) {
@@ -47,7 +47,7 @@ export const AddCateThunk = createAsyncThunk(
   }
 );
 export const UpdateCateThunk = createAsyncThunk(
-  "category/add",
+  "category/updata",
   async (data :{id:string,description:string}, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateCateService(data.id,data.description);

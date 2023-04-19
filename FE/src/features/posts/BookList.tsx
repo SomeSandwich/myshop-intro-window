@@ -14,9 +14,9 @@ export default function BookList(props: {
             {booklist ? (
                 booklist.map((book) => (
                     <CardBook
-                        id={book.Id.toString()}
-                        title={book.Title}
-                        price={book.Price.toString()}
+                        id={book.id.toString()}
+                        title={book.title}
+                        price={book.price.toString()}
                         imgUrl={book.MediaPath}
                     />
                 ))

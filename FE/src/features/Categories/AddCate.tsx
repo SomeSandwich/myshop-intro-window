@@ -7,14 +7,14 @@ import { ExistCate } from './EditCate'
 export default function AddCate() {
     const listCate = useAppSelector(state=>state.cate.listCate)
     console.log(listCate)
-    const desref = React.useRef<HTMLInputElement>(null);
+    const desRef = React.useRef<HTMLInputElement>(null);
     const dispatch = useAppDispatch()
     const [duplicate,setDuplicate] = useState(false)
     const navigate = useNavigate()
     const handleSubmit = async (e:FormEvent<HTMLElement>)=>{
         e.preventDefault()
-        if(desref.current &&!duplicate){
-            await dispatch(AddCateThunk(desref.current.value))
+        if(desRef.current &&!duplicate){
+            await dispatch(AddCateThunk(desRef.current.value))
         }
     }
     return (
@@ -25,11 +25,11 @@ export default function AddCate() {
                 <h2 className=''  ></h2>
             </div>
              
-            <form>
+            <form onSubmit={(e)=>{handleSubmit(e)}}>
                 <div className="form-group">
                     <label htmlFor="DescriptionInput">Description:</label>
                     <input 
-                        ref={desref}
+                        ref={desRef}
                         onChange={(e)=>{
                             setDuplicate(ExistCate(listCate,e.currentTarget.value))
                         }}

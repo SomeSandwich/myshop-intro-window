@@ -1,6 +1,6 @@
 import CateLineFilter from "@/features/Categories/CateLineFilter";
 import BookList from "@/features/posts/BookList";
-import { removeBook, updateBook } from "@/features/posts/BookSlice";
+import { getAllBookThunk, removeBook, updateBook } from "@/features/posts/BookSlice";
 import { addBook } from "@/features/posts/BookSlice";
 import { RootState } from "@/store";
 import React, { useEffect } from "react";
@@ -9,14 +9,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
 import { useAppDispatch } from "@/Hooks/apphooks";
+
+
 export default function Home() {
-    const bookList = useSelector((state: RootState) => state.book.allBook);
+    const bookList = useSelector((state: RootState) => state.book.listPaging);
+    const maxPage = useSelector((state: RootState) => state.book.maxPage);
+    const curentPage = useSelector((state: RootState) => state.book.pageCurrent);
+    const total = useSelector((state: RootState) => state.book.total);
+    const sizeOfCurrentPage = useSelector((state: RootState) => state.book.sizeOfCurrentPage);
     const cateLoading =  useSelector((state: RootState) => state.cate.isLoading);
     console.log(bookList);
     const dispatch = useAppDispatch()
     useEffect(()=>{
         const getData = async ()=>{
             await dispatch(getAllCategoryThunk())
+            await dispatch(getAllBookThunk())
         }
         getData();
     },[])
@@ -55,9 +62,13 @@ export default function Home() {
             })
         );
     };
+    const moveNextPage = ()=>{
+
+    }
     const handelDeleteBook = (bookId: Number) => {
         dispatch(removeBook(bookId));
     };
+   
     return (
         <div className="home-view">
             <div className="row">
@@ -116,18 +127,17 @@ export default function Home() {
                     backgroundColor: "rgba(255, 251, 251,1)",
                     }}
                 >
-                <div>Hiển thị {} trong tổng số {} kết quả</div>
+                <div>Hiển thị {sizeOfCurrentPage.toString()} trong tổng số {total.toString()} kết quả</div>
                 <ul className="pagination justify-content-center">
                     <li className="page-item disabled">
                     <a className="page-link" href="#" tabIndex={-1} >Previous</a>
                     </li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item"><a className="page-link" href="#">2</a></li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
+                    <li className="page-item"><a className="page-link" href="#">{curentPage.toString()}</a></li>
                     <li className="page-item">
-                    <a className="page-link" href="#">Next</a>
+                        <a className="page-link">Next</a>
                     </li>
                 </ul>
+                
             </div>
         </div>
     );
