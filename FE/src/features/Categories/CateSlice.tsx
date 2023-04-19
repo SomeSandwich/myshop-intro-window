@@ -17,7 +17,10 @@ const initialState: ICateState = {
   hasError: false,
   editCate: null
 };
-
+export function arraysEqual(a1:any,a2:any) {
+  /* WARNING: arrays must not contain {objects} or behavior may be undefined */
+  return JSON.stringify(a1)==JSON.stringify(a2);
+}
 export const getAllCategoryThunk = createAsyncThunk(
   "category",
   async (data, { dispatch, rejectWithValue }) => {
@@ -113,7 +116,13 @@ const CateSlice = createSlice({
         getAllCategoryThunk.fulfilled,
         (state, action) => {
             console.log("done");
-            state.listCate = action.payload
+            if(arraysEqual(state.listCate,action.payload))
+            {
+              console.log("Not Change")
+            }
+            else{
+              state.listCate = action.payload
+            }
             state.isLoading = false;
             state.hasError = false;
         }

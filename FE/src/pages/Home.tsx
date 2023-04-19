@@ -1,6 +1,6 @@
 import CateLineFilter from "@/features/Categories/CateLineFilter";
 import BookList from "@/features/posts/BookList";
-import { changePageBookFilter, getAllBookThunk, removeBook, updateBook } from "@/features/posts/BookSlice";
+import { changePageBookFilter, filterBookbyCate, getAllBookThunk, removeBook, updateBook } from "@/features/posts/BookSlice";
 import { addBook } from "@/features/posts/BookSlice";
 import { RootState } from "@/store";
 import React, { useEffect } from "react";
@@ -12,7 +12,7 @@ import { useAppDispatch } from "@/Hooks/apphooks";
 
 
 export default function Home() {
-    const bookList = useSelector((state: RootState) => state.book.listPaging);
+    const bookListPaging = useSelector((state: RootState) => state.book.listPaging);
     const maxPage = useSelector((state: RootState) => state.book.maxPage);
     const curentPage = useSelector((state: RootState) => state.book.pageCurrent);
     const total = useSelector((state: RootState) => state.book.total);
@@ -27,41 +27,8 @@ export default function Home() {
         }
         getData();
     },[])
+   
     const navigate = useNavigate();
-    const handleAddBtnClick = () => {
-        dispatch(
-            addBook({
-                Id: 5,
-                Price: 55000,
-                Discount: 5300,
-                Title: "Lap Trinh Unity",
-                Description: "Lap Trinh Game Thieu Nhi",
-                MediaPath: "meedia",
-                CreateAt: new Date(),
-                UpdateAt: new Date(),
-                Quantity: 15,
-                Status: 1,
-                CategpryId: 1,
-            })
-        );
-    };
-    const handleUpdateBtnClick = () => {
-        dispatch(
-            updateBook({
-                Id: 4,
-                Price: 55000,
-                Discount: 5300,
-                Title: "Sach Update",
-                Description: "Lap Trinh Game Thieu Nhi",
-                MediaPath: "meedia",
-                CreateAt: new Date(),
-                UpdateAt: new Date(),
-                Quantity: 15,
-                Status: 1,
-                CategpryId: 1,
-            })
-        );
-    };
     const moveNextPage = async ()=>{
         if((curentPage<maxPage)){
             const nextPage = parseInt(curentPage.toString())+1
@@ -118,7 +85,7 @@ export default function Home() {
             </div>
             <div className="row d-flex justify-content-center">
                 <BookList
-                    booklist={bookList}
+                    booklist={bookListPaging}
                     handleDeleteBook={handelDeleteBook}
                 />
             </div>

@@ -14,6 +14,8 @@ export default function Login() {
     // const passref = React.useRef<HTMLInputElement>(null);
     const [username, setUsername] = useLocalStore({key:"name",initialValue: ""});
     const [password, setPassword] = useLocalStore({key:"pass",initialValue: ""});
+    const [lastDomand, setLastDomand] =  useLocalStore({key:"lastDomand",initialValue: ""})
+    
     const navigate = useNavigate()
     const Loading = useAppSelector(isLoading);
 
@@ -48,7 +50,7 @@ export default function Login() {
             const logRes = await dispatch(login(user)).then((res)=>{
                 if(res.type == "auth/login/fulfilled")
                 {
-                    navigate("/home")
+                    navigate(lastDomand)
                 }
             }).catch(e=>{
             

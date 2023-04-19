@@ -10,7 +10,7 @@ import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from 'react-redux'
 
 
-const MultiSelectCategory = () => {
+const MultiSelectCategory = (props:{}) => {
     const cateList = useSelector((state:RootState)=>state.cate.listCate) 
     const [selected, setSelected] = useState([]);
     const [options, setOptions] = useState<Genre[]>([]);
@@ -29,10 +29,10 @@ const MultiSelectCategory = () => {
         const getData = async () => {
           if (selected.length>0) {
             console.log(selected)
-            await dispatch(filterBookbyGenre(selected))
+            
           }else{
             console.log("Empty")
-            await dispatch(filterBookbyCate(cateList))
+            
           }
         }
         getData();

@@ -1,7 +1,11 @@
 import React from "react";
 import MultiSelect from "@/components/ReactNPM/MultitySelect";
 import "./styles/AddBook.scss";
+import MultiSelectCategory from "../ReactNPM/MultitySelectCreateBook";
+import { useAppSelector } from "@/Hooks/apphooks";
 export default function AddBook() {
+    const listCate = useAppSelector(state=>state.cate.listCate)
+    const isLoading = useAppSelector(state=>state.cate.isLoading)
     return (
         <div className="order-form-1">
             <div className="d-flex justify-content-between align-items-lg-center py-3 flex-column flex-lg-row">
@@ -102,7 +106,19 @@ export default function AddBook() {
                                         <label className="form-label">
                                             Thể loại
                                         </label>
-                                        <MultiSelect />
+                                        {
+                                            isLoading ?
+                                                <button className="buttonload">
+                                                    <i className="fa fa-refresh fa-spin"></i>Loading
+                                                </button> :
+                                                <select className="custom-select">
+                                                    <option selected>Open this select menu</option>
+                                                    {listCate.map(cate => {
+                                                        return <option value={cate.id.toString()}>{cate.description}</option>
+                                                    })}
+                                                </select>
+                                        }
+                                        {/* <MultiSelectCategory /> */}
                                     </div>
                                 </div>
                                 <div className="col-lg-6">
