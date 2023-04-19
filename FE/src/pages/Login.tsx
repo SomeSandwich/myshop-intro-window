@@ -81,7 +81,7 @@ export default function Login() {
     //     dispatch(login(user))
     // }
     return (
-        <div className="h-100 mt-5 align-items-center ">
+        <div className="align-items-center d-flex justify-content-center" style={{height:"100vh"}}>
             <div className="d-flex  justify-content-center h-100">
                 <div className="user_card">
                     <div className="d-flex justify-content-center">
