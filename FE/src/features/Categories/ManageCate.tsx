@@ -3,9 +3,9 @@ import { RootState } from '@/store'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { DeleteCate, getAllCategory, removeCate } from './CateSlice'
+import { DeleteCateThunk, getAllCategoryThunk, removeCate } from './CateSlice'
 import { useAppDispatch } from '@/Hooks/apphooks'
-import { deleteCateService } from '@/services/categories.service'
+import { DeleteCateThunkService } from '@/services/categories.service'
 
 export default function ManageCate() {
 
@@ -13,7 +13,7 @@ export default function ManageCate() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const HandleDeleteClick= async (cateid:string)=>{
-    await dispatch(DeleteCate(cateid))
+    await dispatch(DeleteCateThunk(cateid))
   }
   return (
     <div>

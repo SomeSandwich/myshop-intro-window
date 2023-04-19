@@ -4,7 +4,7 @@ import { Book } from '@/interfaces/bookDetail';
 import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
-import { addCateService, deleteCateService, getAllCate, updateCateService } from '@/services/categories.service';
+import { addCateService, DeleteCateThunkService, getAllCate, updateCateService } from '@/services/categories.service';
 export interface ICateState {
   listCate: Category[];
   isLoading: boolean;
@@ -18,7 +18,7 @@ const initialState: ICateState = {
   editCate: null
 };
 
-export const getAllCategory = createAsyncThunk(
+export const getAllCategoryThunk = createAsyncThunk(
   "category",
   async (data, { dispatch, rejectWithValue }) => {
     try {
@@ -32,13 +32,13 @@ export const getAllCategory = createAsyncThunk(
     }
   }
 );
-export const AddCateControl = createAsyncThunk(
+export const AddCateThunk = createAsyncThunk(
   "category/add",
   async (description : string, { dispatch, rejectWithValue }) => {
     try {
       const response = await addCateService(description);
       alert(`Add new Category name "${description} success"`)
-      dispatch(getAllCategory())
+      dispatch(getAllCategoryThunk())
       return response;
     } catch (error: any) {
       alert(`Add new Category name "${description} Fail"`)
@@ -46,13 +46,13 @@ export const AddCateControl = createAsyncThunk(
     }
   }
 );
-export const UpdateCateControl = createAsyncThunk(
+export const UpdateCateThunk = createAsyncThunk(
   "category/add",
   async (data :{id:string,description:string}, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateCateService(data.id,data.description);
       alert(`Update Category name "${data.description} success"`)
-      dispatch(getAllCategory())
+      dispatch(getAllCategoryThunk())
       return response;
     } catch (error: any) {
       alert(`Update new Category name "${data.description} Fail"`)
@@ -60,12 +60,12 @@ export const UpdateCateControl = createAsyncThunk(
     }
   }
 );
-export const DeleteCate = createAsyncThunk(
+export const DeleteCateThunk = createAsyncThunk(
   "category/delete",
   async (data : string, { dispatch, rejectWithValue }) => {
     try {
-      const response = await deleteCateService(data);
-      dispatch(getAllCategory())
+      const response = await DeleteCateThunkService(data);
+      dispatch(getAllCategoryThunk())
       return {response,data};
     } catch (error: any) {
       return rejectWithValue(error);
@@ -102,7 +102,7 @@ const CateSlice = createSlice({
     },
     extraReducers: (builder) => {
       builder.addCase(
-        getAllCategory.pending,
+        getAllCategoryThunk.pending,
         (state, action) => {
             console.log("loading");
             state.isLoading = true;
@@ -110,7 +110,7 @@ const CateSlice = createSlice({
         }
       );
       builder.addCase(
-        getAllCategory.fulfilled,
+        getAllCategoryThunk.fulfilled,
         (state, action) => {
             console.log("done");
             state.listCate = action.payload
@@ -119,7 +119,7 @@ const CateSlice = createSlice({
         }
       );
       builder.addCase(
-        getAllCategory.rejected,
+        getAllCategoryThunk.rejected,
         (state, action) => {
             console.log("reject");
             state.isLoading = false;
@@ -127,13 +127,13 @@ const CateSlice = createSlice({
         }
       );
       builder.addCase(
-        DeleteCate.fulfilled,
+        DeleteCateThunk.fulfilled,
         (state, action) => {
           console.log("Delete Success")
         }
       );
       builder.addCase(
-        AddCateControl.fulfilled,
+        AddCateThunk.fulfilled,
         (state, action) => {
           console.log("Add Success")
         }

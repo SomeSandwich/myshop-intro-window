@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import MultiSelect from "@/components/ReactNPM/MultitySelect";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getAllCategory } from "@/features/Categories/CateSlice";
+import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
 import { useAppDispatch } from "@/Hooks/apphooks";
 export default function Home() {
     const bookList = useSelector((state: RootState) => state.book.allBook);
@@ -16,7 +16,7 @@ export default function Home() {
     const dispatch = useAppDispatch()
     useEffect(()=>{
         const getData = async ()=>{
-            await dispatch(getAllCategory())
+            await dispatch(getAllCategoryThunk())
         }
         getData();
     },[])

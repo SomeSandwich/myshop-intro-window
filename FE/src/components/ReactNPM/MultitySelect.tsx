@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/Hooks/apphooks";
-import { getAllCategory } from "@/features/Categories/CateSlice";
+import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
 import { Genre } from "@/interfaces/Genre";
 import { Category } from "@/interfaces/category";
 import { getAllCate } from "@/services/categories.service";

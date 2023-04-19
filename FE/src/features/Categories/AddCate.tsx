@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import React , {useState,useEffect, FormEvent} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AddCateControl, UpdateCateControl, getCateById } from './CateSlice'
+import { AddCateThunk, UpdateCateThunk, getCateById } from './CateSlice'
 import { ExistCate } from './EditCate'
 
 export default function AddCate() {
@@ -14,7 +14,7 @@ export default function AddCate() {
     const handleSubmit = async (e:FormEvent<HTMLElement>)=>{
         e.preventDefault()
         if(desref.current &&!duplicate){
-            await dispatch(AddCateControl(desref.current.value))
+            await dispatch(AddCateThunk(desref.current.value))
         }
     }
     return (

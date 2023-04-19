@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import React , {useState,useEffect, FormEvent} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AddCateControl, UpdateCateControl, getCateById } from './CateSlice'
+import { AddCateThunk, UpdateCateThunk, getCateById } from './CateSlice'
 import AddCate from './AddCate'
 import { Category } from '@/interfaces/category'
 export const ExistCate = (array:Category[],des:string)=>{
@@ -39,7 +39,7 @@ export default function EditCate() {
     const handleSubmit = async (e:FormEvent<HTMLElement>)=>{
         e.preventDefault()
         if(!duplicate){
-            await dispatch(UpdateCateControl({id,description:des}))
+            await dispatch(UpdateCateThunk({id,description:des}))
         }
     }
     return (
