@@ -1,4 +1,6 @@
+import { Genre } from "./Genre";
 import { Book } from "./bookDetail";
+import { Category } from "./category";
 
 export interface BookSliceState{
     listAllBook: Book[],
@@ -11,5 +13,8 @@ export interface BookSliceState{
     maxPage: Number,
     isLoading: boolean,
     hasError: boolean,
-    isRefresh: boolean
+    isRefresh: boolean,
+    currentGenre: Genre[],
+    currentPrice: Number,
+    currentCategory: Category[]
 }

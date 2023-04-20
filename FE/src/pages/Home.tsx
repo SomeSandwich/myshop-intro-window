@@ -10,6 +10,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
 import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import useLocalStore from "@/Hooks/useLocalStore";
+import RangePrice from "@/components/ReactNPM/RangePrice";
 
 
 export default function Home() {
@@ -32,7 +33,6 @@ export default function Home() {
         getData();
     },[])
     useEffect(()=>{
-        
         const updateSearch = async ()=>{
             console.log("Search change");
             console.log(catelist);
@@ -70,12 +70,13 @@ export default function Home() {
         e.preventDefault()
         console.log("refresh")
         await dispatch(refreshBook(""))
-       
+        // await dispatch(getAllCategoryThunk())
+        await dispatch(getAllBookThunk())
         setSearchKey("")
     }
     return (
         <div className="home-view">
-            <div className="row">
+            <div className="row d-flex justify-content-between">
                 <button
                     onClick={handleRefresh}
                     className="btn btn-outline-success my-2 my-sm-0"
@@ -98,8 +99,13 @@ export default function Home() {
                         Search
                     </button>
                 </form>
+                <div className="rol d-flex justify-content-start align-items-center">
+                    <span className="ml-4"><strong>Filter Price:</strong></span>
+                    <RangePrice />
+                </div>
             </div>
             <div className="row">
+                
                 {/* <CateLineFilter/> */}
                 {
                     cateLoading ?

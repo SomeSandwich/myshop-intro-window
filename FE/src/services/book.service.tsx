@@ -3,7 +3,6 @@ import { Book } from "@/interfaces/bookDetail";
 
 export const getAllBookService= async () => {
 	// console.log(data);
-	console.log("Get All Cate")
 	const response = await axiosClient.get("/product");
 	return response.data;
 };
@@ -88,7 +87,7 @@ const arr_search = [{
 },
 {
 	"id": 6,
-	"price": 10000,
+	"price": 20001,
 	"title": "C# 11 and .NET 7",
 	"discount": 10,
 	"description": "Modern Cross-Platform Development",

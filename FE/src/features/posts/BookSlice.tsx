@@ -24,7 +24,7 @@ export const getAllBookThunk = createAsyncThunk(
 );
 export const searchBookThunk = createAsyncThunk(
   "books/search",
-  async (key:string, { dispatch, rejectWithValue }) => {
+  async (key: string, { dispatch, rejectWithValue }) => {
     try {
       //   dispatch(setLoading(true));
       const response = await searchBookService(key);
@@ -88,7 +88,10 @@ const BookSlice = createSlice({
     sizeOfCurrentPage: 0,
     isLoading: false,
     hasError: false,
-    isRefresh: false
+    isRefresh: false,
+    currentGenre: [],
+    currentPrice: 100000,
+    currentCategory: []
   } as BookSliceState,
   reducers: {
     addBook: (state, action) => {
@@ -107,12 +110,12 @@ const BookSlice = createSlice({
         state.listAllBook[postIndex] = newPost;
       }
     },
-    refreshBook(state, action){
+    refreshBook(state, action) {
       state.isRefresh = true;
       state.listSearch = state.listAllBook
     }
     ,
-    releaseRefreshBook(state, action){
+    releaseRefreshBook(state, action) {
       state.isRefresh = false;
 
     }
@@ -125,7 +128,6 @@ const BookSlice = createSlice({
       if (page < state.maxPage.valueOf()) {
         start = (page - 1) * numberPaging;
         end = (page - 1) * numberPaging + numberPaging;
-
       } else {
         start = (page - 1) * state.sizeOfCurrentPage.valueOf();
         end = (page - 1) * state.sizeOfCurrentPage.valueOf() + state.sizeOfCurrentPage.valueOf()
@@ -135,10 +137,11 @@ const BookSlice = createSlice({
       state.sizeOfCurrentPage = state.listPaging.length
     },
     filterBookbyGenre(state, action: PayloadAction<Genre[]>) {
-      const catelist = action.payload;
+      state.currentGenre = action.payload
+      const genrelist = action.payload;
       const arrayfilter = state.listSearch.filter(book => book.categoryDescription == "")
-      catelist.forEach(cate => {
-        const subarr = state.listSearch.filter(book => book.categoryDescription == cate.value)
+      genrelist.forEach(genre => {
+        const subarr = state.listSearch.filter(book => book.categoryDescription == genre.value)
         subarr.forEach(book => arrayfilter.push(book))
       });
 
@@ -147,42 +150,85 @@ const BookSlice = createSlice({
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      if(size>0)
-      {
+      if (size > 0) {
         state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
-        console.log(state.maxPage)
-        console.log(state.listFilter.length)
       }
-      else 
-      {
+      else {
         state.maxPage = 1
       }
       // state.pageCurrent = 1;
-      
+
     },
     filterBookbyCate(state, action: PayloadAction<Category[]>) {
       const catelist = action.payload;
+      state.currentCategory = catelist
       const arrayfilter = state.listSearch.filter(book => book.categoryDescription == "")
       catelist.forEach(cate => {
         const subarr = state.listSearch.filter(book => book.categoryId == cate.id)
         subarr.forEach(book => arrayfilter.push(book))
       });
-      console.log(state.listSearch);
+
       state.listFilter = arrayfilter
-      console.log(state.listFilter);
+      state.listFilter = state.listFilter.filter(book => book.price <= state.currentPrice)
       state.total = state.listFilter.length
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
       const size = state.sizeOfCurrentPage.valueOf()
       state.listPaging = state.listFilter.slice(0, size);
-      if(size>0){
-        
+      if (size > 0) {
         state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
-       
       }
       else
         state.maxPage = 1
-      
-      console.log(state.listPaging);
+
+      // state.pageCurrent = 1;
+    },
+    filterCurrentBookbyPrice(state, action: PayloadAction<Number>) {
+      const price = action.payload;
+      state.listFilter = state.listFilter.filter(book => book.price < price)
+      state.total = state.listFilter.length
+      state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
+      const size = state.sizeOfCurrentPage.valueOf()
+      state.listPaging = state.listFilter.slice(0, size);
+      if (size > 0) {
+        state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
+      }
+      else
+        state.maxPage = 1
+
+      // state.pageCurrent = 1;
+    },
+    filterCurrentBook(state, action: PayloadAction<{ genrelist: Genre[], price: Number }>) {
+
+      const price = action.payload.price;
+      const genrelist = action.payload.genrelist;
+      state.currentPrice = price  
+      const arrayfilter = state.listSearch.filter(book => book.categoryDescription == "")
+      if (genrelist.length == 0) {
+        state.currentCategory.forEach(cate => {
+          const subarr = state.listSearch.filter(book => book.categoryId == cate.id)
+          subarr.forEach(book => arrayfilter.push(book))
+        });
+      }
+      else {
+        state.currentGenre = genrelist
+        genrelist.forEach(genre => {
+          const subarr = state.listSearch.filter(book => book.categoryDescription == genre.value)
+          subarr.forEach(book => arrayfilter.push(book))
+        });
+      }
+
+      state.listFilter = arrayfilter
+      state.listFilter = state.listFilter.filter(book => book.price <= price)
+      state.total = state.listFilter.length
+      state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
+      const size = state.sizeOfCurrentPage.valueOf()
+      state.listPaging = state.listFilter.slice(0, size);
+      if (size > 0) {
+        state.maxPage = Math.ceil((state.listFilter.length) / numberPaging)
+      }
+      else
+        state.maxPage = 1
+
       // state.pageCurrent = 1;
     }
 
@@ -246,7 +292,7 @@ const BookSlice = createSlice({
           state.listSearch = action.payload
           state.isRefresh = true;
         }
-        
+
       }
     );
   }
@@ -254,5 +300,5 @@ const BookSlice = createSlice({
 
 
 const { actions, reducer } = BookSlice;
-export const { addBook, removeBook,refreshBook,releaseRefreshBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate } = actions;
+export const { addBook, removeBook, refreshBook, releaseRefreshBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate, filterCurrentBookbyPrice, filterCurrentBook } = actions;
 export default reducer;

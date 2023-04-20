@@ -116,6 +116,7 @@ const CateSlice = createSlice({
               console.log("Not Change")
             }
             else{
+              console.log("Change")
               state.listCate = action.payload
             }
             state.isLoading = false;

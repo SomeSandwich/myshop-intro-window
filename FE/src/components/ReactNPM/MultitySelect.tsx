@@ -1,19 +1,20 @@
 import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import useLocalStore from "@/Hooks/useLocalStore";
-import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
-import { changePageBookFilter, filterBookbyCate, filterBookbyGenre, releaseRefreshBook } from "@/features/posts/BookSlice";
+import { arraysEqual, getAllCategoryThunk } from "@/features/Categories/CateSlice";
+import { changePageBookFilter, filterBookbyCate, filterBookbyGenre, filterCurrentBook, releaseRefreshBook } from "@/features/posts/BookSlice";
 import { Genre } from "@/interfaces/Genre";
 import { Category } from "@/interfaces/category";
 import { getAllCate } from "@/services/categories.service";
 import { RootState } from "@/store";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from 'react-redux'
 
 
 const MultiSelectCategory = () => {
-    const cateList = useSelector((state: RootState) => state.cate.listCate)
+    const cateList = useAppSelector((state: RootState) => state.cate.listCate)
     const refresh = useAppSelector((state: RootState) => state.book.isRefresh);
+    const currentPrice = useAppSelector((state: RootState) => state.book.currentPrice);
     const [storeSelected, setStoreSelected] = useLocalStore({ key: "genreSelect", initialValue: "[]" });
     const [selected, setSelected] = useState(JSON.parse(storeSelected));
     const [options, setOptions] = useState<Genre[]>([]);
@@ -27,6 +28,7 @@ const MultiSelectCategory = () => {
         }
     }, [refresh])
     useEffect(() => {
+        console.log("catelist multy")
         const changeOption = () => {
             const newoptions: Genre[] = [];
             cateList.map(cate => {
@@ -38,10 +40,10 @@ const MultiSelectCategory = () => {
     }, [cateList])
     useEffect(() => {
         console.log("change")
-        const getData = async () => {
+        const filterGenre = async () => {
             setStoreSelected(JSON.stringify(selected))
             if (selected.length > 0) {
-                await dispatch(filterBookbyGenre(selected))
+                await dispatch(filterCurrentBook({genrelist:selected,price:currentPrice}))
                 await dispatch(changePageBookFilter(1))
 
             } else {
@@ -49,17 +51,17 @@ const MultiSelectCategory = () => {
                 await dispatch(changePageBookFilter(1))
             }
         }
-        getData();
+        filterGenre();
     }, [selected])
     useEffect(() => {
         console.log("reset")
-        const getData = async () => {
+        const filterGenreRefresh = async () => {
             if (selected.length > 0) {
                 setStoreSelected(JSON.stringify(selected))
-                await dispatch(filterBookbyGenre(selected))
+                await dispatch(filterCurrentBook({genrelist:selected,price:currentPrice}))
             }
         }
-        getData();
+        filterGenreRefresh();
     }, [])
     return (
         <div className="filter-genre" style={{ width: "150px" }} >
