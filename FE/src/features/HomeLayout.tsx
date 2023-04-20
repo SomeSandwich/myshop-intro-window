@@ -9,7 +9,7 @@ import { RefreshPrice, filterBookbyCate, filterBookbyGenre, getAllBookThunk } fr
 import { RootState } from '@/store'
 export default function HomeLayout() {
   const location = useLocation()
-  const [lastDomand, setLastDomand] = useLocalStore({ key: "lastDomand", initialValue: "" })
+  const [lastDomand, setLastDomand] = useLocalStore({ key: "lastDomand", initialValue: "/" })
   const bookList = useAppSelector((state: RootState) => state.book.listAllBook);
   const cateList = useAppSelector((state: RootState) => state.cate.listCate);
   
