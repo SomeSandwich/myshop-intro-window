@@ -102,6 +102,7 @@ export default function AddBook() {
         }
 
         const formData = new FormData();
+
         formData.append("title", FormAddBook.title);
         formData.append("author", FormAddBook.author);
         formData.append("publisher", FormAddBook.publisher);
