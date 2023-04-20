@@ -85,6 +85,7 @@ export default function Home() {
                 </button>
                 <form className="form-inline" onSubmit={(e)=>handleSearch(e)}>
                     <input
+                        required
                         className="form-control mr-lg-2"
                         type="search"
                         placeholder="Search"

@@ -24,6 +24,7 @@ export default function RangePrice() {
         if(refresh){
             setCurrentPrice(maxVlue)
             dispatch(releaseRefreshBook(""))
+            dispatch(filterCurrentBook({genrelist:genreList,price:maxVlue}))
         }
     }, [refresh])
     return (
