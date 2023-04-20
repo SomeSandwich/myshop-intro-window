@@ -28,6 +28,7 @@ export default function useLocalStore({key,initialValue}:{key:string, initialVal
           // Save to local storage
           if (typeof window !== "undefined") {
             window.localStorage.setItem(key, JSON.stringify(valueToStore));
+   
           }
         } catch (error) {
           // A more advanced implementation would handle the error case
