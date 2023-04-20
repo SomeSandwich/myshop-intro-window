@@ -91,6 +91,7 @@ public class ProductService : IProductService
 
         product.Price = arg.Price ?? product.Price;
         product.Discount = arg.Discount ?? product.Discount;
+        product.Title = arg.Title ?? product.Title;
         product.Description = arg.Description ?? product.Description;
         product.Quantity = arg.Quantity ?? product.Quantity;
         product.CategoryId = arg.CategoryId ?? product.CategoryId;
@@ -102,10 +103,7 @@ public class ProductService : IProductService
         product.NumPages = arg.NumPages ?? product.NumPages;
         product.CoverType = arg.CoverType ?? product.CoverType;
 
-        if (arg.Dimension is not null
-            && arg.Dimension.Width is not null
-            && arg.Dimension.Height is not null
-            && arg.Dimension.Length is not null)
+        if (arg.Dimension is { Width: not null, Height: not null, Length: not null })
             product.DimensionJSON = JsonSerializer.Serialize(arg.Dimension);
 
         if (arg.MediaFilesDel is not null)

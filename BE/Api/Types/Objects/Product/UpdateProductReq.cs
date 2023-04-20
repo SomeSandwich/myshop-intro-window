@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 
@@ -14,6 +15,12 @@ public class UpdateProductReq
     /// Discount of product
     /// </summary>
     public int? Discount { get; set; }
+
+    /// <summary>
+    /// Title
+    /// </summary>
+    [StringLength(50)]
+    public string? Title { get; set; }
 
     /// <summary>
     /// Description of product
