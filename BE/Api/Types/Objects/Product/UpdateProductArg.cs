@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 
@@ -16,6 +17,13 @@ public class UpdateProductArg
     /// </summary>
     /// <example>10</example>
     public int? Discount { get; set; }
+
+    /// <summary>
+    /// Title
+    /// </summary>
+    /// <example>C# In Depth</example>
+    [StringLength(50)]
+    public string? Title { get; set; }
 
     /// <summary>
     /// Description of product
