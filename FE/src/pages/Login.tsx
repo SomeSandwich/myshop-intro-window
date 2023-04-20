@@ -50,7 +50,10 @@ export default function Login() {
             const logRes = await dispatch(login(user)).then((res)=>{
                 if(res.type == "auth/login/fulfilled")
                 {
-                    navigate(lastDomand)
+                    if(lastDomand)
+                        navigate(lastDomand)
+                    else
+                        navigate("/")
                 }
             }).catch(e=>{
             

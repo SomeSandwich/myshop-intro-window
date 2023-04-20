@@ -43,7 +43,7 @@ function App() {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(RefreshPrice(""))
-        setStoreSelected(JSON.stringify([]))
+        setStoreSelected(JSON.stringify("/"))
     }, [])
     
     return (
