@@ -135,6 +135,8 @@ const BookSlice = createSlice({
       state.pageCurrent = page
       state.listPaging = state.listFilter.slice(start, end);
       state.sizeOfCurrentPage = state.listPaging.length
+    },RefreshPrice(state, action){
+      state.currentPrice = 100000
     },
     filterBookbyGenre(state, action: PayloadAction<Genre[]>) {
       state.currentGenre = action.payload
@@ -169,6 +171,7 @@ const BookSlice = createSlice({
       });
 
       state.listFilter = arrayfilter
+      // state.currentPrice = 100000
       state.listFilter = state.listFilter.filter(book => book.price <= state.currentPrice)
       state.total = state.listFilter.length
       state.sizeOfCurrentPage = (state.listFilter.length > numberPaging) ? numberPaging : state.listFilter.length
@@ -300,5 +303,5 @@ const BookSlice = createSlice({
 
 
 const { actions, reducer } = BookSlice;
-export const { addBook, removeBook, refreshBook, releaseRefreshBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate, filterCurrentBookbyPrice, filterCurrentBook } = actions;
+export const { addBook, removeBook, refreshBook, RefreshPrice,releaseRefreshBook, updateBook, changePageBookFilter, filterBookbyGenre, filterBookbyCate, filterCurrentBookbyPrice, filterCurrentBook } = actions;
 export default reducer;

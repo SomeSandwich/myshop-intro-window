@@ -47,7 +47,7 @@ const MultiSelectCategory = () => {
                 await dispatch(changePageBookFilter(1))
 
             } else {
-                await dispatch(filterBookbyCate(cateList))
+                await dispatch(filterCurrentBook({genrelist:selected,price:100000}))
                 await dispatch(changePageBookFilter(1))
             }
         }
@@ -58,7 +58,7 @@ const MultiSelectCategory = () => {
         const filterGenreRefresh = async () => {
             if (selected.length > 0) {
                 setStoreSelected(JSON.stringify(selected))
-                await dispatch(filterCurrentBook({genrelist:selected,price:currentPrice}))
+                await dispatch(filterCurrentBook({genrelist:selected,price:100000}))
             }
         }
         filterGenreRefresh();

@@ -5,7 +5,7 @@ import NavBar from '@/components/NavBar'
 import useLocalStore from '@/Hooks/useLocalStore'
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import { getAllCategoryThunk } from './Categories/CateSlice'
-import { filterBookbyCate, filterBookbyGenre, getAllBookThunk } from './posts/BookSlice'
+import { RefreshPrice, filterBookbyCate, filterBookbyGenre, getAllBookThunk } from './posts/BookSlice'
 import { RootState } from '@/store'
 export default function HomeLayout() {
   const location = useLocation()
@@ -29,6 +29,7 @@ export default function HomeLayout() {
   useEffect(() => {
     const getData = async () => {
       if (cateList) {
+        await dispatch(RefreshPrice(""))
         await dispatch(filterBookbyCate(cateList))
       }
     }

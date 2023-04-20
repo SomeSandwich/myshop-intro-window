@@ -29,6 +29,8 @@ import AddCate from "./features/Categories/AddCate";
 import OrderForm from "./components/Order/OrderForm";
 import AddBook from "./components/Book/AddBook";
 import useLocalStore from "./Hooks/useLocalStore";
+import { RefreshPrice } from "./features/posts/BookSlice";
+import { useAppDispatch } from "./Hooks/apphooks";
 
 console.log(
     "[App.tsx]",
@@ -38,7 +40,9 @@ console.log(
 function App() {
     const [count, setCount] = useState(0);
     const [storeSelected, setStoreSelected] = useLocalStore({ key: "genreSelect", initialValue: "[]" });
+    const dispatch = useAppDispatch()
     useEffect(() => {
+        dispatch(RefreshPrice(""))
         setStoreSelected(JSON.stringify([]))
     }, [])
     

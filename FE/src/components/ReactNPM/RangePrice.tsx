@@ -3,7 +3,7 @@ import { Range, getTrackBackground } from "react-range";
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks';
 import { RootState } from '@/store';
-import { changePageBookFilter, filterCurrentBook, filterCurrentBookbyPrice, releaseRefreshBook } from '@/features/posts/BookSlice';
+import { RefreshPrice, changePageBookFilter, filterCurrentBook, filterCurrentBookbyPrice, releaseRefreshBook } from '@/features/posts/BookSlice';
 export default function RangePrice() {
     const [maxVlue,setMaxValue] =  useState(100000)
     const [currentPrice,setCurrentPrice] =  useState(100000)
@@ -15,15 +15,25 @@ export default function RangePrice() {
     }, [maxVlue])
     useEffect(() => {
         const filterPrice = async () => {
+            
             await dispatch(filterCurrentBook({genrelist:genreList,price:currentPrice}))
             await dispatch(changePageBookFilter(1))
+            
         }
         filterPrice()
     }, [currentPrice])
+    // useEffect(() => {
+    //     const filterPrice = async () => {
+    //         await dispatch(filterCurrentBook({genrelist:genreList,price:maxVlue}))
+    //         await dispatch(changePageBookFilter(1))
+    //     }
+    //     filterPrice()
+    // }, [])
     useEffect(() => {
         if(refresh){
             setCurrentPrice(maxVlue)
             dispatch(releaseRefreshBook(""))
+            dispatch(RefreshPrice(""))
             dispatch(filterCurrentBook({genrelist:genreList,price:maxVlue}))
         }
     }, [refresh])
