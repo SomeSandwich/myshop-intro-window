@@ -1,5 +1,4 @@
-
-export interface Book{
+export interface Book {
     id: Number;
     price: Number;
     discount: Number;
@@ -11,10 +10,29 @@ export interface Book{
     quantity: Number;
     status: string;
     categoryId: Number;
-    author: string,
-    publisher: string,
-    publicationDate: string,
-    coverType: string,
-    categoryDescription: string,
-    numPages: Number
+    author: string;
+    publisher: string;
+    publicationDate: string;
+    coverType: string;
+    categoryDescription: string;
+    numPages: Number;
+}
+export interface AddBookWithForm {
+    id: Number;
+    price: Number;
+    discount: Number;
+    title: string;
+    description: string;
+    mediaPath: File | null;
+    createAt: string;
+    updateAt: string;
+    quantity: Number;
+    status: string;
+    categoryId: Number;
+    author: string;
+    publisher: string;
+    publicationDate: string;
+    coverType: string;
+    categoryDescription: string;
+    numPages: Number;
 }
