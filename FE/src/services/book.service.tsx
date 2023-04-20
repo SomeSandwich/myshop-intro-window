@@ -16,7 +16,7 @@ export const GetDetailBookService = async (id:string) => {
 	const response = await axiosClient.get(`/product/${id}`);
 	return response.data;
 };
-export const addBookService = async (newBook : Book) => {
+export const addBookService = async (newBook : FormData) => {
 	// console.log(data);
 	const response = await axiosClient.post(`/product`,newBook);
 	return response.data;

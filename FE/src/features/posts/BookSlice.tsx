@@ -8,7 +8,7 @@ import { Genre } from '@/interfaces/Genre';
 import { CategoryScale } from 'chart.js';
 import { Category } from '@/interfaces/category';
 import { arraysEqual } from '../Categories/CateSlice';
-const numberPaging = 2;
+const numberPaging = 8;
 export const getAllBookThunk = createAsyncThunk(
   "books",
   async (data, { dispatch, rejectWithValue }) => {
@@ -37,14 +37,12 @@ export const searchBookThunk = createAsyncThunk(
 );
 export const AddBookThunk = createAsyncThunk(
   "books/add",
-  async (newBook: Book, { dispatch, rejectWithValue }) => {
+  async (newBook: FormData, { dispatch, rejectWithValue }) => {
     try {
       const response = await addBookService(newBook);
-      alert(`Add new Category name "${newBook.title} success"`)
       dispatch(getAllBookThunk())
       return response;
     } catch (error: any) {
-      alert(`Add new Category name "${newBook.title} Fail"`)
       return rejectWithValue(error);
     }
   }

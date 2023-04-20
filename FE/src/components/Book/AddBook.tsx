@@ -67,141 +67,37 @@ export default function AddBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            toast.warn("Vui lòng chọn hình ảnh", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
+            notification("Vui lòng chọn hình ảnh",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            toast.warn("Vui lòng chọn thể loại sách", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng chọn thể loại sách",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.title) {
-            toast.warn("Vui lòng nhập tên sách", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng nhập tên sách",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.author) {
-            toast.warn("Vui lòng nhập tên tác giả", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng nhập tên tác giả",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            toast.warn("Vui lòng nhập nhà phát hành", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng nhập tên tác giả",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            toast.warn("Vui lòng chọn ngày phát hành ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng chọn ngày phát hành",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            toast.warn("Vui lòng chọn loại bìa ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            notification("Vui lòng chọn loại bìa",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            toast.warn("Vui lòng nhập số trang ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
+            notification("Vui lòng nhập số trang",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.price) {
-            toast.warn("Vui lòng nhập giá tiền ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
+            notification("Vui lòng nhập giá tiền",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            toast.warn("Vui lòng nhập số lượng ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
+            notification("Vui lòng nhập số lượng",Notificatrion.Warn);
             return;
         } else if (!FormAddBook.description) {
-            toast.warn("Vui lòng nhập mô tả  ", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-
+            notification("Vui lòng nhập mô tả",Notificatrion.Warn);
             return;
         }
 
@@ -232,27 +128,9 @@ export default function AddBook() {
             .then((data) => {
                 console.log(data);
                 if (data.message == "Success") {
-                    toast.success("Thêm sách thành công", {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    notification("Thêm sách thành công",Notificatrion.Success);
                 } else {
-                    toast.error("Thêm sách thất bại", {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    notification("Thêm sách thất bại",Notificatrion.Error);
                 }
             });
 
@@ -558,4 +436,45 @@ export default function AddBook() {
             </form>
         </div>
     );
+}
+enum Notificatrion {
+    Warn,
+    Success,
+    Error
+}
+const notification = (message:string,type:Notificatrion)=>{
+    if(type==Notificatrion.Warn){
+        toast.warn(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }else if(type==Notificatrion.Success){
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }else if(type==Notificatrion.Error){
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 }

@@ -23,6 +23,7 @@ export default function () {
         }
         getDetail();
     }, []);
+    console.log(curBook?.mediaPath)
     return (
         <div className="detail-book-1">
             <div className="card">
@@ -35,8 +36,8 @@ export default function () {
                                         <img
                                             // src={curBook.mediaPath}
                                             src={
-                                                curBook.mediaPath
-                                                    ? curBook.mediaPath
+                                                curBook.mediaPath[0]
+                                                    ? curBook.mediaPath[0]
                                                     : "https://react.semantic-ui.com/images/wireframe/square-image.png"
                                             }
                                             alt={curBook.title}
