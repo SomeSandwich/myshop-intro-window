@@ -73,8 +73,17 @@ const CateSlice = createSlice({
     name: 'order',
     initialState:  initialState,
     reducers: {
-        addProductToCurrentOrder(state,action : PayloadAction<{id:Number,quantily:Number}>){
-            state.currentOrder.push({productId: action.payload.id,quantity: action.payload.quantily})
+        addProductToCurrentOrder(state,action : PayloadAction<IOrderDetailProduct>){
+            const title = action.payload.title?action.payload.title:""
+            const indexDuplicate = state.currentOrder.findIndex(order=>order.productId==action.payload.productId)
+            if(indexDuplicate>=0){
+                state.currentOrder[indexDuplicate].quantity+=JSON.parse(JSON.stringify(action.payload.quantity))
+            }
+            else{
+                state.currentOrder = [...state.currentOrder,({productId: action.payload.productId,quantity: action.payload.quantity,title})]
+            }
+
+            console.log(state.currentOrder)
         },
         removeProductToCurrentOrder(state,action : PayloadAction<{id:Number}>){
             state.currentOrder = state.currentOrder.filter(product=>product.productId!=action.payload.id)
