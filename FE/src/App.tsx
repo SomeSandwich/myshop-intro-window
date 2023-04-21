@@ -33,6 +33,7 @@ import { RefreshPrice } from "./features/posts/BookSlice";
 import { useAppDispatch } from "./Hooks/apphooks";
 import OrderLayout from "./components/Order/OrderLayout";
 import OrderDashBoard from "./components/Order/OrderDashBoard";
+import AddOrder from "./components/Order/AddOrder";
 
 console.log(
     "[App.tsx]",
@@ -77,7 +78,7 @@ function App() {
                         <Route path="order" element={<OrderLayout />}>
                             <Route index element={<OrderDashBoard />} />
                             <Route path="view/:id" element={<ManageCate />} />
-                            <Route path="add" element={<AddCate />} />
+                            <Route path="add" element={<AddOrder />} />
                             <Route path="edit/:id" element={<EditCate />} />
                         </Route>
                         <Route path="/add-product" element={<AddBook />} />

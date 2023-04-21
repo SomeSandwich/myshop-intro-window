@@ -146,9 +146,89 @@ body {
         max-width: 150px;
     }
 }
-.home-view,.editcate-view{
+.home-view,.editcate-view,.add-order{
     >.row{
         // max-width: 950px;
         margin-top: 15px;
     }
 }
+.add-order{
+    
+    .box-add-product{
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #3f897d42;
+    }
+    .add-product-btn:active{
+        // background-color: black;
+        border: none;
+        color: orange;
+    }
+    .add-product-btn{
+        background-color: transparent;
+        border: none;
+        color: black;
+        cursor: pointer;
+    }
+    .add-product-btn:focus{
+        outline: none;
+        box-shadow: none;
+        
+    }
+    .add-product-btn:hover{
+        outline: none;
+        box-shadow: none;
+        color: orange;
+    }
+}
+table.scrolldown tbody, table.scrolldown thead {
+    display: block;
+ }   
+table.scrolldown {
+    width: 92%;
+    border-spacing: 0;
+    border: none;     
+    .header-add-box th{
+        background-color: transparent
+    }
+    tbody {
+        
+        
+    }
+    thead tr th{
+        background-color: transparent;
+    }     
+    tbody { 
+
+        background: transparent;
+        tr{
+            margin: 0;
+            // border: none;
+        }
+    }     
+ }
+ .body-table-add-box{
+
+    height: 150px; 
+        overflow: hidden;
+        overflow-y: scroll;
+        overflow-x: hidden; 
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+      
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: white; 
+      }
+        
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background:  white; 
+      }
+      
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: white; 
+      }    
+ }

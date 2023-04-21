@@ -16,5 +16,8 @@ export interface OrderDetail{
 export interface IOrderDetailProduct{
     productId: Number,
     title?: string,
+    price?: Number,
+    discount?: Number,
+    uniPrice?: Number,
     quantity: Number,
 }
