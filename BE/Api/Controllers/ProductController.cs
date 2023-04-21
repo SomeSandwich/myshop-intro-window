@@ -1,22 +1,16 @@
-﻿using System.ComponentModel;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 using Api.Services;
 using API.Services;
 using Api.Types.Constant;
 using Api.Types.GlobalTypes;
-using Api.Types.Mapping;
-using Api.Types.Objects;
 using Api.Types.Objects.File;
 using Api.Types.Objects.Product;
 using Api.Types.Results;
 using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using shortid;
-using shortid.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
@@ -32,13 +26,15 @@ public class ProductController : ControllerBase
     private readonly IProductService _productSer;
     private readonly IMinioFileService _fileSer;
 
+    private readonly ILogger _logger;
     private readonly IMapper _mapper;
 
-    public ProductController(IProductService productSer, IMinioFileService fileSer, IMapper mapper)
+    public ProductController(IProductService productSer, IMinioFileService fileSer, ILogger logger, IMapper mapper)
     {
         _productSer = productSer;
         _fileSer = fileSer;
 
+        _logger = logger;
         _mapper = mapper;
     }
 
