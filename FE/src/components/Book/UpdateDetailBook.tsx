@@ -1,44 +1,12 @@
 import React, { useState } from "react";
-import MultiSelect from "@/components/ReactNPM/MultitySelect";
-import "./styles/AddBook.scss";
 import { AddBookWithForm } from "@/interfaces/bookDetail";
+import "./styles/AddBook.scss";
+
 import { useAppSelector } from "@/Hooks/apphooks";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 import axiosClient from "@/Axios/AxiosClient";
-interface FormImportExcel {
-    excelFile: File | null;
-}
 
-export default function AddBook() {
-    // Import excel
-    const [FormImportExcel, setFormImportExcel] = useState<FormImportExcel>({
-        excelFile: null,
-    });
-
-    const handleFileExcelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const data = e.target.files;
-        if (data && data.length > 0) {
-            console.log(data);
-            setFormImportExcel({
-                ...FormImportExcel,
-                excelFile: data[0],
-            });
-        }
-    };
-
-    const handleFormImportSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData();
-
-        formData.append("excelFile", FormImportExcel.excelFile as Blob);
-        console.log(formData);
-
-        // api
-    };
-
+export default function UpdateDetailBook() {
     // Add book
     const [FormAddBook, setFormAddBook] = useState<AddBookWithForm>(
         {} as AddBookWithForm
@@ -163,47 +131,14 @@ export default function AddBook() {
     return (
         <div className="order-form-1">
             <ToastContainer />
-            <form onSubmit={handleFormImportSubmit}>
-                <div className="d-flex justify-content-between align-items-lg-center py-3 flex-column flex-lg-row">
-                    <h2 className="h5 mb-3 mb-lg-0">
-                        <a className="text-muted">
-                            <i className="bi bi-arrow-left-square me-2" />
-                        </a>
-                        Import Books
-                    </h2>
-                    <div className="hstack gap-3">
-                        <button
-                            type="submit"
-                            className="btn btn-success btn-sm btn-icon-text"
-                        >
-                            <i className="bi bi-save" />
-                            <span className="text">Save</span>
-                        </button>
-                    </div>
-                </div>
-                <div className="row">
-                    {/* Left side */}
-                    <div className="col-lg-12">
-                        {/* Basic information */}
-                        <div className="card mb-4">
-                            <div className="card-body">
-                                <input
-                                    type="file"
-                                    className="excel"
-                                    onChange={handleFileExcelChange}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+
             <form onSubmit={handleFormAddBookSubmit}>
                 <div className="d-flex justify-content-between align-items-lg-center py-3 flex-column flex-lg-row">
                     <h2 className="h5 mb-3 mb-lg-0">
                         <a className="text-muted">
                             <i className="bi bi-arrow-left-square me-2" />
                         </a>
-                        Create new Book
+                        Cập nhật thông tin sách
                     </h2>
                     <div className="hstack gap-3">
                         <button className="btn btn-success btn-sm btn-icon-text">

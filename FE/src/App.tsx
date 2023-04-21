@@ -1,5 +1,5 @@
 import nodeLogo from "./assets/node.svg";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
     Routes,
     Route,
@@ -33,6 +33,7 @@ import { RefreshPrice } from "./features/posts/BookSlice";
 import { useAppDispatch } from "./Hooks/apphooks";
 import OrderLayout from "./components/Order/OrderLayout";
 import OrderDashBoard from "./components/Order/OrderDashBoard";
+import UpdateDetailBook from "./components/Book/updateDetailBook";
 
 console.log(
     "[App.tsx]",
@@ -41,13 +42,16 @@ console.log(
 
 function App() {
     const [count, setCount] = useState(0);
-    const [storeSelected, setStoreSelected] = useLocalStore({ key: "genreSelect", initialValue: "[]" });
-    const dispatch = useAppDispatch()
+    const [storeSelected, setStoreSelected] = useLocalStore({
+        key: "genreSelect",
+        initialValue: "[]",
+    });
+    const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(RefreshPrice(""))
-        setStoreSelected("")
-    }, [])
-    
+        dispatch(RefreshPrice(""));
+        setStoreSelected("");
+    }, []);
+
     return (
         <div className="containerWeb">
             <Routes>
@@ -69,7 +73,7 @@ function App() {
                             />
                             <Route
                                 path="update/:id"
-                                element={<div>Update</div>}
+                                element={<UpdateDetailBook />}
                             />
                             <Route path="edit/:id" element={<ManageCate />} />
                         </Route>
