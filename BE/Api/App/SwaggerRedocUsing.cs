@@ -23,13 +23,6 @@ public static class SwaggerRedocUsing
             opt.DocumentTitle = "MyShop API";
             opt.SpecUrl = "../swagger/v1/swagger.json";
 
-            Console.WriteLine($"""
-                *********
-                    Stream is null: {(Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html")) is null}
-                *********
-            """);
-
             opt.IndexStream = () =>
                 Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream(@"Api.App.Redoc.CustomIndex.ReDoc.index.html");

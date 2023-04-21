@@ -24,15 +24,9 @@ builder.Services.RegisterModules();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Logging.ConfiguraLogger(config, env);
+
 var app = builder.Build();
-
-// var versionSet = app.NewApiVersionSet()
-//     .HasApiVersion(1)
-//     .HasApiVersion(2)
-//     .ReportApiVersions()
-//     .Build();
-
-// app.MapEndpoints(versionSet);
 
 app.ConfigureErrorResponse();
 
