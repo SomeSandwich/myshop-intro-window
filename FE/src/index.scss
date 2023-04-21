@@ -208,27 +208,15 @@ table.scrolldown {
     }     
  }
  .body-table-add-box{
-
     height: 150px; 
-        overflow: hidden;
-        overflow-y: scroll;
-        overflow-x: hidden; 
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-      
-      /* Track */
-      ::-webkit-scrollbar-track {
-        background: white; 
-      }
-        
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background:  white; 
-      }
-      
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: white; 
-      }    
+    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+ }
+ .body-table-detail-box{
+    height: 150px; 
+    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block; 
  }

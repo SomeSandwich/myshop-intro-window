@@ -6,6 +6,7 @@ import { RootState } from '@/store';
 import { getDetailBook } from './OrderDashBoard';
 import Select from 'react-select'
 import { BookOption } from '@/interfaces/bookDetail';
+import { NumericFormat } from 'react-number-format';
 // const options = [
 //     { value: 'chocolate', label: 'Chocolate' },
 //     { value: 'strawberry', label: 'Strawberry' },
@@ -90,15 +91,6 @@ export default function AddOrder() {
                             </tr>
                         </thead>
                         <tbody className='body-table-add-box'>
-                            {/* <tr>
-                                <td colSpan={2} style={{ width: "240px" }}>{"Hello world this is a long sentence Hello world this is a long sentence Hello world this is a long sentence"}</td>
-                                <td colSpan={1} style={{ width: "135px" }}>{10}</td>
-                                <td colSpan={1} style={{ width: "30px" }}>
-                                    <span onClick={() => {
-                                        HandleDelete(1)
-                                    }}><i className="fa-solid fa-trash"></i></span>
-                                </td>
-                            </tr> */}
                             {
                                 books.map(book => {
                                     return <ProductInfor handleDelete={HandleDelete} product={book} key={book.productId.toString()} />;
@@ -110,7 +102,23 @@ export default function AddOrder() {
 
             </div>
             <div className='row'>
-                
+                <table className="table">
+                    <thead style={{display: "block"}}>
+                        <tr style={{backgroundColor:"#3f897d42"}}>
+                            <th scope="col" style={{ width: "500px" }}>Tên sách</th>
+                            <th scope="col" style={{ width: widthColumn_detail }}>Giá</th>
+                            <th scope="col" style={{ width: widthColumn_detail }}>Số Lượng</th>
+                            <th scope="col" style={{ width: widthColumn_detail }}>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody className='body-table-detail-box'>
+                        {
+                            books.map(book => {
+                                return <ProductDetail product={book} key={book.productId.toString()} />;
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     )
@@ -132,3 +140,28 @@ const ProductInfor = (props: { product: IOrderDetailProduct, handleDelete: Funct
         </tr>
     )
 }
+const ProductDetail = (props: { product: IOrderDetailProduct}) => {
+    return (
+        <tr>
+            <th scope="row" style={{ width: "500px" }}>{props.product.title} </th>
+            <td style={{ width: widthColumn_detail }}>
+                <NumericFormat
+                        displayType="text"
+                        value={props.product.uniPrice?.toString()}
+                        thousandSeparator={true}
+                        suffix="đ"
+                />
+            </td>
+            <td style={{ width: widthColumn_detail }}>{props.product.quantity}</td>
+            <td style={{ width: widthColumn_detail }}>
+                <NumericFormat
+                            displayType="text"
+                            value={(props.product.uniPrice*props.product.quantity)}
+                            thousandSeparator={true}
+                            suffix="đ"
+                    />
+            </td>
+        </tr>
+    )
+}
+const widthColumn_detail = "120px"
