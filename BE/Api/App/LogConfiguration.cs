@@ -1,19 +1,19 @@
 using Serilog;
-using Serilog.Configuration;
+using Serilog.Exceptions;
 
 namespace Api.App;
 
 public static class LogConfiguration
 {
-    public static LoggerConfiguration abc = new LoggerConfiguration();
-
-    public static void ConfiguraLogger(this ILoggingBuilder builder, IConfiguration config, IWebHostEnvironment env)
+    public static void ConfigureLogger(this ILoggingBuilder builder, IConfiguration config, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(config)
                 .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithMachineName()
                 .WriteTo.Console()
                 .CreateLogger();
 
@@ -25,6 +25,8 @@ public static class LogConfiguration
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(config)
                 .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithMachineName()
                 .WriteTo.Seq("http://139.59.248.73:5342")
                 .CreateLogger();
 

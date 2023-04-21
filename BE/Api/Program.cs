@@ -3,6 +3,8 @@ using API.App;
 using Api.App.Extensions;
 using API.Configurations;
 using MMS.GateApi.Middlewares;
+using Serilog;
+using Serilog.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,7 @@ builder.Services.RegisterModules();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Logging.ConfiguraLogger(config, env);
+builder.Logging.ConfigureLogger(config, env);
 
 var app = builder.Build();
 
