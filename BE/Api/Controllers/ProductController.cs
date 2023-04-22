@@ -26,15 +26,15 @@ public class ProductController : ControllerBase
     private readonly IProductService _productSer;
     private readonly IMinioFileService _fileSer;
 
-    private readonly ILogger _logger;
+    // private readonly ILogger _logger;
     private readonly IMapper _mapper;
 
-    public ProductController(IProductService productSer, IMinioFileService fileSer, ILogger logger, IMapper mapper)
+    public ProductController(IProductService productSer, IMinioFileService fileSer, IMapper mapper)
     {
         _productSer = productSer;
         _fileSer = fileSer;
 
-        _logger = logger;
+        // _logger = logger;
         _mapper = mapper;
     }
 
