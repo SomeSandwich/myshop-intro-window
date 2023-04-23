@@ -7,6 +7,7 @@ import { getDetailBook } from './OrderDashBoard';
 import Select from 'react-select'
 import { BookOption } from '@/interfaces/bookDetail';
 import { NumericFormat } from 'react-number-format';
+import AddCustomToOrder from '../Customer/AddCustomToOrder';
 // const options = [
 //     { value: 'chocolate', label: 'Chocolate' },
 //     { value: 'strawberry', label: 'Strawberry' },
@@ -29,6 +30,7 @@ export default function AddOrder() {
         setBooks(temp);
     }, [listProduct])
     const handleAdd = () => {
+        console.log(selected)
         if(selected!=null && quantityRef.current && quantityRef.current.value){
             console.log("push")
             const newProduct :IOrderDetailProduct ={
@@ -65,8 +67,8 @@ export default function AddOrder() {
     }, [listBook])
     return (
         <div className="add-order" style={{ height: "100vh" }}>
-            <div className='row' style={{ width: "500px" }}>
-                <div className='box-add-product align-items-center d-flex justify-content-center flex-column'>
+            <div className='row' >
+                <div className='box-add-product align-items-center d-flex justify-content-center flex-column col'>
                     <span><strong style={{fontSize:"28px"}}>Sách được mua</strong></span>
                     <table className="table scrolldown">
                         <thead className="thead-light" style={{backgroundColor:"transparent"}}>
@@ -99,7 +101,9 @@ export default function AddOrder() {
                         </tbody>
                     </table>
                 </div>
-
+                <div className=' ml-2 add-customer-box align-items-center d-flex justify-content-center flex-column'>
+                    <AddCustomToOrder/>       
+                </div>
             </div>
             <div className='row'>
                 <table className="table">

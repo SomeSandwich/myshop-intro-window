@@ -180,6 +180,11 @@ body {
         box-shadow: none;
         color: orange;
     }
+    .add-customer-box{
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #3f897d42;
+    }
 }
 table.scrolldown tbody, table.scrolldown thead {
     display: block;
@@ -214,9 +219,13 @@ table.scrolldown {
     overflow-x: hidden; 
  }
  .body-table-detail-box{
+    
     height: 150px; 
     overflow: hidden;
     overflow-y: scroll;
     overflow-x: hidden;
     display: block; 
+ }
+ .toggle-switch{
+    background-color: white;
  }
