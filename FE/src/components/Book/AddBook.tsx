@@ -169,7 +169,16 @@ export default function AddBook() {
                         <a className="text-muted">
                             <i className="bi bi-arrow-left-square me-2" />
                         </a>
-                        Import Books
+                        Import Books &nbsp;
+                        <button
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="Tải về template"
+                            title="Tải về template"
+                            type="button"
+                            className="btn btn-success btn-download"
+                        >
+                            <i className="fa fa-download me-2" />
+                        </button>
                     </h2>
                     <div className="hstack gap-3">
                         <button
