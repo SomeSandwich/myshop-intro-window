@@ -3,7 +3,11 @@ import { NumericFormat } from "react-number-format";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Tab } from "semantic-ui-react";
 import "./styles/DetailBook.scss";
-import { GetDetailBookService } from "@/services/book.service";
+import { ToastContainer, toast } from "react-toastify";
+import {
+    GetDetailBookService,
+    DeleteBookService,
+} from "@/services/book.service";
 import { Book } from "@/interfaces/bookDetail";
 export default function () {
     const { id } = useParams();
@@ -12,6 +16,21 @@ export default function () {
     const navigate = useNavigate();
     const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/books/update/" + id);
+    };
+    const handleDeleteBook = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        await DeleteBookService(id).then((res) => {
+            if (res.message == "Success") {
+                notification("Xóa sách thành công", Notificatrion.Success);
+                setTimeout(() => {
+                    navigate("/home");
+                }, 1000);
+            } else {
+                notification("Xóa sách thất bại", Notificatrion.Error);
+            }
+        });
+    };
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+        notification("Thêm vào giỏ hàng thành công", Notificatrion.Success);
     };
 
     useEffect(() => {
@@ -25,8 +44,10 @@ export default function () {
     }, []);
     console.log(curBook?.mediaPath);
     console.log("https://s3.hieucckha.me/public/" + curBook?.mediaPath[0]);
+
     return (
         <div className="detail-book-1">
+            <ToastContainer />
             <div className="card">
                 {curBook ? (
                     <div className="container-fliud">
@@ -157,6 +178,7 @@ export default function () {
                                     <button
                                         className="add-to-cart btn btn-default"
                                         type="button"
+                                        onClick={handleAddToCart}
                                     >
                                         Add to cart
                                     </button>
@@ -167,6 +189,13 @@ export default function () {
                                         onClick={handleUpdateBtnClick}
                                     >
                                         Update
+                                    </button>
+                                    <button
+                                        className="add-to-cart btn btn-default"
+                                        type="button"
+                                        onClick={handleDeleteBook}
+                                    >
+                                        Delete
                                     </button>
                                 </div>
                             </div>
@@ -179,3 +208,45 @@ export default function () {
         </div>
     );
 }
+
+enum Notificatrion {
+    Warn,
+    Success,
+    Error,
+}
+const notification = (message: string, type: Notificatrion) => {
+    if (type == Notificatrion.Warn) {
+        toast.warn(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Success) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Error) {
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+};
