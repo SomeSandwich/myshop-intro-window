@@ -6,6 +6,7 @@ import { useAppSelector } from "@/Hooks/apphooks";
 import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "@/Axios/AxiosClient";
 import { GetDetailBookService } from "@/services/book.service";
+import moment from "moment";
 
 export default function UpdateDetailBook() {
     // Add book
@@ -21,9 +22,10 @@ export default function UpdateDetailBook() {
             const respone = await GetDetailBookService(id).catch((err) => {
                 navigate("/*");
             });
-            respone.publicationDate = new Date(
-                respone.publicationDate
-            ).toISOString();
+
+            respone.publicationDate = moment(respone.publicationDate).format(
+                "YYYY-MM-DD"
+            );
             setFormAddBook(respone);
         };
         getDetail();
@@ -109,8 +111,6 @@ export default function UpdateDetailBook() {
         formData.append("description", FormAddBook.description);
         formData.append("discount", FormAddBook.discount as unknown as string);
 
-        console.log(formData);
-
         axiosClient
             .patch("/product/" + id, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -133,7 +133,7 @@ export default function UpdateDetailBook() {
     };
 
     // api
-    console.log(FormAddBook);
+    console.log(FormAddBook.publicationDate);
 
     const listCate = useAppSelector((state) => state.cate.listCate);
     const isLoading = useAppSelector((state) => state.cate.isLoading);
