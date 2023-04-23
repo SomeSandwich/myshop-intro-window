@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AddBookWithForm } from "@/interfaces/bookDetail";
 import "./styles/AddBook.scss";
-
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "@/Hooks/apphooks";
 import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "@/Axios/AxiosClient";
+import { GetDetailBookService } from "@/services/book.service";
 
 export default function UpdateDetailBook() {
     // Add book
+    const { id } = useParams();
+    if (!id) return <></>;
+    const navigate = useNavigate();
     const [FormAddBook, setFormAddBook] = useState<AddBookWithForm>(
         {} as AddBookWithForm
     );
+
+    useEffect(() => {
+        const getDetail = async () => {
+            const respone = await GetDetailBookService(id).catch((err) => {
+                navigate("/*");
+            });
+            respone.publicationDate = new Date(
+                respone.publicationDate
+            ).toISOString();
+            setFormAddBook(respone);
+        };
+        getDetail();
+    }, []);
 
     const handleFileImgChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -69,6 +86,9 @@ export default function UpdateDetailBook() {
         } else if (!FormAddBook.description) {
             notification("Vui lòng nhập mô tả", Notificatrion.Warn);
             return;
+        } else if (!FormAddBook.discount) {
+            notification("Vui lòng nhập giảm giá", Notificatrion.Warn);
+            return;
         }
 
         const formData = new FormData();
@@ -87,33 +107,21 @@ export default function UpdateDetailBook() {
             FormAddBook.categoryId as unknown as string
         );
         formData.append("description", FormAddBook.description);
+        formData.append("discount", FormAddBook.discount as unknown as string);
 
         console.log(formData);
 
-        // fetch("https://myshop.hieucckha.me/api/v1/product", {
-        //     mode: "no-cors",
-        //     method: "POST",
-        //     // headers: { "Content-Type": "multipart/form-data" },
-        //     body: formData,
-        // })
-        //     .then((res) => res.json())
-        //     .then((data) => {
-        //         console.log(data);
-        //         if (data.message == "Success") {
-        //             notification("Thêm sách thành công", Notificatrion.Success);
-        //         } else {
-        //             notification("Thêm sách thất bại", Notificatrion.Error);
-        //         }
-        //     });
-
         axiosClient
-            .post("/product", formData, {
+            .patch("/product/" + id, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
                     notification("Thêm sách thành công", Notificatrion.Success);
+                    setTimeout(() => {
+                        navigate("/home");
+                    }, 2000);
                 } else {
                     notification("Thêm sách thất bại", Notificatrion.Error);
                 }
@@ -125,6 +133,7 @@ export default function UpdateDetailBook() {
     };
 
     // api
+    console.log(FormAddBook);
 
     const listCate = useAppSelector((state) => state.cate.listCate);
     const isLoading = useAppSelector((state) => state.cate.isLoading);
@@ -164,6 +173,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.title}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -182,6 +192,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.author}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -202,6 +213,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.publisher}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -220,6 +232,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.price}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -282,6 +295,9 @@ export default function UpdateDetailBook() {
                                             </label>
                                             <input
                                                 name="publicationDate"
+                                                value={
+                                                    FormAddBook.publicationDate
+                                                }
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -299,6 +315,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.quantity}
                                                 name="quantity"
                                                 onChange={
                                                     handleFormAddBookChange
@@ -322,6 +339,7 @@ export default function UpdateDetailBook() {
                                                     handleFormAddBookChange
                                                 }
                                                 className="custom-select"
+                                                value={FormAddBook.coverType}
                                             >
                                                 <option selected>
                                                     Open this select menu
@@ -347,6 +365,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
+                                                value={FormAddBook.numPages}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -365,7 +384,8 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                name="quantity"
+                                                value={FormAddBook.discount}
+                                                name="discount"
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
