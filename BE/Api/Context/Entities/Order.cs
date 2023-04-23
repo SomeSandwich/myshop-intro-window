@@ -21,7 +21,7 @@ public class Order
     public DateTime UpdateAt { get; set; }
 
 
-    [ForeignKey("Customer")] public int CustomerId { get; set; }
+    [ForeignKey("Customer")] public int? CustomerId { get; set; }
     public virtual Customer Customer { get; set; }
 
     [ForeignKey("Seller")] public int SellerId { get; set; }

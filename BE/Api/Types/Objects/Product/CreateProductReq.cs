@@ -79,7 +79,7 @@ public class CreateProductReq
     /// </summary>
     /// <example>2022-8-11</example>
     [Microsoft.Build.Framework.Required]
-    public DateTime PublicationDate { get; set; }
+    public DateOnly PublicationDate { get; set; }
 
     /// <summary>
     /// Dimensions of new book

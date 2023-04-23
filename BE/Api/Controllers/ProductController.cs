@@ -1,22 +1,16 @@
-﻿using System.ComponentModel;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 using Api.Services;
 using API.Services;
 using Api.Types.Constant;
 using Api.Types.GlobalTypes;
-using Api.Types.Mapping;
-using Api.Types.Objects;
 using Api.Types.Objects.File;
 using Api.Types.Objects.Product;
 using Api.Types.Results;
 using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using shortid;
-using shortid.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;

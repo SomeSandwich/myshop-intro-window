@@ -1,12 +1,16 @@
-﻿using Api.Services;
-using Api.Types.GlobalTypes;
+﻿using System.Runtime.CompilerServices;
+using System.Security.Claims;
+using Api.Services;
 using Api.Types.Objects;
+using API.Types.Objects;
 using Api.Types.Objects.Order;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-namespace Api.Controllers;
+using ResFailure = Api.Types.GlobalTypes.ResFailure;
+using ResSuccess = Api.Types.GlobalTypes.ResSuccess;
 
+namespace Api.Controllers;
 
 /// <summary>
 /// Order Controller
@@ -30,21 +34,37 @@ public class OrderController : ControllerBase
         Description = "",
         OperationId = "Get")]
     [SwaggerResponse(200, "List information order", typeof(IEnumerable<OrderRes>))]
-    public async Task<ActionResult<IEnumerable<OrderRes>>> GetAsync()
+    public async Task<ActionResult<IEnumerable<OrderRes>>> GetFilter([FromQuery] OrderFilter page)
     {
-        var list = await _orSer.GetAsync();
+        if (page.DateFrom.CompareTo(page.DateTo) < 0)
+            return BadRequest(new ResFailure { Message = "DateFrom is earlier than DateTo" });
+
+        var list = await _orSer.GetAsync(page);
 
         return Ok(list);
     }
 
     [HttpGet]
-    [Route("{id:int}")]
+    [Route("customer/{userId:int}")]
+    [SwaggerOperation(
+        Summary = "Get By User Id",
+        Description = "",
+        OperationId = "Get")]
+    [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
+    public async Task<ActionResult<IEnumerable<OrderRes>>> GetByUserId([FromRoute] int userId)
+    {
+        return Ok();
+    }
+
+
+    [HttpGet]
+    [Route("order/{id:int}")]
     [SwaggerOperation(
         Summary = "Get Order By Id",
         Description = "",
         OperationId = "Get")]
     [SwaggerResponse(200, "Order information", typeof(OrderRes))]
-    public async Task<ActionResult<OrderRes>> GetAsync([FromRoute] int id)
+    public async Task<ActionResult<OrderRes>> GetOne([FromRoute] int id)
     {
         var order = await _orSer.GetAsync(id);
 
@@ -53,13 +73,30 @@ public class OrderController : ControllerBase
 
         return Ok(order);
     }
-    
-    // [HttpPost]
-    // [Route("")]
-    // [SwaggerOperation(
-    //     Summary = "Create a order",
-    //     Description = "",
-    //     OperationId = "Post")]
-    // [ProducesResponseType(StatusCodes.Status201Created)]
-    // public async Task<ActionResult<string>> Create()
+
+    [HttpPost]
+    [Route("")]
+    [SwaggerOperation(
+        Summary = "Create a order",
+        Description = "",
+        OperationId = "Post")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<string>> Create([FromBody] CreateOrderReq req)
+    {
+        var selfIdStr = User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
+        if (selfIdStr is null)
+            return Unauthorized();
+
+        if (!int.TryParse(selfIdStr, out var userId))
+            return Unauthorized();
+
+        req.SellerId = userId;
+
+        var orderId = await _orSer.CreateAsync(req);
+
+        return CreatedAtAction(
+            nameof(GetOne),
+            new { id = orderId },
+            new ResSuccess());
+    }
 }

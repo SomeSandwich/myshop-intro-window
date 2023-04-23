@@ -8,9 +8,9 @@ public class OrderRes
 {
     public int Id { get; set; }
 
-    public int Total { get; set; } = default;
+    public int Total { get; set; }
 
-    [DefaultValue(OrderStatus.Processing)] public OrderStatus Status { get; set; }
+    public OrderStatus Status { get; set; }
 
     public DateTime CreateAt { get; set; }
 
@@ -20,5 +20,5 @@ public class OrderRes
 
     public int SellerId { get; set; }
 
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+    public ICollection<OrderDetail> OrderDetails { get; set; }
 }

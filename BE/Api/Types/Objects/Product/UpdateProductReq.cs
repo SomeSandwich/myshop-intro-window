@@ -55,7 +55,7 @@ public class UpdateProductReq
     /// <summary>
     /// Publication Date of book
     /// </summary>
-    public DateTime? PublicationDate { get; set; }
+    public DateOnly? PublicationDate { get; set; }
 
     /// <summary>
     /// Dimensions of book

@@ -1,4 +1,5 @@
-﻿using Api.Context.Entities;
+﻿using System.Security.Cryptography;
+using Api.Context.Entities;
 using Api.Types.Objects;
 using Api.Types.Objects.Product;
 using AutoMapper;
@@ -12,7 +13,10 @@ public class ProductProfile : Profile
         CreateMap<Dimensions, Dimensions>();
 
         CreateMap<Product, ProductRes>()
-            .ForMember(des => des.CategoryDescription, opt => opt.MapFrom(src => src.Category.Description));
+            .ForMember(des=>des.UpdateAt, opt=>
+                opt.MapFrom(src=>DateOnly.FromDateTime(src.UpdateAt)))
+            .ForMember(des => des.CategoryDescription, opt => 
+                opt.MapFrom(src => src.Category.Description));
 
         CreateMap<CreateProductReq, CreateProductArg>();
         CreateMap<CreateProductArg, Product>();

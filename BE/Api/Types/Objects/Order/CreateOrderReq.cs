@@ -1,14 +1,16 @@
-using Api.Context.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using API.Types.Objects.OrderDetail;
 
 namespace Api.Types.Objects.Order;
 
 public class CreateOrderReq
 {
-    public int Total { get; set; } = default;
+    [Required] public int Total { get; set; }
 
-    public int CustomerId { get; set; }
+    public int? CustomerId { get; set; }
 
-    public int SellerId { get; set; }
+    [JsonIgnore] public int SellerId { get; set; }
 
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+    [Required] public ICollection<CreateOrderDetailReq> OrderDetails { get; set; }
 }
