@@ -60,7 +60,7 @@ public class ProductRes
     /// Latest time Product is updated
     /// </summary>
     /// <example>2019-08-24T14:15:22Z</example>
-    public DateTime UpdateAt { get; set; }
+    public DateOnly UpdateAt { get; set; }
 
     /// <summary>
     /// Quantity of new product
@@ -96,7 +96,7 @@ public class ProductRes
     /// Publication Date of new book
     /// </summary>
     /// <example>2022-8-11</example>
-    public DateTime PublicationDate { get; set; }
+    public DateOnly PublicationDate { get; set; }
 
     /// <summary>
     /// Dimensions of new book

@@ -74,7 +74,7 @@ public class CreateProductArg
     /// Publication Date of new book
     /// </summary>
     /// <example>2022-8-11</example>
-    public DateTime PublicationDate { get; set; }
+    public DateOnly PublicationDate { get; set; }
 
     /// <summary>
     /// Dimensions of new book
