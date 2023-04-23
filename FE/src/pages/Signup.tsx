@@ -68,7 +68,10 @@ export default function Signup() {
     };
 
     return (
-        <div className="align-items-center d-flex justify-content-center" style={{height:"100vh"}}>
+        <div
+            className="align-items-center d-flex justify-content-center"
+            style={{ height: "100vh" }}
+        >
             <div className="d-flex  justify-content-center h-100">
                 <div className="user_card">
                     <div className="d-flex justify-content-center">

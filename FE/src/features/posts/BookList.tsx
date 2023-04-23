@@ -17,7 +17,7 @@ export default function BookList(props: {
                         id={book.id.toString()}
                         title={book.title}
                         price={book.price.toString()}
-                        imgUrl={book.mediaPath}
+                        mediaPath={book.mediaPath[0]}
                     />
                 ))
             ) : (

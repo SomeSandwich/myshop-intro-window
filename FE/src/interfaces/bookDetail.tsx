@@ -36,3 +36,8 @@ export interface AddBookWithForm {
     categoryDescription: string;
     numPages: Number;
 }
+
+export interface BookOption{
+    label: string;
+    value: Number;
+}

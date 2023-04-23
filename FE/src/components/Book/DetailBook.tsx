@@ -16,14 +16,15 @@ export default function () {
 
     useEffect(() => {
         const getDetail = async () => {
-            const respone = await GetDetailBookService(id).catch(err=>{
+            const respone = await GetDetailBookService(id).catch((err) => {
                 navigate("/*");
-            })
-            setCurBook(respone)
-        }
+            });
+            setCurBook(respone);
+        };
         getDetail();
     }, []);
-    console.log(curBook?.mediaPath)
+    console.log(curBook?.mediaPath);
+    console.log("https://s3.hieucckha.me/public/" + curBook?.mediaPath[0]);
     return (
         <div className="detail-book-1">
             <div className="card">
@@ -37,7 +38,8 @@ export default function () {
                                             // src={curBook.mediaPath}
                                             src={
                                                 curBook.mediaPath[0]
-                                                    ? curBook.mediaPath[0]
+                                                    ? "https://s3.hieucckha.me/public/" +
+                                                      curBook.mediaPath[0]
                                                     : "https://react.semantic-ui.com/images/wireframe/square-image.png"
                                             }
                                             alt={curBook.title}
@@ -129,7 +131,9 @@ export default function () {
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
                                         Ngày xuất bản:{" "}
-                                        <strong>{curBook.publicationDate}</strong>
+                                        <strong>
+                                            {curBook.publicationDate}
+                                        </strong>
                                     </p>
                                     <p className="p-1 flex-fill bd-highlight">
                                         Ngày cập nhật:{" "}
@@ -169,9 +173,7 @@ export default function () {
                         </div>
                     </div>
                 ) : (
-                    <>
-                        
-                    </>
+                    <></>
                 )}
             </div>
         </div>

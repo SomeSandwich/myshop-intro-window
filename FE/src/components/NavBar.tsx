@@ -5,7 +5,7 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { logout } from "./Auth/AuthSlice";
 import { useAppDispatch } from "@/Hooks/apphooks";
 export default function NavBar() {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     return (
         <header id="header">
             <div className="d-flex flex-column">
@@ -28,10 +28,7 @@ export default function NavBar() {
                 <nav id="navbar" className="nav-menu navbar">
                     <ul>
                         <li>
-                            <NavLink
-                                to={"/"}
-                                className="nav-link scrollto"
-                            >
+                            <NavLink to={"/"} className="nav-link scrollto">
                                 <i className="fa-sharp fa-solid fa-chart-simple"></i>
                                 <span>Dash Board</span>
                             </NavLink>
@@ -79,12 +76,30 @@ export default function NavBar() {
                             <NavLink
                                 to={"/login"}
                                 className="nav-link scrollto"
-                                onClick={(e)=>{
+                                onClick={(e) => {
                                     dispatch(logout);
                                 }}
                             >
                                 <i className="fa-solid fa-right-from-bracket"></i>
                                 <span>Log Out</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to={"/books/viewDetail/17"}
+                                className="nav-link scrollto"
+                            >
+                                <i className="fa-solid fa-circle-info"></i>
+                                <span>View Detail book</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to={"/books/update/17"}
+                                className="nav-link scrollto"
+                            >
+                                <i className="fa-solid fa-circle-info"></i>
+                                <span>Test update Detail book</span>
                             </NavLink>
                         </li>
                     </ul>

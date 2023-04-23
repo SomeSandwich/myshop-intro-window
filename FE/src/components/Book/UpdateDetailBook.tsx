@@ -356,6 +356,24 @@ export default function UpdateDetailBook() {
                                             />
                                         </div>
                                     </div>
+                                    <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Khuyến mãi %
+                                                <span className="text-danger">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                name="quantity"
+                                                onChange={
+                                                    handleFormAddBookChange
+                                                }
+                                                type="text"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
 
                                     <br />
 

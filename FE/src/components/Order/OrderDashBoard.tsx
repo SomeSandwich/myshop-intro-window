@@ -4,12 +4,15 @@ import { Book } from '@/interfaces/bookDetail'
 import { RootState } from '@/store'
 import React, { useEffect, useState } from 'react'
 import { addProductToCurrentOrder, removeProductToCurrentOrder } from './OrderSlice'
+import { useNavigate } from 'react-router-dom'
+import { Genre } from '@/interfaces/Genre'
 
 export default function OrderDashBoard() {
   const listBook = useAppSelector((state: RootState) => state.book.listAllBook)
   const listProduct= useAppSelector((state: RootState) => state.order.currentOrder)
   const [books, setBooks] = useState<IOrderDetailProduct[]>(listProduct)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   console.log("boook")
   console.log(books)
 
@@ -41,8 +44,12 @@ export default function OrderDashBoard() {
     const temp = getDetailBook(listProduct, listBook)
     setBooks(temp);
   }, [listProduct])
+  
   return (
     <div>
+      <button type="button" className="btn btn-primary" onClick={()=>{
+        navigate("/order/add")
+      }}>Primary</button>
       <ul>
         Order Dashboard
         {books.map((book) => {
@@ -60,14 +67,20 @@ export default function OrderDashBoard() {
 
   )
 }
-const getDetailBook = (books: IOrderDetailProduct[], listbook: Book[]) => {
+export const getDetailBook = (books: IOrderDetailProduct[], listbook: Book[]) => {
   const bookClone:IOrderDetailProduct[] = []
   books.forEach((book, index, theArray) => {
     const indexinListAll = listbook.findIndex(e => e.id == book.productId)
     var subbook = JSON.parse(JSON.stringify(book))
     if (indexinListAll >= 0) {
       const newTitle = listbook[indexinListAll].title
+      const price = listbook[indexinListAll].price
+      const discount = listbook[indexinListAll].discount
+  
       subbook.title = JSON.parse(JSON.stringify(newTitle))
+      subbook.uniPrice = JSON.parse(JSON.stringify(price))
+      subbook.uniPrice = JSON.parse(JSON.stringify(price)) * ( 100 - JSON.parse(JSON.stringify(discount)))/100
+      subbook.discount = JSON.parse(JSON.stringify(discount))
       // theArray[index] = {...book,title:listbook[indexinListAll].title}
     }
     bookClone.push(subbook)

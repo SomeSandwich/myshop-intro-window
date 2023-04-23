@@ -2,10 +2,14 @@ import React from "react";
 import "./styles/CardBook.scss";
 import { NumericFormat } from "react-number-format";
 import { Navigate, useNavigate } from "react-router-dom";
+const cardWidthImage = "300px";
+const cardHeigthImage = "350px";
+const cardWidth = "300px";
+const cardHeigth = "450px";
 export default function CardBook(props: {
     title: string;
     price: string;
-    imgUrl: string;
+    mediaPath: string;
     id: string;
 }) {
     const navigate = useNavigate();
@@ -15,18 +19,24 @@ export default function CardBook(props: {
     return (
         // <div className="container">
         <article
-            id={props.id.toString()+"cardbook"}
+            id={props.id.toString() + "cardbook"}
             onClick={handleOnClick}
             className="card-book card depth--two"
-            style={{ maxHeight: "400px", maxWidth: "300px" }}
+            style={{ maxHeight: cardHeigth, maxWidth: cardWidth }}
         >
             <figure className="image">
                 <img
-                    style={{ maxHeight: "200px", maxWidth: "300px" }}
+                    style={{
+                        maxHeight: cardHeigthImage,
+                        maxWidth: cardWidthImage,
+                        minHeight: cardHeigthImage,
+                        minWidth: cardWidthImage,
+                    }}
                     // src={props.imgUrl}
                     src={
-                        props.imgUrl
-                            ? props.imgUrl
+                        props.mediaPath
+                            ? "https://s3.hieucckha.me/public/" +
+                              props.mediaPath
                             : "https://react.semantic-ui.com/images/wireframe/square-image.png"
                     }
                     alt={props.title}
