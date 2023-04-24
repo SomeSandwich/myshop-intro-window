@@ -19,6 +19,12 @@ public class ProductRes
     public int Id { get; set; }
 
     /// <summary>
+    /// Cost
+    /// </summary>
+    /// <example>8000</example>
+    public int Cost { get; set; }
+
+    /// <summary>
     /// Price of new product
     /// </summary>
     /// <example>10000</example>

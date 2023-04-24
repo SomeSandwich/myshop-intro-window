@@ -89,6 +89,7 @@ public class ProductService : IProductService
         if (product is null)
             return new FailureResult { Message = $"Not found product with id: {id}" };
 
+        product.Cost = arg.Cost ?? product.Cost;
         product.Price = arg.Price ?? product.Price;
         product.Discount = arg.Discount ?? product.Discount;
         product.Title = arg.Title ?? product.Title;

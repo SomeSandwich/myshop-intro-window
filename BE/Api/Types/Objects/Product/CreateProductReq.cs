@@ -7,6 +7,12 @@ namespace Api.Types.Objects.Product;
 public class CreateProductReq
 {
     /// <summary>
+    /// Cost of new product
+    /// </summary>
+    /// <example>8000</example>
+    public int Cost { get; set; } = default;
+
+    /// <summary>
     /// Price of new product
     /// </summary>
     /// <example>10000</example>
