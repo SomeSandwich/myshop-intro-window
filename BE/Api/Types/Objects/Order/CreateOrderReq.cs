@@ -10,7 +10,7 @@ public class CreateOrderReq
 
     public int? CustomerId { get; set; }
 
-    [JsonIgnore] public int SellerId { get; set; }
+    // [JsonIgnore] public int SellerId { get; set; }
 
     [Required] public ICollection<CreateOrderDetailReq> OrderDetails { get; set; }
 }

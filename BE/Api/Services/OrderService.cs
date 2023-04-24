@@ -5,6 +5,7 @@ using Api.Types;
 using Api.Types.Objects;
 using API.Types.Objects;
 using Api.Types.Objects.Order;
+using Api.Types.Results;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,11 @@ public interface IOrderService
     Task<IEnumerable<OrderRes>> GetAsync(OrderFilter filter);
     Task<OrderRes?> GetAsync(int id);
 
-    Task<int> CreateAsync(CreateOrderReq req);
+    Task<int> CreateAsync(int sellerId, CreateOrderReq req);
 
-    Task<bool> UpdateAsync(int id, UpdateOrderReq req);
+    Task<BaseResult> UpdateAsync(int id, UpdateOrderReq req);
 
-    Task<bool> DeleteAsync(int id);
+    Task<BaseResult> DeleteAsync(int id);
 }
 
 public class OrderService : IOrderService
@@ -58,7 +59,7 @@ public class OrderService : IOrderService
         return order is null ? null : _mapper.Map<Order, OrderRes>(order);
     }
 
-    public async Task<int> CreateAsync(CreateOrderReq req)
+    public async Task<int> CreateAsync(int sellerId, CreateOrderReq req)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
@@ -92,13 +93,33 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<bool> UpdateAsync(int id, UpdateOrderReq req)
+    public async Task<BaseResult> UpdateAsync(int id, UpdateOrderReq req)
     {
-        throw new NotImplementedException();
+        var order = await _context.Orders
+            .FirstOrDefaultAsync(e => e.Id == id && e.Status != OrderStatus.Deleted);
+
+        if (order is null)
+            return new FailureResult { Message = $"Not found order with Id: {id}" };
+
+        order.Status = req.Status;
+
+        await _context.SaveChangesAsync();
+
+        return new SuccessResult();
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<BaseResult> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var order = await _context.Orders
+            .FirstOrDefaultAsync(e => e.Id == id && e.Status != OrderStatus.Deleted);
+
+        if (order is null)
+            return new FailureResult { Message = $"Not found order with Id: {id}" };
+
+        order.Status = OrderStatus.Deleted;
+
+        await _context.SaveChangesAsync();
+
+        return new SuccessResult();
     }
 }
