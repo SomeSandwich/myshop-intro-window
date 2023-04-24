@@ -19,6 +19,11 @@ public class Product
     public int Id { get; set; }
 
     /// <summary>
+    /// Cost
+    /// </summary>
+    public int Cost { get; set; } = default;
+
+    /// <summary>
     /// Price
     /// </summary>
     public int Price { get; set; } = default;

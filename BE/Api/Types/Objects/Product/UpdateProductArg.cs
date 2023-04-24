@@ -7,6 +7,12 @@ namespace Api.Types.Objects.Product;
 public class UpdateProductArg
 {
     /// <summary>
+    /// Cost
+    /// </summary>
+    /// <example>8000</example>
+    public int? Cost { get; set; }
+
+    /// <summary>
     /// Price of product
     /// </summary>
     /// <example>10000</example>
