@@ -4,6 +4,7 @@ using Api.Types.Objects;
 using Api.Types.Results;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;

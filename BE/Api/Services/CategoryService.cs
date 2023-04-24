@@ -59,6 +59,8 @@ public class CategoryService : ICategoryService
 
         await _context.Categories.AddAsync(cate);
 
+        await _context.SaveChangesAsync();
+
         return cate.Id;
     }
 
