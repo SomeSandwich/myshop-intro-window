@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using Api.Context.Constants.Enums;
 using Api.Services;
 using Api.Types.Objects;
 using API.Types.Objects;
 using Api.Types.Objects.Order;
+using Api.Types.Results;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -87,16 +89,29 @@ public class OrderController : ControllerBase
         if (selfIdStr is null)
             return Unauthorized();
 
-        if (!int.TryParse(selfIdStr, out var userId))
+        if (!int.TryParse(selfIdStr, out var sellerId))
             return Unauthorized();
 
-        req.SellerId = userId;
-
-        var orderId = await _orSer.CreateAsync(req);
+        var orderId = await _orSer.CreateAsync(sellerId, req);
 
         return CreatedAtAction(
             nameof(GetOne),
             new { id = orderId },
             new ResSuccess());
+    }
+
+    [HttpPatch]
+    [Route("{id:int}")]
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateOrderReq req)
+    {
+        if (req.Status == OrderStatus.Deleted)
+            return BadRequest(new ResFailure { Message = "Incorrect status" });
+
+        var result = await _orSer.UpdateAsync(id, req);
+
+        if (result is FailureResult)
+            return BadRequest(new ResFailure { Message = result.Message });
+
+        return Ok();
     }
 }
