@@ -1,4 +1,5 @@
 import axiosClient from "@/Axios/AxiosClient";
+import { Notificatrion, notification } from "@/components/Book/AddBook";
 import { Customer, InputCustomer } from "@/interfaces/Customer";
 
 export const getAllCustomerService = async () => {
@@ -14,7 +15,7 @@ export const getAllCustomerByIdService = async (id:Number) => {
 };
 export const DeleteCustomerService = async (id:string) => {
 	// console.log(data);
-	const response = await axiosClient.delete(`/customer/${id}`);
+	const response = await axiosClient.delete(`/customer/${id}`)
 	return response.data;
 };
 export const addCustomerService = async (customer:InputCustomer) => {

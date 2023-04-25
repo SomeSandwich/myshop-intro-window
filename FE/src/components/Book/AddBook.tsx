@@ -479,12 +479,12 @@ export default function AddBook() {
         </div>
     );
 }
-enum Notificatrion {
+export enum Notificatrion {
     Warn,
     Success,
     Error,
 }
-const notification = (message: string, type: Notificatrion) => {
+export const notification = (message: string, type: Notificatrion) => {
     if (type == Notificatrion.Warn) {
         toast.warn(message, {
             position: "top-right",
