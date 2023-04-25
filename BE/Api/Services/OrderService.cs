@@ -61,7 +61,7 @@ public class OrderService : IOrderService
 
     public async Task<int> CreateAsync(int sellerId, CreateOrderReq req)
     {
-        using var transaction = await _context.Database.BeginTransactionAsync();
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             var now = DateTime.Now;
@@ -70,9 +70,11 @@ public class OrderService : IOrderService
                 {
                     des.CreateAt = now;
                     des.UpdateAt = now;
+                    des.SellerId = sellerId;
                 }));
 
             await _context.Orders.AddAsync(order);
+
             await _context.SaveChangesAsync();
 
             foreach (var detail in order.OrderDetails)

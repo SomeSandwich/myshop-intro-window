@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Api.Context.Constants.Enums;
 using Api.Services;
-using Api.Types.Objects;
 using API.Types.Objects;
 using Api.Types.Objects.Order;
 using Api.Types.Results;
@@ -46,17 +44,17 @@ public class OrderController : ControllerBase
         return Ok(list);
     }
 
-    [HttpGet]
-    [Route("customer/{userId:int}")]
-    [SwaggerOperation(
-        Summary = "Get By User Id",
-        Description = "",
-        OperationId = "Get")]
-    [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
-    public async Task<ActionResult<IEnumerable<OrderRes>>> GetByUserId([FromRoute] int userId)
-    {
-        return Ok();
-    }
+    // [HttpGet]
+    // [Route("customer/{userId:int}")]
+    // [SwaggerOperation(
+    //     Summary = "Get By User Id",
+    //     Description = "",
+    //     OperationId = "Get")]
+    // [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
+    // public async Task<ActionResult<IEnumerable<OrderRes>>> GetByUserId([FromRoute] int userId)
+    // {
+    //     return Ok();
+    // }
 
 
     [HttpGet]

@@ -13,6 +13,8 @@ namespace Api.Services;
 
 public interface IAccountService
 {
+    Task<bool> ExistUnameOrEmail(string userName, string email);
+
     Task<IEnumerable<AccountRes>> GetAsync();
     Task<AccountRes> GetAsync(int id);
 
@@ -37,6 +39,12 @@ public class AccountService : IAccountService
 
         var config = new MapperConfiguration(opt => { opt.AddProfile<AccountProfile>(); });
         _mapper = config.CreateMapper();
+    }
+
+    public async Task<bool> ExistUnameOrEmail(string userName, string email)
+    {
+        return await _context.Accounts.AnyAsync(e => e.Username == userName.Trim()) ||
+               await _context.Accounts.AnyAsync(e => e.Email == email.Trim());
     }
 
     public async Task<IEnumerable<AccountRes>> GetAsync()
