@@ -48,7 +48,7 @@ public class CustomerController : ControllerBase
         OperationId = "Get")]
     [SwaggerResponse(200, "Customer information", typeof(CustomerRes))]
     [SwaggerResponse(400, "Not found customerId", typeof(ResFailure))]
-    public async Task<ActionResult<ProductRes>> GetOne([FromRoute] int id)
+    public async Task<ActionResult<CustomerRes>> GetById([FromRoute] int id)
     {
         var customer = await _cusSer.GetAsync(id);
         if (customer is null)
@@ -65,7 +65,7 @@ public class CustomerController : ControllerBase
         OperationId = "Get")]
     [SwaggerResponse(200, "Customer information", typeof(CustomerRes))]
     [SwaggerResponse(400, "Not found customer with phone number", typeof(ResFailure))]
-    public async Task<ActionResult<ProductRes>> GetOne([FromRoute] string phoneNum)
+    public async Task<ActionResult<CustomerRes>> GetByPhone([FromQuery] string phoneNum)
     {
         var customer = await _cusSer.GetByPhoneNumber(phoneNum);
         if (customer is null)
@@ -84,12 +84,18 @@ public class CustomerController : ControllerBase
     [SwaggerResponse(400, "Exists customer with phone number")]
     public async Task<ActionResult<string>> Create([FromBody] CreateCustomerReq req)
     {
+        if (await _cusSer.Exist(req.PhoneNumber))
+            return BadRequest(new FailureResult
+            {
+                Message = "The phone number is exist. Please using another phone number"
+            });
+
         var customerId = await _cusSer.CreateAsync(req);
 
         if (customerId is null)
             return BadRequest(new ResFailure { Message = $"Exists customer with phone number: {req.PhoneNumber}" });
 
-        return CreatedAtAction(nameof(GetOne), new { id = customerId }, new ResSuccess());
+        return CreatedAtAction(nameof(GetByPhone), new { id = customerId }, new ResSuccess());
     }
 
     [HttpPatch]

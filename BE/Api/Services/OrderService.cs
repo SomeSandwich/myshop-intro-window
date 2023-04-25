@@ -155,6 +155,7 @@ public class OrderService : IOrderService
                 }));
 
             await _context.Orders.AddAsync(order);
+
             await _context.SaveChangesAsync();
 
             await _orderDetailService.AddAsync(order.Id, req.OrderDetails);

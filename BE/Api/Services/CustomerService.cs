@@ -1,18 +1,17 @@
 ﻿using Api.Context;
 using Api.Context.Entities;
-using Api.Types;
 using Api.Types.Mapping;
-using Api.Types.Objects;
 using Api.Types.Objects.Customer;
 using Api.Types.Results;
 using AutoMapper;
-using Bogus;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
 public interface ICustomerService
 {
+    Task<bool> Exist(string phoneNumber);
+
     Task<IEnumerable<CustomerRes>> GetAsync();
     Task<CustomerRes?> GetAsync(int id);
     Task<CustomerRes?> GetByPhoneNumber(string phoneNum);
@@ -35,6 +34,11 @@ public class CustomerService : ICustomerService
 
         var config = new MapperConfiguration(opt => { opt.AddProfile<CustomerProfile>(); });
         _mapper = config.CreateMapper();
+    }
+
+    public async Task<bool> Exist(string phoneNumber)
+    {
+        return await _context.Customers.AnyAsync(e => e.PhoneNumber == phoneNumber.Trim());
     }
 
     public async Task<IEnumerable<CustomerRes>> GetAsync()
@@ -62,11 +66,6 @@ public class CustomerService : ICustomerService
 
     public async Task<int?> CreateAsync(CreateCustomerReq req)
     {
-        if (GetByPhoneNumber(req.PhoneNumber) is not null)
-        {
-            return null;
-        }
-
         var customer = _mapper.Map<CreateCustomerReq, Customer>(req);
         customer.JoinDate = DateOnly.FromDateTime(DateTime.Now);
 
