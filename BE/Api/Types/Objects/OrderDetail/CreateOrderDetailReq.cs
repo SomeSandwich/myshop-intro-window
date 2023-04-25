@@ -8,23 +8,33 @@ public class CreateOrderDetailReq
     /// Identity of product
     /// </summary>
     /// <example>1</example>
-    [Required] public int ProductId { get; set; }
-    
+    [Required]
+    public int ProductId { get; set; }
+
+    /// <summary>
+    /// Cost of product
+    /// </summary>
+    /// <example>10000</example>
+    [Required] public int Cost { get; set; }
+
     /// <summary>
     /// Unit price of product
     /// </summary>
-    /// <example>10000</example>
-    [Required] public int UnitPrice { get; set; }
-    
+    /// <example>100000</example>
+    [Required]
+    public int UnitPrice { get; set; }
+
     /// <summary>
     /// Discount of product
     /// </summary>
     /// <example>10</example>
-    [Required] public int Discount { get; set; }
+    [Required]
+    public int Discount { get; set; }
 
     /// <summary>
     /// Quantity of product
     /// </summary>
     /// <example>2</example>
-    [Required] public int Quantity { get; set; } = 1;
+    [Required]
+    public int Quantity { get; set; } = 1;
 }

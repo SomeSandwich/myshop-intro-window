@@ -2,9 +2,9 @@ using Api.App;
 using API.App;
 using Api.App.Extensions;
 using API.Configurations;
+using Api.Context;
+using AutoMapper.EquivalencyExpression;
 using MMS.GateApi.Middlewares;
-using Serilog;
-using Serilog.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,23 +19,25 @@ builder.Services.ConfigureJwt(config);
 builder.Services.ConfigureController();
 builder.Services.ConfigCors();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(opt =>
+{
+    opt.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
+    opt.AddCollectionMappers();
+});
+
 builder.Services.RegisterServices();
 builder.Services.RegisterModules();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Logging.ConfigureLogger(config, env);
 
 var app = builder.Build();
 
 app.ConfigureErrorResponse();
-
 app.UseSwaggerAndRedoc();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.MapControllers();
-
 app.Run();

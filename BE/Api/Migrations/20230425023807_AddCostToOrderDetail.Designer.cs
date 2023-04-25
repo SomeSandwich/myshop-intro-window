@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(MyShopDbContext))]
-    partial class MyShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230425023807_AddCostToOrderDetail")]
+    partial class AddCostToOrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Api.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            Password = "$2a$11$xkMjcRQ0789Jl28ZKJIILuxP/i7QAD8bjj/TaVxqcxiZA.GQfzBxO",
+                            Password = "$2a$11$H3n7s7ci646HDbJigYi6c.1r0hpzL8UUWM5QGYP2hxCNqd6.Ed/RO",
                             Status = 0,
                             Username = "root"
                         });
@@ -192,15 +195,6 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            JoinDate = new DateOnly(1, 1, 1),
-                            Name = "Khách vãng lai",
-                            PhoneNumber = "0123456789"
-                        });
                 });
 
             modelBuilder.Entity("Api.Context.Entities.Order", b =>
@@ -224,10 +218,7 @@ namespace Api.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TotalCost")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalPrice")
+                    b.Property<int>("Total")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdateAt")

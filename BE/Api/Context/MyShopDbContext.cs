@@ -17,6 +17,7 @@ public class MyShopDbContext : DbContext
         new AccountConfiguration().Configure(builder.Entity<Account>());
         new CategoryConfiguration().Configure(builder.Entity<Category>());
         new OrderDetailConfiguration().Configure(builder.Entity<OrderDetail>());
+        new CustomerConfiguration().Configure(builder.Entity<Customer>());
     }
 
     #region Entities

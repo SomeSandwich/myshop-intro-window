@@ -7,6 +7,10 @@ namespace Api.Types.Objects.Product;
 
 public class CreateProductArg
 {
+    /// <summary>
+    /// Cost of product
+    /// </summary>
+    /// <example>10000</example>
     public int Cost { get; set; } = default;
 
     /// <summary>

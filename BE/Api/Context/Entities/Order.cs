@@ -11,10 +11,11 @@ public class Order
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    public int Total { get; set; } = default;
+    public int TotalCost { get; set; } = default;
 
-    [DefaultValue(OrderStatus.Processing)]
-    public OrderStatus Status { get; set; }
+    public int TotalPrice { get; set; } = default;
+
+    [DefaultValue(OrderStatus.Processing)] public OrderStatus Status { get; set; }
 
     public DateTime CreateAt { get; set; }
 
@@ -26,7 +27,6 @@ public class Order
 
     [ForeignKey("Seller")] public int SellerId { get; set; }
     public virtual Account Seller { get; set; }
-    
-    
-    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+    public List<OrderDetail> OrderDetails { get; set; } = new();
 }

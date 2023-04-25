@@ -29,6 +29,5 @@ public class CustomerRes
     /// <summary>
     /// List of Order of Its Category
     /// </summary>
-    /// <example></example>
-    public ICollection<Context.Entities.Order> Orders { get; set; }
+    public List<Context.Entities.Order> Orders { get; set; }
 }
