@@ -12,5 +12,5 @@ public class CreateOrderReq
 
     // [JsonIgnore] public int SellerId { get; set; }
 
-    [Required] public ICollection<CreateOrderDetailReq> OrderDetails { get; set; }
+    [Required] public List<CreateOrderDetailReq> OrderDetails { get; set; }
 }

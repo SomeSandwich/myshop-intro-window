@@ -58,6 +58,12 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<ResSuccess>> Create([FromBody] CreateAccountReq req)
     {
+        if (await _accSer.ExistUnameOrEmail(req.Username, req.Email))
+            return BadRequest(new FailureResult
+            {
+                Message = "Username or email is exist. Please using another"
+            });
+
         var acc = await _accSer.CreateAsync(req);
 
         return CreatedAtAction(nameof(GetById), new { id = acc }, new ResSuccess());
