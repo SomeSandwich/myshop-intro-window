@@ -10,14 +10,16 @@ public static class DbConfiguration
     {
         if (env.IsDevelopment())
         {
-            services.AddDbContextPool<MyShopDbContext>(options =>
+            services.AddDbContext<MyShopDbContext>(options =>
             {
                 options.UseNpgsql(config["ConnectionStrings:Url"]);
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
             });
         }
         else
         {
-            services.AddDbContextPool<MyShopDbContext>(options =>
+            services.AddDbContext<MyShopDbContext>(options =>
             {
                 options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTIONSTR"));
             });

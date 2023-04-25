@@ -15,6 +15,8 @@ public interface IProductService
     Task<IEnumerable<ProductRes>> GetByCategoryAsync(int cateId);
     Task<ProductRes?> GetAsync(int id);
 
+    Task<bool> CheckProductExists(int id);
+
     Task<int> CreateAsync(CreateProductArg arg);
 
     Task<BaseResult> UpdateAsync(int id, UpdateProductArg arg);
@@ -62,6 +64,15 @@ public class ProductService : IProductService
             .FirstOrDefault(e => e.Status != ProductStatus.Deleted && e.Id == id);
 
         return acc is null ? null : _mapper.Map<Product, ProductRes>(acc);
+    }
+
+    public async Task<bool> CheckProductExists(int id)
+    {
+        var acc = _context.Products
+            .AsNoTracking()
+            .Any(e => e.Id == id && e.Status != ProductStatus.Deleted);
+
+        return acc;
     }
 
     public async Task<int> CreateAsync(CreateProductArg arg)

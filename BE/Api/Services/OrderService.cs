@@ -1,19 +1,18 @@
 ﻿using Api.Context;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
-using Api.Types;
-using Api.Types.Objects;
-using API.Types.Objects;
+using API.Types.Objects.Filter;
 using Api.Types.Objects.Order;
 using Api.Types.Results;
 using AutoMapper;
+using System.Web;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
 public interface IOrderService
 {
-    Task<IEnumerable<OrderRes>> GetAsync(OrderFilter filter);
+    Task<PagedResponse<OrderRes>> GetAsync(OrderPagingFilter filter);
     Task<OrderRes?> GetAsync(int id);
 
     Task<int> CreateAsync(int sellerId, CreateOrderReq req);
@@ -25,35 +24,117 @@ public interface IOrderService
 
 public class OrderService : IOrderService
 {
+    private readonly IUriService _uriService;
+    private readonly IOrderDetailService _orderDetailService;
     private readonly MyShopDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public OrderService(MyShopDbContext context, IMapper mapper)
+    public OrderService(MyShopDbContext context, IMapper mapper, IUriService uriService,
+        IOrderDetailService orderDetailService, IHttpContextAccessor httpContextAccessor)
     {
+        _uriService = uriService;
+        _orderDetailService = orderDetailService;
         _context = context;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<IEnumerable<OrderRes>> GetAsync(OrderFilter filter)
+    public async Task<PagedResponse<OrderRes>> GetAsync(OrderPagingFilter filter)
     {
-        var listOrder = _context.Orders
+        var lsOrder = _context.Orders
             .OrderByDescending(e => e.CreateAt)
             .Include(e => e.OrderDetails)
             .Include(e => e.Customer)
             .AsEnumerable();
 
-        listOrder = listOrder.Where(e =>
-            e.CreateAt.CompareTo(filter.DateFrom) >= 0
-            && e.CreateAt.CompareTo(filter.DateTo) <= 0);
+        if (filter.CustomerId is not null)
+            lsOrder = lsOrder.Where(e => e.CustomerId == filter.CustomerId);
 
-        var list = listOrder;
+        if (filter.DateFrom is not null)
+            lsOrder = lsOrder.Where(e => DateOnly.FromDateTime(e.CreateAt) >= filter.DateFrom);
 
-        return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderRes>>(list);
+        if (filter.DateTo is not null)
+            lsOrder = lsOrder.Where(e => DateOnly.FromDateTime(e.CreateAt) <= filter.DateTo);
+
+        var listOrder = lsOrder
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize);
+
+        var listOrderRes = _mapper.Map<IEnumerable<Order>, IEnumerable<OrderRes>>(listOrder);
+
+        var totalRecords = lsOrder.Count();
+        var totalPages = Convert.ToInt32(Math.Ceiling(((double)totalRecords / (double)filter.PageSize)));
+
+        var prevPage = filter.PageNumber - 1 >= 1 && filter.PageNumber <= totalPages
+            ? _uriService.GetPageUri(
+                new OrderPagingFilter
+                {
+                    CustomerId = filter.CustomerId,
+                    PageNumber = filter.PageNumber - 1,
+                    PageSize = filter.PageSize,
+                    DateFrom = filter.DateFrom,
+                    DateTo = filter.DateTo
+                },
+                _httpContextAccessor.HttpContext.Request.Path.Value)
+            : null;
+
+        var nextPage = filter.PageNumber >= 1 && filter.PageNumber <= totalPages
+            ? _uriService.GetPageUri(
+                new OrderPagingFilter
+                {
+                    CustomerId = filter.CustomerId,
+                    PageNumber = filter.PageNumber + 1,
+                    PageSize = filter.PageSize,
+                    DateFrom = filter.DateFrom,
+                    DateTo = filter.DateTo
+                },
+                _httpContextAccessor.HttpContext.Request.Path.Value)
+            : null;
+        var firstPage = filter.PageNumber >= 1 && filter.PageNumber <= totalPages
+            ? _uriService.GetPageUri(
+                new OrderPagingFilter
+                {
+                    CustomerId = filter.CustomerId,
+                    PageNumber = 1,
+                    PageSize = filter.PageSize,
+                    DateFrom = filter.DateFrom,
+                    DateTo = filter.DateTo
+                },
+                _httpContextAccessor.HttpContext.Request.Path.Value)
+            : null;
+        var lastPage = filter.PageNumber >= 1 && filter.PageNumber <= totalPages
+            ? _uriService.GetPageUri(
+                new OrderPagingFilter
+                {
+                    CustomerId = filter.CustomerId,
+                    PageNumber = totalPages,
+                    PageSize = filter.PageSize,
+                    DateFrom = filter.DateFrom,
+                    DateTo = filter.DateTo
+                },
+                _httpContextAccessor.HttpContext.Request.Path.Value)
+            : null;
+        var result = new PagedResponse<OrderRes>
+        {
+            PageNumber = filter.PageNumber,
+            PageSize = filter.PageSize,
+            FirstPage = firstPage,
+            LastPage = lastPage,
+            TotalRecords = totalRecords,
+            TotalPages = totalPages,
+            NextPage = nextPage,
+            PreviousPage = prevPage,
+            Data = listOrderRes
+        };
+
+        return result;
     }
 
     public async Task<OrderRes?> GetAsync(int id)
     {
         var order = await _context.Orders
+            .Include(e => e.OrderDetails)
             .FirstOrDefaultAsync(e => e.Status != OrderStatus.Deleted && e.Id == id);
 
         return order is null ? null : _mapper.Map<Order, OrderRes>(order);
@@ -77,18 +158,12 @@ public class OrderService : IOrderService
 
             await _context.SaveChangesAsync();
 
-            foreach (var detail in order.OrderDetails)
-            {
-                detail.OrderId = order.Id;
-            }
-
-            await _context.OrderDetails.AddRangeAsync(order.OrderDetails);
-            await _context.SaveChangesAsync();
+            await _orderDetailService.AddAsync(order.Id, req.OrderDetails);
 
             await transaction.CommitAsync();
             return order.Id;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             await transaction.RollbackAsync();
             throw;

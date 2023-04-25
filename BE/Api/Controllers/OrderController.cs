@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
+using System.Text;
 using Api.Context.Constants.Enums;
 using Api.Services;
-using API.Types.Objects;
+using API.Types.Objects.Filter;
 using Api.Types.Objects.Order;
 using Api.Types.Results;
 using Asp.Versioning;
@@ -21,10 +22,12 @@ namespace Api.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orSer;
+    private readonly IProductService _prodSer;
 
-    public OrderController(IOrderService orSer)
+    public OrderController(IProductService prodSer, IOrderService orSer)
     {
         _orSer = orSer;
+        _prodSer = prodSer;
     }
 
     [HttpGet]
@@ -33,37 +36,30 @@ public class OrderController : ControllerBase
         Summary = "Get All Order",
         Description = "",
         OperationId = "Get")]
-    [SwaggerResponse(200, "List information order", typeof(IEnumerable<OrderRes>))]
-    public async Task<ActionResult<IEnumerable<OrderRes>>> GetFilter([FromQuery] OrderFilter page)
+    // [SwaggerResponse(200, "List information order", typeof(IEnumerable<OrderRes>))]
+    public async Task<ActionResult<PagedResponse<OrderRes>>> GetFilter([FromQuery] OrderPagingFilter page)
     {
-        if (page.DateFrom.CompareTo(page.DateTo) < 0)
-            return BadRequest(new ResFailure { Message = "DateFrom is earlier than DateTo" });
+        if (page.DateFrom is not null && page.DateTo is not null)
+            if (page.DateFrom > page.DateTo)
+                return BadRequest(new ResFailure { Message = "DateFrom is earlier than DateTo" });
 
         var list = await _orSer.GetAsync(page);
 
         return Ok(list);
     }
 
-    // [HttpGet]
-    // [Route("customer/{userId:int}")]
-    // [SwaggerOperation(
-    //     Summary = "Get By User Id",
-    //     Description = "",
-    //     OperationId = "Get")]
+    [HttpGet]
+    [Route("customer/{customerId:int}")]
+    [SwaggerOperation(
+        Summary = "Get By Customer Id",
+        Description = "",
+        OperationId = "Get")]
     // [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
-    // public async Task<ActionResult<IEnumerable<OrderRes>>> GetByUserId([FromRoute] int userId)
-    // {
-    //     return Ok();
-    // }
-
+   
 
     [HttpGet]
     [Route("order/{id:int}")]
-    [SwaggerOperation(
-        Summary = "Get Order By Id",
-        Description = "",
-        OperationId = "Get")]
-    [SwaggerResponse(200, "Order information", typeof(OrderRes))]
+    // [SwaggerResponse(200, "Order information", typeof(OrderRes))]
     public async Task<ActionResult<OrderRes>> GetOne([FromRoute] int id)
     {
         var order = await _orSer.GetAsync(id);
@@ -80,7 +76,7 @@ public class OrderController : ControllerBase
         Summary = "Create a order",
         Description = "",
         OperationId = "Post")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<string>> Create([FromBody] CreateOrderReq req)
     {
         var selfIdStr = User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
@@ -89,6 +85,24 @@ public class OrderController : ControllerBase
 
         if (!int.TryParse(selfIdStr, out var sellerId))
             return Unauthorized();
+
+        var listNotExists = new List<string>();
+        foreach (var orderDetail in req.OrderDetails)
+        {
+            var check = await _prodSer.CheckProductExists(orderDetail.ProductId);
+            if (!check) listNotExists.Add(orderDetail.ProductId.ToString());
+        }
+
+        if (listNotExists.Any())
+        {
+            var ls = new StringBuilder();
+            foreach (var pId in listNotExists)
+            {
+                ls.Append($" - {pId}");
+            }
+
+            return BadRequest(new ResFailure { Message = $"Product not found:{ls}" });
+        }
 
         var orderId = await _orSer.CreateAsync(sellerId, req);
 
@@ -112,4 +126,5 @@ public class OrderController : ControllerBase
 
         return Ok();
     }
+
 }
