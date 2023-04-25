@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import { getAllCategoryThunk } from './Categories/CateSlice'
 import { RefreshPrice, filterBookbyCate, filterBookbyGenre, getAllBookThunk } from './posts/BookSlice'
 import { RootState } from '@/store'
+import { getAllCustomerThunk } from '@/components/Customer/CustomerSlice'
 export default function HomeLayout() {
   const location = useLocation()
   const [lastDomand, setLastDomand] = useLocalStore({ key: "lastDomand", initialValue: "/" })
@@ -22,6 +23,7 @@ export default function HomeLayout() {
     const getData = async () => {
       await dispatch(getAllCategoryThunk())
       await dispatch(getAllBookThunk())
+      await dispatch(getAllCustomerThunk())
       
     }
     getData();
