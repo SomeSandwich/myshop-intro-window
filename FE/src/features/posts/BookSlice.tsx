@@ -20,6 +20,7 @@ import { Genre } from "@/interfaces/Genre";
 import { CategoryScale } from "chart.js";
 import { Category } from "@/interfaces/category";
 import { arraysEqual } from "../Categories/CateSlice";
+import { Notificatrion, notification } from "@/components/Book/AddBook";
 export const getAllBookThunk = createAsyncThunk(
     "books",
     async (data, { dispatch, rejectWithValue }) => {
@@ -311,6 +312,7 @@ const BookSlice = createSlice({
             if (arraysEqual(state.listAllBook, action.payload)) {
                 console.log("Not Change");
             } else {
+                
                 state.listAllBook = action.payload;
                 state.listSearch = action.payload;
                 state.listFilter = action.payload;
@@ -339,6 +341,7 @@ const BookSlice = createSlice({
                 console.log("Not Change");
             } else {
                 console.log("search Book Success");
+                
                 state.listSearch = action.payload;
                 state.isRefresh = true;
             }

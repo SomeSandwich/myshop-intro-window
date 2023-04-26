@@ -9,6 +9,7 @@ import {
     DeleteBookService,
 } from "@/services/book.service";
 import { Book } from "@/interfaces/bookDetail";
+import { notification } from "./AddBook";
 export default function () {
     const { id } = useParams();
     if (!id) return <></>;
@@ -214,39 +215,39 @@ enum Notificatrion {
     Success,
     Error,
 }
-const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
-        toast.warn(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Success) {
-        toast.success(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Error) {
-        toast.error(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
-};
+// const notification = (message: string, type: Notificatrion) => {
+//     if (type == Notificatrion.Warn) {
+//         toast.warn(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     } else if (type == Notificatrion.Success) {
+//         toast.success(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     } else if (type == Notificatrion.Error) {
+//         toast.error(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     }
+// };

@@ -8,6 +8,8 @@ import Select from 'react-select'
 import { BookOption } from '@/interfaces/bookDetail';
 import { NumericFormat } from 'react-number-format';
 import AddCustomToOrder from '../Customer/AddCustomToOrder';
+import { Notificatrion, notification } from '../Book/AddBook';
+import { ToastContainer } from 'react-toastify';
 // const options = [
 //     { value: 'chocolate', label: 'Chocolate' },
 //     { value: 'strawberry', label: 'Strawberry' },
@@ -30,6 +32,7 @@ export default function AddOrder() {
         setBooks(temp);
     }, [listProduct])
     const handleAdd = () => {
+       
         console.log(selected)
         if(selected!=null && quantityRef.current && quantityRef.current.value){
             console.log("push")
@@ -39,6 +42,7 @@ export default function AddOrder() {
                 title: selected.label
             }
             console.log(newProduct)
+            notification("Add New Product Success", Notificatrion.Success)
             dispatch(addProductToCurrentOrder(newProduct))
         }
         
@@ -67,6 +71,7 @@ export default function AddOrder() {
     }, [listBook])
     return (
         <div className="add-order" style={{ height: "100vh" }}>
+            <ToastContainer />
             <div className='row' >
                 <div className='box-add-product align-items-center d-flex justify-content-center flex-column col'>
                     <span><strong style={{fontSize:"28px"}}>Sách được mua</strong></span>

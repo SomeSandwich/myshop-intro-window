@@ -32,11 +32,12 @@ export const AddCustomerThunk = createAsyncThunk(
     async (customer: InputCustomer, { dispatch, rejectWithValue }) => {
         try {
             const response = await addCustomerService(customer);
+            notification("Create New Customer Success", Notificatrion.Success)
             dispatch(getAllCustomerThunk())
             return response;
         } catch (error: any) {
             console.log(error.response.data.message)
-            notification(error.response.data.message, Notificatrion.Error)
+            if(error) notification(error.response.data.message, Notificatrion.Error)
             return rejectWithValue(error);
         }
     }

@@ -7,7 +7,9 @@ import Select from 'react-select'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { AddCustomerThunk } from './CustomerSlice';
-import { Notificatrion, notification } from '../Book/AddBook';
+import { Notificatrion } from '../Book/AddBook';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddCustomToOrder() {
     const listCustomer = useAppSelector((state: RootState) => state.customer.listAllCustomer)
@@ -27,16 +29,13 @@ export default function AddCustomToOrder() {
                 phoneNumber: phoneRef.current?.value
             }
             console.log(newCustomer)
-            await dispatch(AddCustomerThunk(newCustomer)).then(()=>{
-                notification("Create New Customer Success", Notificatrion.Success)
-                setShow(false);
-            }).catch(()=>{
-                notification("Create New Customer Fail", Notificatrion.Error)
-                setShow(false);
-            })
+            await dispatch(AddCustomerThunk(newCustomer))
+            setShow(false);
         }
     }
-    const handleShow = () => setShow(true);
+    const handleShow = () => {  
+        setShow(true)
+    };
     useEffect(() => {
         const changeOption = async () => {
             const newoptions: CustomerOption[] = [];
@@ -78,7 +77,7 @@ export default function AddCustomToOrder() {
                 </Modal.Header>
                 <Modal.Body>
                     <input ref={nameRef} type="text" className="form-control" required id="inputPhone" placeholder={"Name"} />
-                    <input ref={phoneRef} type="text" className="form-control" required id="inputPhone" placeholder={"phoneNumber"} />
+                    <input maxLength={10} minLength={10} ref={phoneRef} type="text" className="form-control" required id="inputPhone" placeholder={"phoneNumber"} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -114,3 +113,39 @@ export default function AddCustomToOrder() {
 
     )
 }
+const notification = (message: string, type: Notificatrion) => {
+    if (type == Notificatrion.Warn) {
+        toast.warn(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Success) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Error) {
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+};

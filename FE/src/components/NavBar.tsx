@@ -50,6 +50,15 @@ export default function NavBar() {
                         </li>
                         <li>
                             <NavLink
+                                to={"/categories/view"}
+                                className="nav-link scrollto"
+                            >
+                                <i className="fa-sharp fa-solid fa-list-check"></i>
+                                <span>Mange Category</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
                                 to={"/order"}
                                 className="nav-link scrollto"
                             >
@@ -82,24 +91,6 @@ export default function NavBar() {
                             >
                                 <i className="fa-solid fa-right-from-bracket"></i>
                                 <span>Log Out</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to={"/books/viewDetail/17"}
-                                className="nav-link scrollto"
-                            >
-                                <i className="fa-solid fa-circle-info"></i>
-                                <span>View Detail book</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to={"/books/update/17"}
-                                className="nav-link scrollto"
-                            >
-                                <i className="fa-solid fa-circle-info"></i>
-                                <span>Test update Detail book</span>
                             </NavLink>
                         </li>
                     </ul>

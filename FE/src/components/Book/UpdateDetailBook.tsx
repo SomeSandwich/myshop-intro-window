@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "@/Axios/AxiosClient";
 import { GetDetailBookService } from "@/services/book.service";
 import moment from "moment";
+import { Notificatrion, notification } from "./AddBook";
 
 export default function UpdateDetailBook() {
     // Add book
@@ -443,44 +444,3 @@ export default function UpdateDetailBook() {
         </div>
     );
 }
-enum Notificatrion {
-    Warn,
-    Success,
-    Error,
-}
-const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
-        toast.warn(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Success) {
-        toast.success(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Error) {
-        toast.error(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
-};
