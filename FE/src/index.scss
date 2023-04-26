@@ -146,13 +146,13 @@ body {
         max-width: 150px;
     }
 }
-.home-view,.editcate-view,.add-order{
+.home-view,.editcate-view,.add-order,.order-dashboard{
     >.row{
         // max-width: 950px;
         margin-top: 15px;
     }
 }
-.add-order{
+.add-order,.product-detail-box-dashboard{
     
     .box-add-product{
         padding: 10px;

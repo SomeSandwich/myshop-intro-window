@@ -85,6 +85,9 @@ const CateSlice = createSlice({
 
             console.log(state.currentOrder)
         },
+        resetProductinOrder(state,action){
+          state.currentOrder = []
+        },
         removeProductToCurrentOrder(state,action : PayloadAction<{id:Number}>){
             state.currentOrder = state.currentOrder.filter(product=>product.productId!=action.payload.id)
         },
@@ -145,5 +148,5 @@ const CateSlice = createSlice({
 
 
 const { actions, reducer } = CateSlice;
-export const { addProductToCurrentOrder,removeProductToCurrentOrder} = actions;
+export const { addProductToCurrentOrder,resetProductinOrder,removeProductToCurrentOrder} = actions;
 export default reducer;
