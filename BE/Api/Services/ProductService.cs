@@ -14,6 +14,7 @@ public interface IProductService
     Task<IEnumerable<ProductRes>> GetAsync();
     Task<IEnumerable<ProductRes>> GetByCategoryAsync(int cateId);
     Task<ProductRes?> GetAsync(int id);
+    Task<IEnumerable<ProductRes>> SearchProduct(string query);
 
     Task<bool> CheckProductExists(int id);
 
@@ -64,6 +65,18 @@ public class ProductService : IProductService
             .FirstOrDefault(e => e.Status != ProductStatus.Deleted && e.Id == id);
 
         return acc is null ? null : _mapper.Map<Product, ProductRes>(acc);
+    }
+
+    public async Task<IEnumerable<ProductRes>> SearchProduct(string query)
+    {
+        var listProduct = _context.Products
+            .Include(p => p.Category)
+            .Where(p => p.Title.Trim().Contains(query)
+                        ||
+                        p.Description.Trim().Contains(query))
+            .AsEnumerable();
+
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(listProduct);
     }
 
     public async Task<bool> CheckProductExists(int id)

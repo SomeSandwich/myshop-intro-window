@@ -187,4 +187,13 @@ public class ProductController : ControllerBase
 
         return Ok(new ResSuccess());
     }
+
+    [HttpGet]
+    [Route("search")]
+    public async Task<ActionResult<IEnumerable<ProductRes>>> Search([FromQuery] string query)
+    {
+        var list = await _productSer.SearchProduct(query);
+
+        return Ok(list);
+    }
 }

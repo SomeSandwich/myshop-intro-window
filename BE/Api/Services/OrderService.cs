@@ -3,6 +3,7 @@ using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 using API.Types.Objects.Filter;
 using Api.Types.Objects.Order;
+using API.Types.Objects.Statistic;
 using Api.Types.Results;
 using AutoMapper;
 using System.Web;
@@ -20,6 +21,9 @@ public interface IOrderService
     Task<BaseResult> UpdateAsync(int id, UpdateOrderReq req);
 
     Task<BaseResult> DeleteAsync(int id);
+
+    Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query);
+    Task<StatByYearRes> GetStatisticByYear(StatByYearQuery query);
 }
 
 public class OrderService : IOrderService
@@ -199,4 +203,109 @@ public class OrderService : IOrderService
 
         return new SuccessResult();
     }
+
+    public async Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query)
+    {
+        var categories = _context.Categories
+            .Include(e => e.Products)
+            .ThenInclude(p => p.OrderDetails)
+            .ThenInclude(od => od.Order)
+            .ToList();
+
+        var listRes = categories
+            .GroupBy(e => e.Id)
+            .Select(e => new
+            {
+                Id = e.Key,
+                Quantity = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.Quantity))),
+                Cost = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.Cost * od.Quantity))),
+                Profit = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.UnitPrice * od.Quantity))),
+                Revenue = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
+            }).ToList();
+
+        var result = new StatByCateRes();
+
+        foreach (var b in listRes)
+        {
+            result.Revenue.Add(b.Revenue);
+            result.Cost.Add(b.Cost);
+            result.Profit.Add(b.Profit);
+            result.Quantity.Add(b.Quantity);
+            result.Id.Add(b.Id);
+        }
+
+        return result;
+    }
+
+    public async Task<StatByYearRes> GetStatisticByYear(StatByYearQuery query)
+    {
+        var result = new StatByYearRes();
+        var listOrder = _context.Orders
+            .Include(o => o.OrderDetails)
+            .Where(o => o.CreateAt.Year == DateTime.Now.Year)
+            .GroupBy(o => o.CreateAt.Month)
+            .Select(o => new StatRes
+            {
+                Month = o.Key,
+                Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
+                Cost = o.Sum(od => od.OrderDetails.Sum(ord => ord.Cost * ord.Quantity)),
+                Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
+                Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
+            }).ToList();
+
+        result = _mapper.Map<ICollection<StatRes>, StatByYearRes>(listOrder, opt=>
+            opt.AfterMap((src, des) =>
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    if (!des.Month.Contains(i))
+                    {
+                        des.Month.Add(i);
+                        des.Cost.Add(0);
+                        des.Quantity.Add(0);
+                        des.Profit.Add(0);
+                        des.Revenue.Add(0);
+                    }
+                }
+            }));
+        return result;
+    }
 }
+
+public class StatRes
+{
+    public int Month { get; set; } = 0;
+
+    public int Quantity { get; set; } = 0;
+
+    public int Cost { get; set; } = 0;
+
+    public int Revenue { get; set; } = 0;
+
+    public int Profit { get; set; } = 0;
+}
+//
+// public class OrderDetailRes
+// {
+//     public int OrderId { get; set; }
+//
+//     public int ProductId { get; set; }
+//
+//     public int Cost { get; set; } = default;
+//
+//     public int UnitPrice { get; set; } = default;
+//
+//     public int Discount { get; set; } = default;
+//
+//     public int Quantity { get; set; } = default;
+//
+//     public int CategoryId { get; set; }
+// }
