@@ -5,6 +5,7 @@ import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
 import { addCateService, DeleteCateThunkService, getAllCate, updateCateService } from '@/services/categories.service';
+import { Notification, notification } from '@/components/Book/AddBook';
 export interface ICateState {
   listCate: Category[];
   isLoading: boolean;
@@ -39,11 +40,11 @@ export const AddCateThunk = createAsyncThunk(
   async (description : string, { dispatch, rejectWithValue }) => {
     try {
       const response = await addCateService(description);
-      alert(`Add new Category name "${description} success"`)
+      notification(`Add new Category name "${description}" Success`, Notification.Success)
       dispatch(getAllCategoryThunk())
       return response;
     } catch (error: any) {
-      alert(`Add new Category name "${description} Fail"`)
+      notification(`Add new Category name "${description}" Fail`, Notification.Success)
       return rejectWithValue(error);
     }
   }
@@ -53,11 +54,11 @@ export const UpdateCateThunk = createAsyncThunk(
   async (data :{id:string,description:string}, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateCateService(data.id,data.description);
-      alert(`Update Category name "${data.description} success"`)
+      notification(`Update new Category name "${data.description}" Success`, Notification.Success)
       dispatch(getAllCategoryThunk())
       return response;
     } catch (error: any) {
-      alert(`Update new Category name "${data.description} Fail"`)
+      notification(`Update new Category name "${data.description}" Fail`, Notification.Error)
       return rejectWithValue(error);
     }
   }
@@ -67,9 +68,12 @@ export const DeleteCateThunk = createAsyncThunk(
   async (data : string, { dispatch, rejectWithValue }) => {
     try {
       const response = await DeleteCateThunkService(data);
+      notification("Delete Success",Notification.Success)
       dispatch(getAllCategoryThunk())
       return {response,data};
     } catch (error: any) {
+      notification(error.response.data.message,Notification.Error)
+      
       return rejectWithValue(error);
     }
   }

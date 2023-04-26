@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import axios from "axios";
 import { env } from "process";
 import useLocalStore from "@/Hooks/useLocalStore";
+import { ToastContainer } from "react-toastify";
+import { Notification, notification } from "@/components/Book/AddBook";
 
 export default function Login() {
     // const userref = React.useRef<HTMLInputElement>(null);
@@ -32,16 +34,14 @@ export default function Login() {
             username=="" ||
             password==""
         ) {
-            alert("Please fill all the fields");
+            notification("Please fill all the fields",Notification.Warn)
         }
         //email validation
         else if (
             containsSpecialChars(username) ||
             containsSpecialChars(password)
         ) {
-            alert(
-                "Username and Password not allowed to contain special characters"
-            );
+            notification("sername and Password not allowed to contain special characters",Notification.Warn)
         } else {
             const user : ILoginInput= {
                 username: username,
@@ -56,8 +56,7 @@ export default function Login() {
                         navigate("/")
                 }
             }).catch(e=>{
-            
-                alert(e)
+                notification(e.response.data.message,Notification.Error)
             })
 
             
@@ -85,6 +84,7 @@ export default function Login() {
     // }
     return (
         <div className="align-items-center d-flex justify-content-center" style={{height:"100vh"}}>
+            <ToastContainer/>
             <div className="d-flex  justify-content-center h-100">
                 <div className="user_card">
                     <div className="d-flex justify-content-center">

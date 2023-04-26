@@ -105,6 +105,15 @@ export default function OrderList() {
                             />
 
                         </th>
+                        <th
+                            scope="col"
+                            style={{
+                                width: "100px",
+                            }}
+                        >
+                            <button className="btn btn-dark text-light">Search</button>
+
+                        </th>
                     </tr>
                     <tr style={{ backgroundColor: "#3f897d42" }}>
                         <th scope="col" style={{ width: 500 }}>

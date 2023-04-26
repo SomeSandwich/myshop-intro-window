@@ -3,6 +3,7 @@ import React , {useState,useEffect, FormEvent} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AddCateThunk, UpdateCateThunk, getCateById } from './CateSlice'
 import { ExistCate } from './EditCate'
+import { ToastContainer } from 'react-toastify'
 
 export default function AddCate() {
     const listCate = useAppSelector(state=>state.cate.listCate)
@@ -18,6 +19,7 @@ export default function AddCate() {
     }
     return (
         <div className='editcate-view'>
+            <ToastContainer/>
             <div className='row d-fles justify-content-between' >
                 <button className='btn btn-primary' onClick={()=>{navigate(-1)}} > Back</button>
                 <h2 className='' style={{marginRight:50}} >Add New Category</h2>   

@@ -68,11 +68,9 @@ export const UpdateBookThunk = createAsyncThunk(
     ) => {
         try {
             const response = await updateBookService(data.id, data.newBook);
-            alert(`Update Category name "${data.newBook.title} success"`);
             dispatch(getAllBookThunk());
             return response;
         } catch (error: any) {
-            alert(`Update new Category name "${data.newBook.title} Fail"`);
             return rejectWithValue(error);
         }
     }
