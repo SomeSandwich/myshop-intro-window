@@ -37,13 +37,13 @@ export default function CardBook(props: {
                         props.mediaPath
                             ? "https://s3.hieucckha.me/public/" +
                               props.mediaPath
-                            : "https://react.semantic-ui.com/images/wireframe/square-image.png"
+                            : "https://www.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg"
                     }
                     alt={props.title}
                     onError={({ currentTarget }) => {
                         currentTarget.onerror = null;
                         currentTarget.src =
-                            "https://react.semantic-ui.com/images/wireframe/square-image.png";
+                            "https://www.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg";
                     }}
                 />
             </figure>

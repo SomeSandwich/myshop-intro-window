@@ -20,7 +20,6 @@ import { Genre } from "@/interfaces/Genre";
 import { CategoryScale } from "chart.js";
 import { Category } from "@/interfaces/category";
 import { arraysEqual } from "../Categories/CateSlice";
-const numberPaging = 9;
 export const getAllBookThunk = createAsyncThunk(
     "books",
     async (data, { dispatch, rejectWithValue }) => {
@@ -103,8 +102,10 @@ const BookSlice = createSlice({
         hasError: false,
         isRefresh: false,
         currentGenre: [],
-        currentPrice: 100000,
+        currentPriceMax: 100000,
+        currentPriceMin: 0,
         currentCategory: [],
+        numberPaging: 8
     } as BookSliceState,
     reducers: {
         addBook: (state, action) => {
@@ -128,62 +129,41 @@ const BookSlice = createSlice({
             }
         },
         refreshBook(state, action) {
+            state.currentGenre = []
             state.isRefresh = true;
             state.listSearch = state.listAllBook;
         },
         releaseRefreshBook(state, action) {
             state.isRefresh = false;
         },
-        changePageBookFilter(state, action) {
-            const page = action.payload;
+        changePageBookFilter(state, action : PayloadAction<{page:Number,limit:Number}>) {
+            const page = action.payload.page;
+            const limit = action.payload.limit;
+            state.numberPaging = limit
+            state.maxPage = Math.ceil(state.listFilter.length / +state.numberPaging);
             var start = 0;
             var end = 0;
-
-            if (page < state.maxPage.valueOf()) {
-                start = (page - 1) * numberPaging;
-                end = (page - 1) * numberPaging + numberPaging;
-            } else {
-                start = (page - 1) * state.sizeOfCurrentPage.valueOf();
-                end =
-                    (page - 1) * state.sizeOfCurrentPage.valueOf() +
-                    state.sizeOfCurrentPage.valueOf();
+            
+            start = (+page - 1) * +limit;
+            end = (+page - 1) * +limit + +limit;
+            if(state.pageCurrent>state.maxPage){
+                state.pageCurrent = 1;
+            }else{
+                state.pageCurrent = page;
             }
-            state.pageCurrent = page;
             state.listPaging = state.listFilter.slice(start, end);
             state.sizeOfCurrentPage = state.listPaging.length;
+            // const size = state.sizeOfCurrentPage.valueOf();
+            // if (size > 0) {
+            //     state.maxPage = Math.ceil(
+            //         state.listFilter.length / +state.numberPaging
+            //     );
+            // } else {
+            //     state.maxPage = 1;
+            // }
         },
         RefreshPrice(state, action) {
-            state.currentPrice = 100000;
-        },
-        filterBookbyGenre(state, action: PayloadAction<Genre[]>) {
-            state.currentGenre = action.payload;
-            const genrelist = action.payload;
-            const arrayfilter = state.listSearch.filter(
-                (book) => book.categoryDescription == ""
-            );
-            genrelist.forEach((genre) => {
-                const subarr = state.listSearch.filter(
-                    (book) => book.categoryDescription == genre.value
-                );
-                subarr.forEach((book) => arrayfilter.push(book));
-            });
-
-            state.listFilter = arrayfilter;
-            state.total = state.listFilter.length;
-            state.sizeOfCurrentPage =
-                state.listFilter.length > numberPaging
-                    ? numberPaging
-                    : state.listFilter.length;
-            const size = state.sizeOfCurrentPage.valueOf();
-            state.listPaging = state.listFilter.slice(0, size);
-            if (size > 0) {
-                state.maxPage = Math.ceil(
-                    state.listFilter.length / numberPaging
-                );
-            } else {
-                state.maxPage = 1;
-            }
-            // state.pageCurrent = 1;
+            state.currentPriceMax = 100000;
         },
         filterBookbyCate(state, action: PayloadAction<Category[]>) {
             const catelist = action.payload;
@@ -201,38 +181,18 @@ const BookSlice = createSlice({
             state.listFilter = arrayfilter;
             // state.currentPrice = 100000
             state.listFilter = state.listFilter.filter(
-                (book) => book.price <= state.currentPrice
+                (book) => book.price <= state.currentPriceMax &&  book.price >= state.currentPriceMin
             );
             state.total = state.listFilter.length;
             state.sizeOfCurrentPage =
-                state.listFilter.length > numberPaging
-                    ? numberPaging
+                state.listFilter.length > +state.numberPaging
+                    ? +state.numberPaging
                     : state.listFilter.length;
             const size = state.sizeOfCurrentPage.valueOf();
             state.listPaging = state.listFilter.slice(0, size);
             if (size > 0) {
                 state.maxPage = Math.ceil(
-                    state.listFilter.length / numberPaging
-                );
-            } else state.maxPage = 1;
-
-            // state.pageCurrent = 1;
-        },
-        filterCurrentBookbyPrice(state, action: PayloadAction<Number>) {
-            const price = action.payload;
-            state.listFilter = state.listFilter.filter(
-                (book) => book.price < price
-            );
-            state.total = state.listFilter.length;
-            state.sizeOfCurrentPage =
-                state.listFilter.length > numberPaging
-                    ? numberPaging
-                    : state.listFilter.length;
-            const size = state.sizeOfCurrentPage.valueOf();
-            state.listPaging = state.listFilter.slice(0, size);
-            if (size > 0) {
-                state.maxPage = Math.ceil(
-                    state.listFilter.length / numberPaging
+                    state.listFilter.length / +state.numberPaging
                 );
             } else state.maxPage = 1;
 
@@ -240,22 +200,27 @@ const BookSlice = createSlice({
         },
         filterCurrentBook(
             state,
-            action: PayloadAction<{ genrelist: Genre[]; price: Number }>
+            action: PayloadAction<{ genrelist: Genre[]; minPrice:Number ; maxPrice:Number }>
         ) {
-            const price = action.payload.price;
+            const minPrice = action.payload.minPrice;
+            const maxPrice = action.payload.maxPrice;
             const genrelist = action.payload.genrelist;
-            state.currentPrice = price;
+            state.currentPriceMax = maxPrice;
+            state.currentPriceMin = minPrice;
             const arrayfilter = state.listSearch.filter(
                 (book) => book.categoryDescription == ""
             );
             if (genrelist.length == 0) {
+                state.currentGenre = [];
                 state.currentCategory.forEach((cate) => {
+                    console.log("cate")
                     const subarr = state.listSearch.filter(
                         (book) => book.categoryId == cate.id
                     );
                     subarr.forEach((book) => arrayfilter.push(book));
                 });
             } else {
+                console.log("genre")
                 state.currentGenre = genrelist;
                 genrelist.forEach((genre) => {
                     const subarr = state.listSearch.filter(
@@ -267,18 +232,68 @@ const BookSlice = createSlice({
 
             state.listFilter = arrayfilter;
             state.listFilter = state.listFilter.filter(
-                (book) => book.price <= price
+                (book) => book.price <= maxPrice && book.price >= minPrice
             );
             state.total = state.listFilter.length;
             state.sizeOfCurrentPage =
-                state.listFilter.length > numberPaging
-                    ? numberPaging
+                state.listFilter.length > +state.numberPaging
+                    ? +state.numberPaging
                     : state.listFilter.length;
             const size = state.sizeOfCurrentPage.valueOf();
             state.listPaging = state.listFilter.slice(0, size);
             if (size > 0) {
                 state.maxPage = Math.ceil(
-                    state.listFilter.length / numberPaging
+                    state.listFilter.length / +state.numberPaging
+                );
+            } else state.maxPage = 1;
+
+            // state.pageCurrent = 1;
+        },
+        filterCurrentBookWithMinMax(
+            state,
+            action: PayloadAction<{ genrelist: Genre[]; minPrice:Number ; maxPrice:Number }>
+        ) {
+            const minPrice = action.payload.minPrice;
+            const maxPrice = action.payload.maxPrice;
+            const genrelist = action.payload.genrelist;
+            state.currentPriceMax = maxPrice;
+            state.currentPriceMin = minPrice;
+            const arrayfilter = state.listSearch.filter(
+                (book) => book.categoryDescription == ""
+            );
+            if (genrelist.length == 0) {
+                state.currentCategory.forEach((cate) => {
+                    console.log("cate")
+                    const subarr = state.listSearch.filter(
+                        (book) => book.categoryId == cate.id
+                    );
+                    subarr.forEach((book) => arrayfilter.push(book));
+                });
+            } else {
+                console.log("genre")
+                state.currentGenre = genrelist;
+                genrelist.forEach((genre) => {
+                    const subarr = state.listSearch.filter(
+                        (book) => book.categoryDescription == genre.value
+                    );
+                    subarr.forEach((book) => arrayfilter.push(book));
+                });
+            }
+
+            state.listFilter = arrayfilter;
+            state.listFilter = state.listFilter.filter(
+                (book) => book.price <= maxPrice && book.price>= minPrice
+            );
+            state.total = state.listFilter.length;
+            state.sizeOfCurrentPage =
+                state.listFilter.length > +state.numberPaging
+                    ? +state.numberPaging
+                    : state.listFilter.length;
+            const size = state.sizeOfCurrentPage.valueOf();
+            state.listPaging = state.listFilter.slice(0, size);
+            if (size > 0) {
+                state.maxPage = Math.ceil(
+                    state.listFilter.length / +state.numberPaging
                 );
             } else state.maxPage = 1;
 
@@ -340,9 +355,8 @@ export const {
     releaseRefreshBook,
     updateBook,
     changePageBookFilter,
-    filterBookbyGenre,
     filterBookbyCate,
-    filterCurrentBookbyPrice,
+    filterCurrentBookWithMinMax,
     filterCurrentBook,
 } = actions;
 export default reducer;

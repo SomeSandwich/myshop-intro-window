@@ -1,6 +1,6 @@
 import CateLineFilter from "@/features/Categories/CateLineFilter";
 import BookList from "@/features/posts/BookList";
-import { changePageBookFilter, filterBookbyCate, filterBookbyGenre, getAllBookThunk, refreshBook, releaseRefreshBook, removeBook, searchBookThunk, updateBook } from "@/features/posts/BookSlice";
+import { changePageBookFilter, filterBookbyCate, filterCurrentBook, getAllBookThunk, refreshBook, releaseRefreshBook, removeBook, searchBookThunk, updateBook } from "@/features/posts/BookSlice";
 import { addBook } from "@/features/posts/BookSlice";
 import { RootState } from "@/store";
 import React, { useEffect,FormEvent,useState } from "react";
@@ -22,20 +22,42 @@ export default function Home() {
     const total = useSelector((state: RootState) => state.book.total);
     const sizeOfCurrentPage = useSelector((state: RootState) => state.book.sizeOfCurrentPage);
     const cateLoading =  useSelector((state: RootState) => state.cate.isLoading);
-    const [searchKey, setSearchKey] = useLocalStore({key:"name",initialValue: ""});
+    const numberPaging = useAppSelector((state: RootState) => state.book.numberPaging);
+    const genreList = useAppSelector((state: RootState) => state.book.currentGenre);
+    const currentPriceMax = useAppSelector((state: RootState) => state.book.currentPriceMax);
+    const currentPriceMin = useAppSelector((state: RootState) => state.book.currentPriceMin);
+    const [searchKey, setSearchKey] = useLocalStore({key:"search",initialValue: ""});
+    
+    const [numberOfPaging,setNumberOfPaging] = useLocalStore({key:"numberPaging",initialValue: "8"});
+
     const dispatch = useAppDispatch()
     useEffect(()=>{
         const getData = async ()=>{
             await dispatch(getAllCategoryThunk())
             await dispatch(getAllBookThunk())
+            dispatch(refreshBook(""))
         }
         getData();
     },[])
     useEffect(()=>{
+        setNumberOfPaging(numberPaging)
+    },[numberPaging])
+    useEffect(()=>{
+        const updatepaging =async () => {
+            await dispatch(changePageBookFilter({page:curentPage,limit:numberOfPaging}))
+        }
+        updatepaging();
+    },[curentPage])
+    useEffect(()=>{
+        const updatepaging =async () => {
+            await dispatch(changePageBookFilter({page:curentPage,limit:numberOfPaging}))
+        }
+        updatepaging();
+    },[numberOfPaging])
+    useEffect(()=>{
         const updateSearch = async ()=>{
-            console.log("Search change");
-            console.log(catelist);
-            await dispatch(filterBookbyCate(catelist))
+            await dispatch(filterCurrentBook({genrelist:genreList,minPrice:currentPriceMin,maxPrice:currentPriceMax}))
+            await dispatch(changePageBookFilter({page:1,limit:numberPaging}))
         }
         updateSearch();
     },[bookListSearch])
@@ -44,13 +66,13 @@ export default function Home() {
     const moveNextPage = async ()=>{
         if((curentPage<maxPage)){
             const nextPage = parseInt(curentPage.toString())+1
-            await dispatch(changePageBookFilter(nextPage))
+            await dispatch(changePageBookFilter({page:nextPage,limit:numberOfPaging}))
         }
     }
     const movePrePage = async()=>{
         if( parseInt(curentPage.toString())> 1){
             const prePage = parseInt(curentPage.toString())-1
-            await dispatch(changePageBookFilter(prePage))
+            await dispatch(changePageBookFilter({page:prePage,limit:numberOfPaging}))
         }
         
     }
@@ -63,7 +85,6 @@ export default function Home() {
         {
             await dispatch(searchBookThunk(searchKey))
         }
-
     }
     const handleRefresh = async (e:React.MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault()
@@ -75,7 +96,7 @@ export default function Home() {
     }
     return (
         <div className="home-view">
-            <div className="row d-flex justify-content-between">
+            <div className="row d-flex justify-content-between align-items-center">
                 <button
                     onClick={handleRefresh}
                     className="btn btn-outline-success my-2 my-sm-0"
@@ -100,13 +121,11 @@ export default function Home() {
                     </button>
                 </form>
                 <div className="rol d-flex justify-content-start align-items-center">
-                    <span className="ml-4"><strong>Filter Price:</strong></span>
+                    <span className="ml-2"><strong>Filter Price:</strong></span>
                     <RangePrice />
                 </div>
             </div>
             <div className="row">
-                
-                {/* <CateLineFilter/> */}
                 {
                     cateLoading ?
                         <button className="buttonload">
@@ -114,24 +133,21 @@ export default function Home() {
                         </button> : <MultiSelect />
                 }
                 
-                <button style={{width: "150px"}}
+                {/* <button style={{width: "150px"}}
                     className="ml-4 btn btn-success"
                     onClick={()=>{
                         navigate('/categories/view')
                     }}>
                     <span style={{color:"white"}}>Manage Genre</span>
-                </button>
+                </button> */}
+                <div className="col d-flex align-items-center">
+                Max Number Book of Page:
+                <input className="text-center" style={{backgroundColor:"gray" , width: "50px"}} min={0} type="number" value={numberOfPaging} onChange={(e)=>{
+                    setNumberOfPaging(+e.currentTarget.value)
+                }}></input>
             </div>
-            <div className="row d-flex justify-content-center">
-                <BookList
-                    booklist={bookListPaging}
-                    handleDeleteBook={handelDeleteBook}
-                />
             </div>
-            {/* <div className="row">
-                <button onClick={() => handleAddBtnClick()}>Add</button>
-                <button onClick={() => handleUpdateBtnClick()}>Update</button>
-            </div> */}
+            
             <div className="row d-flex justify-content-between"
                 style={{
                     bottom: 0,
@@ -157,6 +173,17 @@ export default function Home() {
                 </ul>
                 
             </div>
+            <div className="row d-flex justify-content-center">
+                <BookList
+                    booklist={bookListPaging}
+                    handleDeleteBook={handelDeleteBook}
+                />
+            </div>
+            {/* <div className="row">
+                <button onClick={() => handleAddBtnClick()}>Add</button>
+                <button onClick={() => handleUpdateBtnClick()}>Update</button>
+            </div> */}
+            
         </div>
     );
 }

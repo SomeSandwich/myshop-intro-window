@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import useLocalStore from "@/Hooks/useLocalStore";
 import { arraysEqual, getAllCategoryThunk } from "@/features/Categories/CateSlice";
-import { changePageBookFilter, filterBookbyCate, filterBookbyGenre, filterCurrentBook, releaseRefreshBook } from "@/features/posts/BookSlice";
+import { changePageBookFilter, filterBookbyCate, filterCurrentBook, releaseRefreshBook } from "@/features/posts/BookSlice";
 import { Genre } from "@/interfaces/Genre";
 import { Category } from "@/interfaces/category";
 import { getAllCate } from "@/services/categories.service";
@@ -14,7 +14,9 @@ import { useDispatch, useSelector } from 'react-redux'
 const MultiSelectCategory = () => {
     const cateList = useAppSelector((state: RootState) => state.cate.listCate)
     const refresh = useAppSelector((state: RootState) => state.book.isRefresh);
-    const currentPrice = useAppSelector((state: RootState) => state.book.currentPrice);
+    const numberPaging = useAppSelector((state: RootState) => state.book.numberPaging);
+    const currentPriceMax = useAppSelector((state: RootState) => state.book.currentPriceMax);
+    const currentPriceMin = useAppSelector((state: RootState) => state.book.currentPriceMin);
     const [emptylist, setemptylist] = useState([]);
     // const [storeSelected, setStoreSelected] = useLocalStore({ key: "genreSelect", initialValue: JSON.stringify(emptylist)});
     const [selected, setSelected] = useState([]);
@@ -50,14 +52,8 @@ const MultiSelectCategory = () => {
         
         const filterGenre = async () => {
             // setStoreSelected(selected)
-            if (selected.length > 0) {
-                await dispatch(filterCurrentBook({genrelist:selected,price:currentPrice}))
-                await dispatch(changePageBookFilter(1))
-
-            } else {
-                await dispatch(filterCurrentBook({genrelist:selected,price:100000}))
-                await dispatch(changePageBookFilter(1))
-            }
+            await dispatch(filterCurrentBook({genrelist:selected,minPrice:currentPriceMin,maxPrice:currentPriceMax}))
+            await dispatch(changePageBookFilter({page:1,limit:numberPaging}))
         }
         filterGenre();
     }, [selected])
@@ -67,7 +63,7 @@ const MultiSelectCategory = () => {
         const filterGenreRefresh = async () => {
             if (selected.length > 0) {
                 // setStoreSelected(JSON.stringify(selected))
-                await dispatch(filterCurrentBook({genrelist:selected,price:100000}))
+                await dispatch(filterCurrentBook({genrelist:selected,minPrice:0,maxPrice:100000}))
             }
         }
         filterGenreRefresh();

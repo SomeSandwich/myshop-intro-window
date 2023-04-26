@@ -15,6 +15,8 @@ export interface BookSliceState{
     hasError: boolean,
     isRefresh: boolean,
     currentGenre: Genre[],
-    currentPrice: Number,
-    currentCategory: Category[]
+    currentPriceMax: Number,
+    currentPriceMin: Number,
+    currentCategory: Category[],
+    numberPaging: Number
 }

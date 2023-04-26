@@ -61,13 +61,13 @@ export default function () {
                                                 curBook.mediaPath[0]
                                                     ? "https://s3.hieucckha.me/public/" +
                                                       curBook.mediaPath[0]
-                                                    : "https://react.semantic-ui.com/images/wireframe/square-image.png"
+                                                    : "https://www.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg"
                                             }
                                             alt={curBook.title}
                                             onError={({ currentTarget }) => {
                                                 currentTarget.onerror = null;
                                                 currentTarget.src =
-                                                    "https://react.semantic-ui.com/images/wireframe/square-image.png";
+                                                    "https://www.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg";
                                             }}
                                         />
                                     </div>

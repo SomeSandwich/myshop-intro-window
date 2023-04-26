@@ -5,7 +5,7 @@ import NavBar from '@/components/NavBar'
 import useLocalStore from '@/Hooks/useLocalStore'
 import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import { getAllCategoryThunk } from './Categories/CateSlice'
-import { RefreshPrice, filterBookbyCate, filterBookbyGenre, getAllBookThunk } from './posts/BookSlice'
+import { RefreshPrice, filterBookbyCate, getAllBookThunk } from './posts/BookSlice'
 import { RootState } from '@/store'
 import { getAllCustomerThunk } from '@/components/Customer/CustomerSlice'
 export default function HomeLayout() {

@@ -10,7 +10,7 @@ export default function BookList(props: {
     const booklist = props.booklist;
     const navigate = useNavigate();
     return (
-        <div className="row d-flex flex-wrap justify-content-between">
+        <div className="row d-flex flex-wrap justify-content-center">
             {booklist ? (
                 booklist.map((book) => (
                     <CardBook
