@@ -4,6 +4,7 @@ using Api.Context.Constants.Enums;
 using Api.Services;
 using API.Types.Objects.Filter;
 using Api.Types.Objects.Order;
+using API.Types.Objects.Statistic;
 using Api.Types.Results;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -127,4 +128,11 @@ public class OrderController : ControllerBase
         return Ok();
     }
 
+    [HttpGet]
+    [Route("statistic/category")]
+    public async Task<ActionResult<StatByCateRes>> GetStatisticByCategory([FromRoute] StatByCateQuery query)
+    {
+        var result = await _orSer.GetStatisticByCate(query);
+        return Ok(result);
+    }
 }

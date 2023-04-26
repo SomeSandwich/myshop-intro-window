@@ -3,6 +3,7 @@ using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 using API.Types.Objects.Filter;
 using Api.Types.Objects.Order;
+using API.Types.Objects.Statistic;
 using Api.Types.Results;
 using AutoMapper;
 using System.Web;
@@ -20,6 +21,8 @@ public interface IOrderService
     Task<BaseResult> UpdateAsync(int id, UpdateOrderReq req);
 
     Task<BaseResult> DeleteAsync(int id);
+
+    Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query);
 }
 
 public class OrderService : IOrderService
@@ -199,4 +202,87 @@ public class OrderService : IOrderService
 
         return new SuccessResult();
     }
+
+    public async Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query)
+    {
+        var categories = _context.Categories
+            .Include(e => e.Products)
+            .ThenInclude(p => p.OrderDetails)
+            .ThenInclude(od => od.Order)
+            .ToList();
+
+        var listRes = categories
+            .GroupBy(e => e.Id)
+            .Select(e => new
+            {
+                Id = e.Key,
+                Quantity = e.Sum(ef => ef.Products.Sum(p =>
+                    p.OrderDetails
+                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                        .Sum(od => od.Quantity))),
+                Cost = e.Sum(ef => ef.Products.Sum(p =>
+                    p.OrderDetails
+                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                        .Sum(od => od.Cost * od.Quantity))),
+                Profit = e.Sum(ef => ef.Products.Sum(p =>
+                    p.OrderDetails
+                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                        .Sum(od => od.UnitPrice * od.Quantity))),
+                Revenue = e.Sum(ef => ef.Products.Sum(p =>
+                    p.OrderDetails
+                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                        .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
+            }).ToList();
+        
+        // var abc = _context.OrderDetails
+        //     .Include(e => e.Order)
+        //     .Include(e => e.Product).ToList();
+        //
+        // var bbb = abc
+        //     .GroupBy(e => e.Product.CategoryId)
+        //     .Select(od => new
+        //     {
+        //         Id = od.Key,
+        //         Quatity = od.Sum(e => e.Quantity),
+        //         Cost = od.Sum(e => e.Cost * e.Quantity),
+        //         Revenue = od.Sum(e => e.Quantity * e.UnitPrice),
+        //         Profit = od.Sum(e => (e.UnitPrice - e.Cost) * e.Quantity),
+        //     }).ToList();
+        // var bbb1 = abc
+        //     .GroupBy(e => e.Product.CategoryId)
+        //     .Select(od => new StatByCateRes
+        //     {
+        //         Id = od.Select(x => x.Product.CategoryId).ToList(),
+        //     }).ToList();
+
+        var result = new StatByCateRes();
+
+        foreach (var b in listRes)
+        {
+            result.Revenue.Add(b.Revenue);
+            result.Cost.Add(b.Cost);
+            result.Profit.Add(b.Profit);
+            result.Quantity.Add(b.Quantity);
+            result.Id.Add(b.Id);
+        }
+
+        return result;
+    }
+}
+
+public class OrderDetailRes
+{
+    public int OrderId { get; set; }
+
+    public int ProductId { get; set; }
+
+    public int Cost { get; set; } = default;
+
+    public int UnitPrice { get; set; } = default;
+
+    public int Discount { get; set; } = default;
+
+    public int Quantity { get; set; } = default;
+
+    public int CategoryId { get; set; }
 }
