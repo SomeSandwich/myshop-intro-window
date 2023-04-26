@@ -260,7 +260,23 @@ public class OrderService : IOrderService
                 Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
                 Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
             }).ToList();
-        return new StatByYearRes();
+
+        result = _mapper.Map<ICollection<StatRes>, StatByYearRes>(listOrder, opt=>
+            opt.AfterMap((src, des) =>
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    if (!des.Month.Contains(i))
+                    {
+                        des.Month.Add(i);
+                        des.Cost.Add(0);
+                        des.Quantity.Add(0);
+                        des.Profit.Add(0);
+                        des.Revenue.Add(0);
+                    }
+                }
+            }));
+        return result;
     }
 }
 

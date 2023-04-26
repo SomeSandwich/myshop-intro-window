@@ -135,4 +135,12 @@ public class OrderController : ControllerBase
         var result = await _orSer.GetStatisticByCate(query);
         return Ok(result);
     }
+
+    [HttpGet]
+    [Route("statistic/year")]
+    public async Task<ActionResult<StatByYearRes>> GetStatistisByYear([FromQuery] StatByYearQuery query)
+    {
+        var result = await _orSer.GetStatisticByYear(query);
+        return Ok(result);
+    }
 }
