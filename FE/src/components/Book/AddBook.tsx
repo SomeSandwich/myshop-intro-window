@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import axiosClient from "@/Axios/AxiosClient";
+import { Link } from "react-router-dom";
 interface FormImportExcel {
     excelFile: File | null;
 }
@@ -31,10 +32,30 @@ export default function AddBook() {
 
     const handleFormImportSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData();
+        if (!FormImportExcel.excelFile) {
+            notification("Please choose file", Notificatrion.Warn);
+            return;
+        }
 
-        formData.append("excelFile", FormImportExcel.excelFile as Blob);
-        console.log(formData);
+        const formData = new FormData();
+        formData.append("File", FormImportExcel.excelFile as Blob);
+
+        axiosClient
+            .post("/import", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.data.status == "Success") {
+                    notification(res.data.message, Notificatrion.Success);
+                } else {
+                    notification("Add book error", Notificatrion.Error);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                notification("Add book error", Notificatrion.Error);
+            });
 
         // api
     };
@@ -101,7 +122,7 @@ export default function AddBook() {
         } else if (!FormAddBook.description) {
             notification("Please input description", Notificatrion.Warn);
             return;
-        }else if (!FormAddBook.originalPrice) {
+        } else if (!FormAddBook.originalPrice) {
             notification("Please input original price", Notificatrion.Warn);
             return;
         }
@@ -181,7 +202,13 @@ export default function AddBook() {
                             type="button"
                             className="btn btn-success btn-download"
                         >
-                            <i className="fa fa-download me-2" />
+                            <Link
+                                to="/assects/template/templateExcel.xlsx"
+                                target="_blank"
+                                download
+                            >
+                                <i className="fa fa-download me-2" />
+                            </Link>
                         </button>
                     </h2>
                     <div className="hstack gap-3">
