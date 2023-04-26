@@ -35,6 +35,8 @@ export interface AddBookWithForm {
     coverType: string;
     categoryDescription: string;
     numPages: Number;
+    originalPrice: Number;
+    cost: Number;
 }
 
 export interface BookOption{

@@ -18,7 +18,7 @@ import Error from "./pages/Error";
 import RequireLogin from "./components/Auth/RequireLogin";
 import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
-import ManageCate from "./features/Categories/manageCate";
+import ManageCate from "./features/Categories/ManageCate";
 import CateLayout from "./features/Categories/CateLayout";
 import DetailBook from "./components/Book/DetailBook";
 import CardBook from "./components/Book/CardBook";
@@ -34,7 +34,7 @@ import { useAppDispatch } from "./Hooks/apphooks";
 import OrderLayout from "./components/Order/OrderLayout";
 import OrderDashBoard from "./components/Order/OrderDashBoard";
 import AddOrder from "./components/Order/AddOrder";
-import UpdateDetailBook from "./components/Book/updateDetailBook";
+import UpdateDetailBook from "./components/Book/UpdateDetailBook";
 
 console.log(
     "[App.tsx]",

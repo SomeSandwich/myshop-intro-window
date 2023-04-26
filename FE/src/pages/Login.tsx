@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import axios from "axios";
 import { env } from "process";
 import useLocalStore from "@/Hooks/useLocalStore";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
     // const userref = React.useRef<HTMLInputElement>(null);
@@ -32,16 +34,14 @@ export default function Login() {
             username=="" ||
             password==""
         ) {
-            alert("Please fill all the fields");
+            notification("Vui lòng nhập đầy đủ", Notificatrion.Warn);
         }
         //email validation
         else if (
             containsSpecialChars(username) ||
             containsSpecialChars(password)
         ) {
-            alert(
-                "Username and Password not allowed to contain special characters"
-            );
+            notification("Username và password không được chứa ký tự đặc biệt", Notificatrion.Warn);
         } else {
             const user : ILoginInput= {
                 username: username,
@@ -85,6 +85,7 @@ export default function Login() {
     // }
     return (
         <div className="align-items-center d-flex justify-content-center" style={{height:"100vh"}}>
+            <ToastContainer />
             <div className="d-flex  justify-content-center h-100">
                 <div className="user_card">
                     <div className="d-flex justify-content-center">
@@ -153,3 +154,45 @@ export default function Login() {
         </div>
     );
 }
+
+export enum Notificatrion {
+    Warn,
+    Success,
+    Error,
+}
+export const notification = (message: string, type: Notificatrion) => {
+    if (type == Notificatrion.Warn) {
+        toast.warn(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Success) {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    } else if (type == Notificatrion.Error) {
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+};

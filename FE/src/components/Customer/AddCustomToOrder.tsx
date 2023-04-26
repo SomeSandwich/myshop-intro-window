@@ -76,8 +76,19 @@ export default function AddCustomToOrder() {
                     <Modal.Title>Create new Customer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input ref={nameRef} type="text" className="form-control" required id="inputPhone" placeholder={"Name"} />
-                    <input maxLength={10} minLength={10} ref={phoneRef} type="text" className="form-control" required id="inputPhone" placeholder={"phoneNumber"} />
+                    {/* <input ref={nameRef} type="text" className="form-control" required id="inputPhone" placeholder={"Name"} />
+                    <input maxLength={10} minLength={10} ref={phoneRef} type="text" className="form-control" required id="inputPhone" placeholder={"phoneNumber"} /> */}
+                    <div className="row">
+                    <div className="form-group col-6">
+                        <label  className="font-weight-bold">Tên Khách Hàng</label>
+                        <input ref={nameRef} id="inputName" name="request_code" type="text" className="form-control" placeholder="Nhập tên khách hàng" />
+                    </div>
+                    <div className="form-group col-6">
+                        <label className="font-weight-bold">Số điện thoại</label>
+                        <input ref={phoneRef} id="inputPhone" name="material_info" type="text" className="form-control" placeholder="Nhập số điện thoại" />
+                    </div>
+                    </div>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

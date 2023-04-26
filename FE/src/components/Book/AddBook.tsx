@@ -69,37 +69,40 @@ export default function AddBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Vui lòng chọn hình ảnh", Notificatrion.Warn);
+            notification("Please choose image", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Vui lòng chọn thể loại sách", Notificatrion.Warn);
+            notification("Please select category", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Vui lòng nhập tên sách", Notificatrion.Warn);
+            notification("Please input title", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.author) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Please input author", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Please input publisher", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Vui lòng chọn ngày phát hành", Notificatrion.Warn);
+            notification("Please input publication date", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Vui lòng chọn loại bìa", Notificatrion.Warn);
+            notification("Please input cover type", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Vui lòng nhập số trang", Notificatrion.Warn);
+            notification("Please input num pages", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Vui lòng nhập giá tiền", Notificatrion.Warn);
+            notification("Please input price", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Vui lòng nhập số lượng", Notificatrion.Warn);
+            notification("Please input quantity", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Vui lòng nhập mô tả", Notificatrion.Warn);
+            notification("Please input description", Notificatrion.Warn);
+            return;
+        }else if (!FormAddBook.originalPrice) {
+            notification("Please input original price", Notificatrion.Warn);
             return;
         }
 
@@ -114,6 +117,7 @@ export default function AddBook() {
         formData.append("price", FormAddBook.price as unknown as string);
         formData.append("quantity", FormAddBook.quantity as unknown as string);
         formData.append("MediaFiles", FormAddBook.mediaPath);
+        formData.append("cost", FormAddBook.originalPrice as unknown as string);
         formData.append(
             "categoryId",
             FormAddBook.categoryId as unknown as string
@@ -145,14 +149,14 @@ export default function AddBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Thêm sách thành công", Notificatrion.Success);
+                    notification("Add book success", Notificatrion.Success);
                 } else {
-                    notification("Thêm sách thất bại", Notificatrion.Error);
+                    notification("Add book error", Notificatrion.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Thêm sách thất bại", Notificatrion.Error);
+                notification("Add book error", Notificatrion.Error);
             });
     };
 
@@ -232,7 +236,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Tên sách
+                                                Title
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -250,7 +254,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Tác giả{" "}
+                                                Author
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -270,7 +274,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Nhà phát hành
+                                                Publisher{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -288,7 +292,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Giá tiền{" "}
+                                                Price{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -306,7 +310,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Thể loại{" "}
+                                                Categories{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -349,7 +353,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Ngày xuất bản{" "}
+                                                Publication Date{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -367,7 +371,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Số lượng{" "}
+                                                Quantity
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -385,7 +389,7 @@ export default function AddBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Loại bìa{" "}
+                                                Cover Type
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -401,13 +405,13 @@ export default function AddBook() {
                                                     Open this select menu
                                                 </option>
                                                 <option value="Hardcover">
-                                                    Bìa mềm
+                                                    Hard cover
                                                 </option>
                                                 <option value="Paperback">
-                                                    Bìa cứng
+                                                    Paper back
                                                 </option>
                                                 <option value="FoldingCover">
-                                                    Bìa gấp
+                                                    Folding Cover
                                                 </option>
                                             </select>
                                         </div>
@@ -425,6 +429,24 @@ export default function AddBook() {
                                                     handleFormAddBookChange
                                                 }
                                                 name="numPages"
+                                                type="text"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Giá gốc{" "}
+                                                <span className="text-danger">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                name="originalPrice"
+                                                onChange={
+                                                    handleFormAddBookChange
+                                                }
                                                 type="text"
                                                 className="form-control"
                                             />

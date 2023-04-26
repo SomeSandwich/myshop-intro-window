@@ -57,40 +57,40 @@ export default function UpdateDetailBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Vui lòng chọn hình ảnh", Notificatrion.Warn);
+            notification("Please choose image", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Vui lòng chọn thể loại sách", Notificatrion.Warn);
+            notification("Please select category", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Vui lòng nhập tên sách", Notificatrion.Warn);
+            notification("Please input title", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.author) {
             notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Please input publisher", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Vui lòng chọn ngày phát hành", Notificatrion.Warn);
+            notification("Please input publication date", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Vui lòng chọn loại bìa", Notificatrion.Warn);
+            notification("Please input cover type", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Vui lòng nhập số trang", Notificatrion.Warn);
+            notification("Please input cover type", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Vui lòng nhập giá tiền", Notificatrion.Warn);
+            notification("Please input price", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Vui lòng nhập số lượng", Notificatrion.Warn);
+            notification("Please input quantity", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Vui lòng nhập mô tả", Notificatrion.Warn);
+            notification("Please input description", Notificatrion.Warn);
             return;
         } else if (!FormAddBook.discount) {
-            notification("Vui lòng nhập giảm giá", Notificatrion.Warn);
+            notification("Please input original price", Notificatrion.Warn);
             return;
         }
 
@@ -111,7 +111,7 @@ export default function UpdateDetailBook() {
         );
         formData.append("description", FormAddBook.description);
         formData.append("discount", FormAddBook.discount as unknown as string);
-
+        formData.append("cost", FormAddBook.cost as unknown as string);
         axiosClient
             .patch("/product/" + id, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -119,17 +119,17 @@ export default function UpdateDetailBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Thêm sách thành công", Notificatrion.Success);
+                    notification("Add book success", Notificatrion.Success);
                     setTimeout(() => {
                         navigate("/home");
                     }, 2000);
                 } else {
-                    notification("Thêm sách thất bại", Notificatrion.Error);
+                    notification("Add book error", Notificatrion.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Thêm sách thất bại", Notificatrion.Error);
+                notification("Add book error", Notificatrion.Error);
             });
     };
 
@@ -148,7 +148,7 @@ export default function UpdateDetailBook() {
                         <a className="text-muted">
                             <i className="bi bi-arrow-left-square me-2" />
                         </a>
-                        Cập nhật thông tin sách
+                        Update book
                     </h2>
                     <div className="hstack gap-3">
                         <button className="btn btn-success btn-sm btn-icon-text">
@@ -168,7 +168,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Tên sách
+                                                Title
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -187,7 +187,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Tác giả{" "}
+                                                Author{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -208,7 +208,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Nhà phát hành
+                                                Publisher{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -227,7 +227,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Giá tiền{" "}
+                                                Price {" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -246,7 +246,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Thể loại{" "}
+                                                Categories {" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -289,7 +289,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Ngày xuất bản{" "}
+                                                Publication Date{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -310,7 +310,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Số lượng{" "}
+                                                Quantity {" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -329,7 +329,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Loại bìa{" "}
+                                                Cover type {" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -346,13 +346,13 @@ export default function UpdateDetailBook() {
                                                     Open this select menu
                                                 </option>
                                                 <option value="Hardcover">
-                                                    Bìa mềm
+                                                    Hardcover
                                                 </option>
                                                 <option value="Paperback">
-                                                    Bìa cứng
+                                                    Paperback
                                                 </option>
                                                 <option value="FoldingCover">
-                                                    Bìa gấp
+                                                    FoldingCover
                                                 </option>
                                             </select>
                                         </div>
@@ -360,7 +360,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Tổng số trang{" "}
+                                                Total pages{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -379,7 +379,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Khuyến mãi %
+                                                Discount %
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -387,6 +387,25 @@ export default function UpdateDetailBook() {
                                             <input
                                                 value={FormAddBook.discount}
                                                 name="discount"
+                                                onChange={
+                                                    handleFormAddBookChange
+                                                }
+                                                type="text"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                     <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Original Price{" "}
+                                                <span className="text-danger">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                value={FormAddBook.cost}
+                                                name="cost"
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }

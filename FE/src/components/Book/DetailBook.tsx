@@ -100,7 +100,7 @@ export default function () {
                             </div> */}
                                     <span className="review-no">
                                         <strong>
-                                            Tác giả: {curBook.author}
+                                            Author: {curBook.author}
                                         </strong>
                                     </span>
                                 </div>
@@ -109,7 +109,7 @@ export default function () {
                                 </p>
                                 <div className="d-flex bd-highlight">
                                     <h6 className="p-1 flex-fill bd-highlight">
-                                        Giá bán:{" "}
+                                        Price:{" "}
                                         <strong>
                                             <NumericFormat
                                                 displayType="text"
@@ -120,7 +120,7 @@ export default function () {
                                         </strong>
                                     </h6>
                                     <h6 className="p-1 flex-fill bd-highlight">
-                                        Giá khuyến mãi:
+                                        Discount price: 
                                         <strong>
                                             <NumericFormat
                                                 displayType="text"
@@ -138,13 +138,13 @@ export default function () {
                                 </div>
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
-                                        SL Hiện tại:{" "}
+                                        Quantity:{" "}
                                         <strong>
                                             {curBook.quantity.toString()}
                                         </strong>
                                     </p>
                                     <p className="p-1 flex-fill bd-highlight">
-                                        Số trang:{" "}
+                                        Num page:{" "}
                                         <strong>
                                             {curBook.numPages.toString()}
                                         </strong>
@@ -152,23 +152,23 @@ export default function () {
                                 </div>
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
-                                        Ngày xuất bản:{" "}
+                                        Publication:{" "}
                                         <strong>
                                             {curBook.publicationDate}
                                         </strong>
                                     </p>
                                     <p className="p-1 flex-fill bd-highlight">
-                                        Ngày cập nhật:{" "}
+                                        Update:{" "}
                                         <strong>{curBook.updateAt}</strong>
                                     </p>
                                 </div>
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
-                                        Nhà xuất bản:{" "}
+                                        Publisher:{" "}
                                         <strong>{curBook.publisher}</strong>
                                     </p>
                                     <p className="p-1 flex-fill bd-highlight">
-                                        Thể loại:{" "}
+                                        Categories:{" "}
                                         <strong>
                                             {curBook.categoryDescription}
                                         </strong>
