@@ -18,5 +18,6 @@ export interface BookSliceState{
     currentPriceMax: Number,
     currentPriceMin: Number,
     currentCategory: Category[],
-    numberPaging: Number
+    numberPaging: Number,
+    listBookOutOfStock : Book[]
 }

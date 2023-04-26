@@ -105,7 +105,8 @@ const BookSlice = createSlice({
         currentPriceMax: 100000,
         currentPriceMin: 0,
         currentCategory: [],
-        numberPaging: 8
+        numberPaging: 8,
+        listBookOutOfStock: []
     } as BookSliceState,
     reducers: {
         addBook: (state, action) => {
@@ -156,14 +157,6 @@ const BookSlice = createSlice({
             }
             state.listPaging = state.listFilter.slice(start, end);
             state.sizeOfCurrentPage = state.listPaging.length;
-            // const size = state.sizeOfCurrentPage.valueOf();
-            // if (size > 0) {
-            //     state.maxPage = Math.ceil(
-            //         state.listFilter.length / +state.numberPaging
-            //     );
-            // } else {
-            //     state.maxPage = 1;
-            // }
         },
         RefreshPrice(state, action) {
             state.currentPriceMax = 100000;
@@ -302,6 +295,9 @@ const BookSlice = createSlice({
 
             // state.pageCurrent = 1;
         },
+        filterlistBookOutOfStock( state,action){
+            state.listBookOutOfStock = state.listAllBook.filter(book=>+book.quantity<5)
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getAllBookThunk.pending, (state, action) => {
@@ -363,5 +359,6 @@ export const {
     filterBookbyCate,
     filterCurrentBookWithMinMax,
     filterCurrentBook,
+    filterlistBookOutOfStock
 } = actions;
 export default reducer;
