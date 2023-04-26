@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 );
 
-export default function BarChart(props:{data:Number[]}) {
+export default function BarChart(props:{data:Number[],labels:String[]}) {
     const options = {
         indexAxis: 'x' as const,
         elements: {
@@ -56,7 +56,7 @@ export default function BarChart(props:{data:Number[]}) {
           },
           title: {
             display: true,
-            text: 'Danh thu theo tháng',
+            text: 'Doanh thu Bar Chart',
             font: {
                 size: 20
             },
@@ -64,9 +64,8 @@ export default function BarChart(props:{data:Number[]}) {
           },
         },
       };
-      const labels = [1,2,3,4,5,6,7,8,9,10,11,12];
       const data = {
-        labels,
+        labels: props.labels,
         datasets: [
           {
             label: 'Doanh thu',

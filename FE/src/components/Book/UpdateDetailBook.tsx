@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "@/Axios/AxiosClient";
 import { GetDetailBookService } from "@/services/book.service";
 import moment from "moment";
-import { Notificatrion, notification } from "./AddBook";
+import { Notification, notification } from "./AddBook";
 
 export default function UpdateDetailBook() {
     // Add book
@@ -57,40 +57,40 @@ export default function UpdateDetailBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Please choose image", Notificatrion.Warn);
+            notification("Please choose image", Notification.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Please select category", Notificatrion.Warn);
+            notification("Please select category", Notification.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Please input title", Notificatrion.Warn);
+            notification("Please input title", Notification.Warn);
             return;
         } else if (!FormAddBook.author) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Vui lòng nhập tên tác giả", Notification.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Please input publisher", Notificatrion.Warn);
+            notification("Please input publisher", Notification.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Please input publication date", Notificatrion.Warn);
+            notification("Please input publication date", Notification.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Please input cover type", Notificatrion.Warn);
+            notification("Please input cover type", Notification.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Please input cover type", Notificatrion.Warn);
+            notification("Please input cover type", Notification.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Please input price", Notificatrion.Warn);
+            notification("Please input price", Notification.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Please input quantity", Notificatrion.Warn);
+            notification("Please input quantity", Notification.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Please input description", Notificatrion.Warn);
+            notification("Please input description", Notification.Warn);
             return;
         } else if (!FormAddBook.discount) {
-            notification("Please input original price", Notificatrion.Warn);
+            notification("Please input original price", Notification.Warn);
             return;
         }
 
@@ -119,17 +119,17 @@ export default function UpdateDetailBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Add book success", Notificatrion.Success);
+                    notification("Add book success", Notification.Success);
                     setTimeout(() => {
                         navigate("/home");
                     }, 2000);
                 } else {
-                    notification("Add book error", Notificatrion.Error);
+                    notification("Add book error", Notification.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Add book error", Notificatrion.Error);
+                notification("Add book error", Notification.Error);
             });
     };
 
@@ -227,7 +227,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Price {" "}
+                                                Price{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -246,7 +246,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Categories {" "}
+                                                Categories{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -310,7 +310,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Quantity {" "}
+                                                Quantity{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -329,7 +329,7 @@ export default function UpdateDetailBook() {
                                     <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
-                                                Cover type {" "}
+                                                Cover type{" "}
                                                 <span className="text-danger">
                                                     *
                                                 </span>
@@ -395,7 +395,7 @@ export default function UpdateDetailBook() {
                                             />
                                         </div>
                                     </div>
-                                     <div className="col-lg-6">
+                                    <div className="col-lg-6">
                                         <div className="mb-3">
                                             <label className="form-label">
                                                 Original Price{" "}

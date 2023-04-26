@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { AddCateThunk, UpdateCateThunk, getCateById } from './CateSlice'
 import AddCate from './AddCate'
 import { Category } from '@/interfaces/category'
+import { ToastContainer } from 'react-toastify'
 export const ExistCate = (array:Category[],des:string)=>{
     const index = array.findIndex(cate=>cate.description==des)
     return index >= 0
@@ -44,6 +45,7 @@ export default function EditCate() {
     }
     return (
         <div className='editcate-view'>
+            <ToastContainer/>
             <div className='row d-fles justify-content-between' >
                 <button className='btn btn-primary' onClick={()=>{navigate(-1)}} > Back</button>
                 <h2 className='' style={{marginRight:50}} >Edit Cate</h2>   

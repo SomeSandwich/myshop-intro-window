@@ -6,6 +6,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { DeleteCateThunk, getAllCategoryThunk, removeCate } from './CateSlice'
 import { useAppDispatch } from '@/Hooks/apphooks'
 import { DeleteCateThunkService } from '@/services/categories.service'
+import { ToastContainer } from 'react-toastify'
 
 export default function ManageCate() {
 
@@ -17,6 +18,7 @@ export default function ManageCate() {
   }
   return (
     <div>
+      <ToastContainer/>
       <div className='row d-fles justify-content-between' >        
         <h2 className=''  ></h2>
         <h2 className='' style={{ marginRight: 50 }} >List of Category</h2>

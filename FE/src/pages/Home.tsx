@@ -11,7 +11,8 @@ import { getAllCategoryThunk } from "@/features/Categories/CateSlice";
 import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import useLocalStore from "@/Hooks/useLocalStore";
 import RangePrice from "@/components/ReactNPM/RangePrice";
-
+import { ToastContainer } from "react-toastify";
+import { Notification, notification } from "@/components/Book/AddBook";
 
 export default function Home() {
     const bookListPaging = useAppSelector((state: RootState) => state.book.listPaging);
@@ -36,6 +37,7 @@ export default function Home() {
             await dispatch(getAllCategoryThunk())
             await dispatch(getAllBookThunk())
             dispatch(refreshBook(""))
+           
         }
         getData();
     },[])
@@ -89,6 +91,7 @@ export default function Home() {
     const handleRefresh = async (e:React.MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault()
         console.log("refresh")
+        notification("Refresh Successfully",Notification.Success)
         await dispatch(refreshBook(""))
         // await dispatch(getAllCategoryThunk())
         await dispatch(getAllBookThunk())
@@ -96,6 +99,7 @@ export default function Home() {
     }
     return (
         <div className="home-view">
+            <ToastContainer />
             <div className="row d-flex justify-content-between align-items-center">
                 <button
                     onClick={handleRefresh}

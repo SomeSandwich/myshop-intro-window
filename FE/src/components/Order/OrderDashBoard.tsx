@@ -98,8 +98,8 @@ export const getDetailBook = (
       const discount = listbook[indexinListAll].discount;
 
       subbook.title = JSON.parse(JSON.stringify(newTitle));
-      subbook.uniPrice = JSON.parse(JSON.stringify(price));
-      subbook.uniPrice =
+      subbook.unitPrice = JSON.parse(JSON.stringify(price));
+      subbook.unitPrice =
         (JSON.parse(JSON.stringify(price)) *
           (100 - JSON.parse(JSON.stringify(discount)))) /
         100;
@@ -117,7 +117,7 @@ const ProductDetail = (props: { product: IOrderDetailProduct, handleDelete: Func
       <td style={{ width: widthColumn_detail }}>
         <NumericFormat
           displayType="text"
-          value={props.product.uniPrice?.toString()}
+          value={props.product.unitPrice?.toString()}
           thousandSeparator={true}
           suffix="đ"
         />
@@ -126,7 +126,7 @@ const ProductDetail = (props: { product: IOrderDetailProduct, handleDelete: Func
       <td style={{ width: widthColumn_detail }}>
         <NumericFormat
           displayType="text"
-          value={(props.product.uniPrice * props.product.quantity)}
+          value={(props.product.unitPrice * props.product.quantity)}
           thousandSeparator={true}
           suffix="đ"
         />

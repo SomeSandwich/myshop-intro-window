@@ -8,17 +8,26 @@ import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
 import axios from "axios";
 import { env } from "process";
 import useLocalStore from "@/Hooks/useLocalStore";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { Notification, notification } from "@/components/Book/AddBook";
 
 export default function Login() {
     // const userref = React.useRef<HTMLInputElement>(null);
     // const passref = React.useRef<HTMLInputElement>(null);
-    const [username, setUsername] = useLocalStore({key:"name",initialValue: ""});
-    const [password, setPassword] = useLocalStore({key:"pass",initialValue: ""});
-    const [lastDomand, setLastDomand] =  useLocalStore({key:"lastDomand",initialValue: "/"})
-    
-    const navigate = useNavigate()
+    const [username, setUsername] = useLocalStore({
+        key: "name",
+        initialValue: "",
+    });
+    const [password, setPassword] = useLocalStore({
+        key: "pass",
+        initialValue: "",
+    });
+    const [lastDomand, setLastDomand] = useLocalStore({
+        key: "lastDomand",
+        initialValue: "/",
+    });
+
+    const navigate = useNavigate();
     const Loading = useAppSelector(isLoading);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,41 +35,37 @@ export default function Login() {
         let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
         // if (
         //     !userref.current?.value ||
-        //     !passref.current?.value 
+        //     !passref.current?.value
         // ) {
         //     alert("Please fill all the fields");
         // }
-        if (
-            username=="" ||
-            password==""
-        ) {
-            notification("Vui lòng nhập đầy đủ", Notificatrion.Warn);
+        if (username == "" || password == "") {
+            notification("Please fill all the fields", Notification.Warn);
         }
         //email validation
         else if (
             containsSpecialChars(username) ||
             containsSpecialChars(password)
         ) {
-            notification("Username và password không được chứa ký tự đặc biệt", Notificatrion.Warn);
+            notification(
+                "Username and Password not allowed to contain special characters",
+                Notification.Warn
+            );
         } else {
-            const user : ILoginInput= {
+            const user: ILoginInput = {
                 username: username,
                 password: password,
-            }
-            const logRes = await dispatch(login(user)).then((res)=>{
-                if(res.type == "auth/login/fulfilled")
-                {
-                    if(lastDomand)
-                        navigate(lastDomand)
-                    else
-                        navigate("/")
-                }
-            }).catch(e=>{
-            
-                alert(e)
-            })
-
-            
+            };
+            const logRes = await dispatch(login(user))
+                .then((res) => {
+                    if (res.type == "auth/login/fulfilled") {
+                        if (lastDomand) navigate(lastDomand);
+                        else navigate("/");
+                    }
+                })
+                .catch((e) => {
+                    notification(e.response.data.message, Notification.Error);
+                });
         }
 
         // Perform login process here, e.g. by making an API call or validating user credentials
@@ -73,7 +78,7 @@ export default function Login() {
         const regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         return regex.test(input);
     };
-    const dispatch = useAppDispatch()   
+    const dispatch = useAppDispatch();
     // const handleLogin = async (e: SubmitEvent)=>
     // {
     //     e.preventDefault()
@@ -84,7 +89,10 @@ export default function Login() {
     //     dispatch(login(user))
     // }
     return (
-        <div className="align-items-center d-flex justify-content-center" style={{height:"100vh"}}>
+        <div
+            className="align-items-center d-flex justify-content-center"
+            style={{ height: "100vh" }}
+        >
             <ToastContainer />
             <div className="d-flex  justify-content-center h-100">
                 <div className="user_card">
@@ -98,7 +106,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center form_container">
-                    <form onSubmit={handleLogin}>
+                        <form onSubmit={handleLogin}>
                             <div className="input-group mb-3">
                                 <div className="input-group-append">
                                     <span className="input-group-text">
@@ -111,7 +119,9 @@ export default function Login() {
                                     placeholder="username"
                                     // ref={userref}
                                     value={username}
-                                    onChange={(e)=>{setUsername(e.currentTarget.value)}}
+                                    onChange={(e) => {
+                                        setUsername(e.currentTarget.value);
+                                    }}
                                 />
                             </div>
                             <div className="input-group mb-2">
@@ -126,7 +136,9 @@ export default function Login() {
                                     placeholder="password"
                                     // ref={passref}
                                     value={password}
-                                    onChange={(e)=>{setPassword(e.currentTarget.value)}}
+                                    onChange={(e) => {
+                                        setPassword(e.currentTarget.value);
+                                    }}
                                 />
                             </div>
 
@@ -136,7 +148,11 @@ export default function Login() {
                                     name="button"
                                     className="btn login_btn"
                                 >
-                                    {Loading?<i className="fa fa-spinner fa-spin"></i>:"Login"}
+                                    {Loading ? (
+                                        <i className="fa fa-spinner fa-spin"></i>
+                                    ) : (
+                                        "Login"
+                                    )}
                                 </button>
                             </div>
                         </form>
@@ -155,44 +171,44 @@ export default function Login() {
     );
 }
 
-export enum Notificatrion {
-    Warn,
-    Success,
-    Error,
-}
-export const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
-        toast.warn(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Success) {
-        toast.success(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    } else if (type == Notificatrion.Error) {
-        toast.error(message, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
-};
+// export enum Notificatrion {
+//     Warn,
+//     Success,
+//     Error,
+// }
+// export const notification = (message: string, type: Notificatrion) => {
+//     if (type == Notificatrion.Warn) {
+//         toast.warn(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     } else if (type == Notificatrion.Success) {
+//         toast.success(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     } else if (type == Notificatrion.Error) {
+//         toast.error(message, {
+//             position: "top-right",
+//             autoClose: 1000,
+//             hideProgressBar: false,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: true,
+//             progress: undefined,
+//             theme: "light",
+//         });
+//     }
+// };

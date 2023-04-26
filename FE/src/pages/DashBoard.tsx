@@ -14,6 +14,8 @@ import BarChart from '@/components/dashboard/BarChart';
 import PieChart from '@/components/dashboard/PieChart';
 import TotalMoney from '@/components/dashboard/TotalMoney';
 import ToTalAmout from '@/components/dashboard/ToTalAmout';
+import { LineChart } from '@/components/dashboard/LineChart';
+import ProductStatistics from '@/components/dashboard/ProductStatistics';
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -56,10 +58,19 @@ export default function DashBoard() {
             </div>
             <div className='row '>
                 <div className='chart-card'>
-                    <BarChart data={[100,500,200,100,8000,400,1000,500,200,100,8000,400]}/>
+                    <BarChart data={[100,500,200,100,8000,400,1000,500,200,100,8000,400]} labels={["1","2","3","4","5","6","7","8","9","10","11","12"]}/>
                 </div>
                 <div className='chart-card ml-4'>
                     <PieChart data = {[12, 19, 3, 5, 2, 3]} cate={["Romatic","Action","War","Novel","Fatasy","Cartoon"]}/>
+                </div>
+            </div>
+            <div className='row '>
+                <LineChart data={[100, 500, 200, 100, 8000, 400, 1000, 500, 200, 100, 8000, 400]} label={['January', 'February', 'March', 'April', 'May', 'June', 'July','January', 'February', 'March', 'April', 'May', 'June', 'July','January', 'February', 'March', 'April', 'May', 'June', 'July','January', 'February', 'March', 'April', 'May', 'June', 'July','January', 'February', 'March', 'April', 'May', 'June', 'July']}/>
+            </div>
+            <div className='row d-flex justify-content-center'>
+                
+                <div>
+                    <ProductStatistics/>
                 </div>
             </div>
         </div>

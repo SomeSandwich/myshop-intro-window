@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Customer, InputCustomer } from '@/interfaces/Customer';
 import { addCustomerService, getAllCustomerService } from '@/services/customer.service';
 import { arraysEqual } from '@/features/Categories/CateSlice';
-import { Notificatrion, notification } from '../Book/AddBook';
+import { Notification, notification } from '../Book/AddBook';
 export interface ICustomerState {
     listAllCustomer: Customer[];
     isLoading: boolean;
@@ -32,12 +32,12 @@ export const AddCustomerThunk = createAsyncThunk(
     async (customer: InputCustomer, { dispatch, rejectWithValue }) => {
         try {
             const response = await addCustomerService(customer);
-            notification("Create New Customer Success", Notificatrion.Success)
+            notification("Create New Customer Success", Notification.Success)
             dispatch(getAllCustomerThunk())
             return response;
         } catch (error: any) {
             console.log(error.response.data.message)
-            if(error) notification(error.response.data.message, Notificatrion.Error)
+            if(error) notification(error.response.data.message, Notification.Error)
             return rejectWithValue(error);
         }
     }

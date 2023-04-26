@@ -9,6 +9,7 @@ import { RootState } from "@/store";
 import React, { useState, useEffect, useMemo } from "react";
 import { MultiSelect } from "react-multi-select-component";
 import { useDispatch, useSelector } from 'react-redux'
+import { Notification, notification } from "../Book/AddBook";
 
 
 const MultiSelectCategory = () => {
@@ -54,6 +55,9 @@ const MultiSelectCategory = () => {
             // setStoreSelected(selected)
             await dispatch(filterCurrentBook({genrelist:selected,minPrice:currentPriceMin,maxPrice:currentPriceMax}))
             await dispatch(changePageBookFilter({page:1,limit:numberPaging}))
+            if(selected.length>0){
+                notification("Filter Successfully",Notification.Success)
+            }
         }
         filterGenre();
     }, [selected])

@@ -20,7 +20,7 @@ import { Genre } from "@/interfaces/Genre";
 import { CategoryScale } from "chart.js";
 import { Category } from "@/interfaces/category";
 import { arraysEqual } from "../Categories/CateSlice";
-import { Notificatrion, notification } from "@/components/Book/AddBook";
+import { Notification, notification } from "@/components/Book/AddBook";
 export const getAllBookThunk = createAsyncThunk(
     "books",
     async (data, { dispatch, rejectWithValue }) => {
@@ -41,6 +41,7 @@ export const searchBookThunk = createAsyncThunk(
             //   dispatch(setLoading(true));
             const response = await searchBookService(key);
             //   dispatch(setLoading(false));
+            notification("Search Successfully",Notification.Success)
             return response;
         } catch (error: any) {
             return rejectWithValue(error);
@@ -67,11 +68,9 @@ export const UpdateBookThunk = createAsyncThunk(
     ) => {
         try {
             const response = await updateBookService(data.id, data.newBook);
-            alert(`Update Category name "${data.newBook.title} success"`);
             dispatch(getAllBookThunk());
             return response;
         } catch (error: any) {
-            alert(`Update new Category name "${data.newBook.title} Fail"`);
             return rejectWithValue(error);
         }
     }
@@ -106,7 +105,8 @@ const BookSlice = createSlice({
         currentPriceMax: 100000,
         currentPriceMin: 0,
         currentCategory: [],
-        numberPaging: 8
+        numberPaging: 8,
+        listBookOutOfStock: []
     } as BookSliceState,
     reducers: {
         addBook: (state, action) => {
@@ -130,8 +130,11 @@ const BookSlice = createSlice({
             }
         },
         refreshBook(state, action) {
+            
             state.currentGenre = []
             state.isRefresh = true;
+            state.currentPriceMin=0;
+            state.currentPriceMax= 100000
             state.listSearch = state.listAllBook;
         },
         releaseRefreshBook(state, action) {
@@ -154,14 +157,6 @@ const BookSlice = createSlice({
             }
             state.listPaging = state.listFilter.slice(start, end);
             state.sizeOfCurrentPage = state.listPaging.length;
-            // const size = state.sizeOfCurrentPage.valueOf();
-            // if (size > 0) {
-            //     state.maxPage = Math.ceil(
-            //         state.listFilter.length / +state.numberPaging
-            //     );
-            // } else {
-            //     state.maxPage = 1;
-            // }
         },
         RefreshPrice(state, action) {
             state.currentPriceMax = 100000;
@@ -300,6 +295,9 @@ const BookSlice = createSlice({
 
             // state.pageCurrent = 1;
         },
+        filterlistBookOutOfStock( state,action){
+            state.listBookOutOfStock = state.listAllBook.filter(book=>+book.quantity<5)
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getAllBookThunk.pending, (state, action) => {
@@ -361,5 +359,6 @@ export const {
     filterBookbyCate,
     filterCurrentBookWithMinMax,
     filterCurrentBook,
+    filterlistBookOutOfStock
 } = actions;
 export default reducer;

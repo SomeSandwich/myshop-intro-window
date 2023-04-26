@@ -33,7 +33,7 @@ export default function AddBook() {
     const handleFormImportSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!FormImportExcel.excelFile) {
-            notification("Please choose file", Notificatrion.Warn);
+            notification("Please choose file", Notification.Warn);
             return;
         }
 
@@ -47,14 +47,14 @@ export default function AddBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.status == "Success") {
-                    notification(res.data.message, Notificatrion.Success);
+                    notification(res.data.message, Notification.Success);
                 } else {
-                    notification("Add book error", Notificatrion.Error);
+                    notification("Add book error", Notification.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Add book error", Notificatrion.Error);
+                notification("Add book error", Notification.Error);
             });
 
         // api
@@ -90,40 +90,40 @@ export default function AddBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Please choose image", Notificatrion.Warn);
+            notification("Please choose image", Notification.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Please select category", Notificatrion.Warn);
+            notification("Please select category", Notification.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Please input title", Notificatrion.Warn);
+            notification("Please input title", Notification.Warn);
             return;
         } else if (!FormAddBook.author) {
-            notification("Please input author", Notificatrion.Warn);
+            notification("Please input author", Notification.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Please input publisher", Notificatrion.Warn);
+            notification("Please input publisher", Notification.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Please input publication date", Notificatrion.Warn);
+            notification("Please input publication date", Notification.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Please input cover type", Notificatrion.Warn);
+            notification("Please input cover type", Notification.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Please input num pages", Notificatrion.Warn);
+            notification("Please input num pages", Notification.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Please input price", Notificatrion.Warn);
+            notification("Please input price", Notification.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Please input quantity", Notificatrion.Warn);
+            notification("Please input quantity", Notification.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Please input description", Notificatrion.Warn);
+            notification("Please input description", Notification.Warn);
             return;
         } else if (!FormAddBook.originalPrice) {
-            notification("Please input original price", Notificatrion.Warn);
+            notification("Please input original price", Notification.Warn);
             return;
         }
 
@@ -157,9 +157,9 @@ export default function AddBook() {
         //     .then((data) => {
         //         console.log(data);
         //         if (data.message == "Success") {
-        //             notification("Thêm sách thành công", Notificatrion.Success);
+        //             notification("Thêm sách thành công", Notification.Success);
         //         } else {
-        //             notification("Thêm sách thất bại", Notificatrion.Error);
+        //             notification("Thêm sách thất bại", Notification.Error);
         //         }
         //     });
 
@@ -170,14 +170,14 @@ export default function AddBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Add book success", Notificatrion.Success);
+                    notification("Add book success", Notification.Success);
                 } else {
-                    notification("Add book error", Notificatrion.Error);
+                    notification("Add book error", Notification.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Add book error", Notificatrion.Error);
+                notification("Add book error", Notification.Error);
             });
     };
 
@@ -528,13 +528,13 @@ export default function AddBook() {
         </div>
     );
 }
-export enum Notificatrion {
+export enum Notification {
     Warn,
     Success,
     Error,
 }
-export const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
+export const notification = (message: string, type: Notification) => {
+    if (type == Notification.Warn) {
         toast.warn(message, {
             position: "top-right",
             autoClose: 1000,
@@ -545,7 +545,7 @@ export const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Success) {
+    } else if (type == Notification.Success) {
         toast.success(message, {
             position: "top-right",
             autoClose: 1000,
@@ -556,7 +556,7 @@ export const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Error) {
+    } else if (type == Notification.Error) {
         toast.error(message, {
             position: "top-right",
             autoClose: 1000,

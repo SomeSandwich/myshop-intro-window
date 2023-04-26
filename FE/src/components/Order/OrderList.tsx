@@ -1,14 +1,26 @@
 import { OrderDetail, OrderDetailList, tmplist } from "@/interfaces/Order";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NumericFormat } from "react-number-format";
 import { getAllOrderService } from "@/services/order.service";
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import "react-datepicker/dist/react-datepicker.css";
+
 import moment from "moment";
 export default function OrderList() {
     const [orderDetail, setOrderDetail] = React.useState<OrderDetailList[]>([]);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
+    const handleEndChange = (e:any) => {
+        setEndDate(e.target.value);
+    };
+    const handleStartChange = (e:any) => {
+        setStartDate(e.target.value);
+    };
     React.useEffect(() => {
         getAllOrderService().then((res) => {
-            console.log(res);
             const tmp: OrderDetailList[] = [];
             res.data.forEach((ele: tmplist) => {
                 tmp.push({
@@ -51,12 +63,56 @@ export default function OrderList() {
                 <thead style={{ display: "block" }}>
                     <tr>
                         <th
+                            className="text-left"
                             scope="col"
                             style={{
                                 width: 500,
                             }}
                         >
-                            <h5 style={{ fontWeight: 4 }}>Đơn hàng</h5>
+                            <h5 style={{ fontWeight: 4 }}><strong>Đơn hàng</strong></h5>
+                        </th>
+                        <th
+                            scope="col"
+                            style={{
+                                width: "100px",
+                            }}
+                        >
+                            Start Day:
+                            <input
+                                style={{width:"100px"}}
+                                type="date"
+                                name="startDate"
+                                value={startDate}
+                                max={endDate}
+                                onChange={handleStartChange}
+                            />
+
+                        </th>
+                        <th
+                            scope="col"
+                            style={{
+                                width: "100px",
+                            }}
+                        >
+                            End Day:
+                            <input
+                                style={{width:"100px"}}
+                                type="date"
+                                name="endDate"
+                                min={startDate}
+                                value={endDate}
+                                onChange={handleEndChange}
+                            />
+
+                        </th>
+                        <th
+                            scope="col"
+                            style={{
+                                width: "100px",
+                            }}
+                        >
+                            <button className="btn btn-dark text-light">Search</button>
+
                         </th>
                     </tr>
                     <tr style={{ backgroundColor: "#3f897d42" }}>

@@ -1,5 +1,5 @@
 import axiosClient from "@/Axios/AxiosClient";
-import { Order } from "@/interfaces/Order";
+import { IOrderDetailProduct, Order, OrderDetail } from "@/interfaces/Order";
 
 export const getAllOrderService = async () => {
     // console.log(data);
@@ -17,9 +17,9 @@ export const GetDetailOrderService = async (id: string) => {
     const response = await axiosClient.get(`/order/${id}`);
     return response.data;
 };
-export const addOrderService = async (newOrder: FormData) => {
+export const addOrderService = async (total: Number,customerId:Number,orderDetails:IOrderDetailProduct[]) => {
     // console.log(data);
-    const response = await axiosClient.post(`/order`, newOrder);
+    const response = await axiosClient.post(`/order`, {total,customerId,orderDetails});
     return response.data;
 };
 export const updateOrderService = async (id: string, newOrder: string) => {

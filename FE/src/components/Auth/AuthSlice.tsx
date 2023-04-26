@@ -10,6 +10,7 @@ import { ILoginInput, ILoginResponse } from "../../interfaces/IAuth";
 // import { setLoading } from "../loadingSlice/loadingSlice";
 import { RootState } from "../../store";
 import { LoginAsync } from "@/services/auth.service";
+import { Notification, notification } from "../Book/AddBook";
 
 export interface IAuthState {
   isLogin: boolean;
@@ -30,7 +31,7 @@ export const login = createAsyncThunk(
     //   dispatch(setLoading(false));
       return response;
     } catch (error: any) {
-      alert("Wrong username or password")
+      notification("Wrong username or password",Notification.Error)
       return rejectWithValue(error);
     }
   }
