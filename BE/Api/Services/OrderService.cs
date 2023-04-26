@@ -23,6 +23,7 @@ public interface IOrderService
     Task<BaseResult> DeleteAsync(int id);
 
     Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query);
+    Task<StatByYearRes> GetStatisticByYear(StatByYearQuery query);
 }
 
 public class OrderService : IOrderService
@@ -216,44 +217,19 @@ public class OrderService : IOrderService
             .Select(e => new
             {
                 Id = e.Key,
-                Quantity = e.Sum(ef => ef.Products.Sum(p =>
-                    p.OrderDetails
-                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
-                        .Sum(od => od.Quantity))),
-                Cost = e.Sum(ef => ef.Products.Sum(p =>
-                    p.OrderDetails
-                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
-                        .Sum(od => od.Cost * od.Quantity))),
-                Profit = e.Sum(ef => ef.Products.Sum(p =>
-                    p.OrderDetails
-                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
-                        .Sum(od => od.UnitPrice * od.Quantity))),
-                Revenue = e.Sum(ef => ef.Products.Sum(p =>
-                    p.OrderDetails
-                        .Where(orderDetail => orderDetail.Order.CreateAt != default)
-                        .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
+                Quantity = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.Quantity))),
+                Cost = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.Cost * od.Quantity))),
+                Profit = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => od.UnitPrice * od.Quantity))),
+                Revenue = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
+                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
             }).ToList();
-        
-        // var abc = _context.OrderDetails
-        //     .Include(e => e.Order)
-        //     .Include(e => e.Product).ToList();
-        //
-        // var bbb = abc
-        //     .GroupBy(e => e.Product.CategoryId)
-        //     .Select(od => new
-        //     {
-        //         Id = od.Key,
-        //         Quatity = od.Sum(e => e.Quantity),
-        //         Cost = od.Sum(e => e.Cost * e.Quantity),
-        //         Revenue = od.Sum(e => e.Quantity * e.UnitPrice),
-        //         Profit = od.Sum(e => (e.UnitPrice - e.Cost) * e.Quantity),
-        //     }).ToList();
-        // var bbb1 = abc
-        //     .GroupBy(e => e.Product.CategoryId)
-        //     .Select(od => new StatByCateRes
-        //     {
-        //         Id = od.Select(x => x.Product.CategoryId).ToList(),
-        //     }).ToList();
 
         var result = new StatByCateRes();
 
@@ -268,21 +244,52 @@ public class OrderService : IOrderService
 
         return result;
     }
+
+    public async Task<StatByYearRes> GetStatisticByYear(StatByYearQuery query)
+    {
+        var result = new StatByYearRes();
+        var listOrder = _context.Orders
+            .Include(o => o.OrderDetails)
+            .Where(o => o.CreateAt.Year == DateTime.Now.Year)
+            .GroupBy(o => o.CreateAt.Month)
+            .Select(o => new StatRes
+            {
+                Month = o.Key,
+                Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
+                Cost = o.Sum(od => od.OrderDetails.Sum(ord => ord.Cost * ord.Quantity)),
+                Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
+                Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
+            }).ToList();
+        return new StatByYearRes();
+    }
 }
 
-public class OrderDetailRes
+public class StatRes
 {
-    public int OrderId { get; set; }
+    public int Month { get; set; } = 0;
 
-    public int ProductId { get; set; }
+    public int Quantity { get; set; } = 0;
 
-    public int Cost { get; set; } = default;
+    public int Cost { get; set; } = 0;
 
-    public int UnitPrice { get; set; } = default;
+    public int Revenue { get; set; } = 0;
 
-    public int Discount { get; set; } = default;
-
-    public int Quantity { get; set; } = default;
-
-    public int CategoryId { get; set; }
+    public int Profit { get; set; } = 0;
 }
+//
+// public class OrderDetailRes
+// {
+//     public int OrderId { get; set; }
+//
+//     public int ProductId { get; set; }
+//
+//     public int Cost { get; set; } = default;
+//
+//     public int UnitPrice { get; set; } = default;
+//
+//     public int Discount { get; set; } = default;
+//
+//     public int Quantity { get; set; } = default;
+//
+//     public int CategoryId { get; set; }
+// }

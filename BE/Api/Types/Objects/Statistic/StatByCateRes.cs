@@ -1,6 +1,4 @@
-﻿using OrderDetailRes = Api.Services.OrderDetailRes;
-
-namespace API.Types.Objects.Statistic;
+﻿namespace API.Types.Objects.Statistic;
 
 public class StatByCateRes
 {
@@ -14,7 +12,7 @@ public class StatByCateRes
     /// <summary>
     /// Chi phi
     /// </summary>
-    public ICollection<int> Cost { get; set; }  = new List<int>();
+    public ICollection<int> Cost { get; set; } = new List<int>();
 
     /// <summary>
     /// Doanh thu
@@ -26,6 +24,4 @@ public class StatByCateRes
     /// </summary>
     /// <returns></returns>
     public ICollection<int> Profit { get; set; } = new List<int>();
-
-    // public ICollection<OrderDetailRes> detail { get; set; }
 }
