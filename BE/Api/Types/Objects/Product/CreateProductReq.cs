@@ -103,7 +103,7 @@ public class CreateProductReq
     /// </summary>
     /// <example>1</example>
     [Microsoft.Build.Framework.Required]
-    public CoverType CoverType { get; set; }
+    public int CoverType { get; set; }
 
     /// <summary>
     /// Category Id of new product

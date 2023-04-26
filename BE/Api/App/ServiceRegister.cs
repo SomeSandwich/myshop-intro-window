@@ -1,5 +1,6 @@
 ﻿using Api.Services;
 using API.Services;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Api.App;
 
@@ -15,6 +16,7 @@ public static class ServiceRegister
         builder.AddScoped<IProductService, ProductService>();
         builder.AddScoped<IMinioFileService, MinioFileService>();
         builder.AddScoped<IOrderDetailService, OrderDetailService>();
+        builder.AddScoped<IImportService, ImportService>();
 
         builder.AddSingleton<IUriService>(o =>
         {
