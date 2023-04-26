@@ -21,7 +21,6 @@ export default function OrderList() {
     };
     React.useEffect(() => {
         getAllOrderService().then((res) => {
-            console.log(res);
             const tmp: OrderDetailList[] = [];
             res.data.forEach((ele: tmplist) => {
                 tmp.push({

@@ -8,16 +8,51 @@ import {
     GetDetailBookService,
     DeleteBookService,
 } from "@/services/book.service";
+import Modal from 'react-bootstrap/Modal';
 import { Book } from "@/interfaces/bookDetail";
 import { notification } from "./AddBook";
+import { Button } from "react-bootstrap";
+import { IOrderDetailProduct } from "@/interfaces/Order";
+import { addProductToCurrentOrder } from "../Order/OrderSlice";
+import { useAppDispatch } from "@/Hooks/apphooks";
 export default function () {
     const { id } = useParams();
     if (!id) return <></>;
+    const quantityRef = React.useRef<HTMLInputElement>(null);
+    const [show, setShow] = useState(false);
+    
     const [curBook, setCurBook] = useState<Book>();
     const navigate = useNavigate();
     const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/books/update/" + id);
     };
+    const dispatch = useAppDispatch()
+    const handleShow = () => {  
+        setShow(true)
+    };
+    const handleClose = () => setShow(false);
+    const handleAddNewProduct =async ()=>{
+        // if(nameRef.current &&  phoneRef.current){
+        //     const newCustomer: InputCustomer= {
+        //         name: nameRef.current?.value,
+        //         phoneNumber: phoneRef.current?.value
+        //     }
+        //     console.log(newCustomer)
+        //     await dispatch(AddCustomerThunk(newCustomer))
+            
+        // }
+        if(quantityRef.current && curBook){
+            const newProduct: IOrderDetailProduct = {
+                productId: parseInt(id),
+                quantity: +quantityRef.current?.value,
+                title: curBook?.title
+            }
+            console.log(newProduct)
+            notification("Add New Product into Order Success", Notificatrion.Success)
+            dispatch(addProductToCurrentOrder(newProduct))
+        }
+        setShow(false);
+    }
     const handleDeleteBook = async (e: React.MouseEvent<HTMLButtonElement>) => {
         await DeleteBookService(id).then((res) => {
             if (res.message == "Success") {
@@ -45,10 +80,29 @@ export default function () {
     }, []);
     console.log(curBook?.mediaPath);
     console.log("https://s3.hieucckha.me/public/" + curBook?.mediaPath[0]);
-
+    if(!curBook) return <></>
     return (
         <div className="detail-book-1">
             <ToastContainer />
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add To Card</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Quantity: <input ref={quantityRef} type="number" min={1} max={curBook.quantity.toString()} className="form-control" required id="inputPhone" placeholder={"Quantity"} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleAddNewProduct}>
+                        Add
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <div className="row d-flex justify-content-start">
+                <button className='btn btn-primary' onClick={()=>{navigate("/home")}} > Back</button>
+            </div>
             <div className="card">
                 {curBook ? (
                     <div className="container-fliud">
@@ -179,7 +233,7 @@ export default function () {
                                     <button
                                         className="add-to-cart btn btn-default"
                                         type="button"
-                                        onClick={handleAddToCart}
+                                        onClick={handleShow}
                                     >
                                         Add to cart
                                     </button>
