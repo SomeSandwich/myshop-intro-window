@@ -7,7 +7,7 @@ import Select from 'react-select'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { AddCustomerThunk } from './CustomerSlice';
-import { Notificatrion } from '../Book/AddBook';
+import { Notification } from '../Book/AddBook';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -114,8 +114,8 @@ export default function AddCustomToOrder(props:{setCurrentCustomerId:React.Dispa
 
     )
 }
-const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
+const notification = (message: string, type: Notification) => {
+    if (type == Notification.Warn) {
         toast.warn(message, {
             position: "top-right",
             autoClose: 1000,
@@ -126,7 +126,7 @@ const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Success) {
+    } else if (type == Notification.Success) {
         toast.success(message, {
             position: "top-right",
             autoClose: 1000,
@@ -137,7 +137,7 @@ const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Error) {
+    } else if (type == Notification.Error) {
         toast.error(message, {
             position: "top-right",
             autoClose: 1000,

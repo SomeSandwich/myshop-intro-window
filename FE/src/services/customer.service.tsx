@@ -1,5 +1,5 @@
 import axiosClient from "@/Axios/AxiosClient";
-import { Notificatrion, notification } from "@/components/Book/AddBook";
+import { Notification, notification } from "@/components/Book/AddBook";
 import { Customer, InputCustomer } from "@/interfaces/Customer";
 
 export const getAllCustomerService = async () => {

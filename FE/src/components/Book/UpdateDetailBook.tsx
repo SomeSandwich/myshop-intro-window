@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "@/Axios/AxiosClient";
 import { GetDetailBookService } from "@/services/book.service";
 import moment from "moment";
-import { Notificatrion, notification } from "./AddBook";
+import { Notification, notification } from "./AddBook";
 
 export default function UpdateDetailBook() {
     // Add book
@@ -57,40 +57,40 @@ export default function UpdateDetailBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Vui lòng chọn hình ảnh", Notificatrion.Warn);
+            notification("Vui lòng chọn hình ảnh", Notification.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Vui lòng chọn thể loại sách", Notificatrion.Warn);
+            notification("Vui lòng chọn thể loại sách", Notification.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Vui lòng nhập tên sách", Notificatrion.Warn);
+            notification("Vui lòng nhập tên sách", Notification.Warn);
             return;
         } else if (!FormAddBook.author) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Vui lòng nhập tên tác giả", Notification.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Vui lòng nhập tên tác giả", Notification.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Vui lòng chọn ngày phát hành", Notificatrion.Warn);
+            notification("Vui lòng chọn ngày phát hành", Notification.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Vui lòng chọn loại bìa", Notificatrion.Warn);
+            notification("Vui lòng chọn loại bìa", Notification.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Vui lòng nhập số trang", Notificatrion.Warn);
+            notification("Vui lòng nhập số trang", Notification.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Vui lòng nhập giá tiền", Notificatrion.Warn);
+            notification("Vui lòng nhập giá tiền", Notification.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Vui lòng nhập số lượng", Notificatrion.Warn);
+            notification("Vui lòng nhập số lượng", Notification.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Vui lòng nhập mô tả", Notificatrion.Warn);
+            notification("Vui lòng nhập mô tả", Notification.Warn);
             return;
         } else if (!FormAddBook.discount) {
-            notification("Vui lòng nhập giảm giá", Notificatrion.Warn);
+            notification("Vui lòng nhập giảm giá", Notification.Warn);
             return;
         }
 
@@ -119,17 +119,17 @@ export default function UpdateDetailBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Thêm sách thành công", Notificatrion.Success);
+                    notification("Thêm sách thành công", Notification.Success);
                     setTimeout(() => {
                         navigate("/home");
                     }, 2000);
                 } else {
-                    notification("Thêm sách thất bại", Notificatrion.Error);
+                    notification("Thêm sách thất bại", Notification.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Thêm sách thất bại", Notificatrion.Error);
+                notification("Thêm sách thất bại", Notification.Error);
             });
     };
 

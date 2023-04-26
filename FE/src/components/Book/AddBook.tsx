@@ -69,37 +69,37 @@ export default function AddBook() {
         //validate
 
         if (!FormAddBook.mediaPath) {
-            notification("Vui lòng chọn hình ảnh", Notificatrion.Warn);
+            notification("Vui lòng chọn hình ảnh", Notification.Warn);
             return;
         } else if (!FormAddBook.categoryId) {
-            notification("Vui lòng chọn thể loại sách", Notificatrion.Warn);
+            notification("Vui lòng chọn thể loại sách", Notification.Warn);
             return;
         } else if (!FormAddBook.title) {
-            notification("Vui lòng nhập tên sách", Notificatrion.Warn);
+            notification("Vui lòng nhập tên sách", Notification.Warn);
             return;
         } else if (!FormAddBook.author) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Vui lòng nhập tên tác giả", Notification.Warn);
             return;
         } else if (!FormAddBook.publisher) {
-            notification("Vui lòng nhập tên tác giả", Notificatrion.Warn);
+            notification("Vui lòng nhập tên tác giả", Notification.Warn);
             return;
         } else if (!FormAddBook.publicationDate) {
-            notification("Vui lòng chọn ngày phát hành", Notificatrion.Warn);
+            notification("Vui lòng chọn ngày phát hành", Notification.Warn);
             return;
         } else if (!FormAddBook.coverType) {
-            notification("Vui lòng chọn loại bìa", Notificatrion.Warn);
+            notification("Vui lòng chọn loại bìa", Notification.Warn);
             return;
         } else if (!FormAddBook.numPages) {
-            notification("Vui lòng nhập số trang", Notificatrion.Warn);
+            notification("Vui lòng nhập số trang", Notification.Warn);
             return;
         } else if (!FormAddBook.price) {
-            notification("Vui lòng nhập giá tiền", Notificatrion.Warn);
+            notification("Vui lòng nhập giá tiền", Notification.Warn);
             return;
         } else if (!FormAddBook.quantity) {
-            notification("Vui lòng nhập số lượng", Notificatrion.Warn);
+            notification("Vui lòng nhập số lượng", Notification.Warn);
             return;
         } else if (!FormAddBook.description) {
-            notification("Vui lòng nhập mô tả", Notificatrion.Warn);
+            notification("Vui lòng nhập mô tả", Notification.Warn);
             return;
         }
 
@@ -132,9 +132,9 @@ export default function AddBook() {
         //     .then((data) => {
         //         console.log(data);
         //         if (data.message == "Success") {
-        //             notification("Thêm sách thành công", Notificatrion.Success);
+        //             notification("Thêm sách thành công", Notification.Success);
         //         } else {
-        //             notification("Thêm sách thất bại", Notificatrion.Error);
+        //             notification("Thêm sách thất bại", Notification.Error);
         //         }
         //     });
 
@@ -145,14 +145,14 @@ export default function AddBook() {
             .then((res) => {
                 console.log(res);
                 if (res.data.message == "Success") {
-                    notification("Thêm sách thành công", Notificatrion.Success);
+                    notification("Thêm sách thành công", Notification.Success);
                 } else {
-                    notification("Thêm sách thất bại", Notificatrion.Error);
+                    notification("Thêm sách thất bại", Notification.Error);
                 }
             })
             .catch((err) => {
                 console.log(err);
-                notification("Thêm sách thất bại", Notificatrion.Error);
+                notification("Thêm sách thất bại", Notification.Error);
             });
     };
 
@@ -479,13 +479,13 @@ export default function AddBook() {
         </div>
     );
 }
-export enum Notificatrion {
+export enum Notification {
     Warn,
     Success,
     Error,
 }
-export const notification = (message: string, type: Notificatrion) => {
-    if (type == Notificatrion.Warn) {
+export const notification = (message: string, type: Notification) => {
+    if (type == Notification.Warn) {
         toast.warn(message, {
             position: "top-right",
             autoClose: 1000,
@@ -496,7 +496,7 @@ export const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Success) {
+    } else if (type == Notification.Success) {
         toast.success(message, {
             position: "top-right",
             autoClose: 1000,
@@ -507,7 +507,7 @@ export const notification = (message: string, type: Notificatrion) => {
             progress: undefined,
             theme: "light",
         });
-    } else if (type == Notificatrion.Error) {
+    } else if (type == Notification.Error) {
         toast.error(message, {
             position: "top-right",
             autoClose: 1000,

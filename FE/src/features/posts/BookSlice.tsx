@@ -20,7 +20,7 @@ import { Genre } from "@/interfaces/Genre";
 import { CategoryScale } from "chart.js";
 import { Category } from "@/interfaces/category";
 import { arraysEqual } from "../Categories/CateSlice";
-import { Notificatrion, notification } from "@/components/Book/AddBook";
+import { Notification, notification } from "@/components/Book/AddBook";
 export const getAllBookThunk = createAsyncThunk(
     "books",
     async (data, { dispatch, rejectWithValue }) => {
@@ -41,6 +41,7 @@ export const searchBookThunk = createAsyncThunk(
             //   dispatch(setLoading(true));
             const response = await searchBookService(key);
             //   dispatch(setLoading(false));
+            notification("Search Successfully",Notification.Success)
             return response;
         } catch (error: any) {
             return rejectWithValue(error);
@@ -130,8 +131,11 @@ const BookSlice = createSlice({
             }
         },
         refreshBook(state, action) {
+            
             state.currentGenre = []
             state.isRefresh = true;
+            state.currentPriceMin=0;
+            state.currentPriceMax= 100000
             state.listSearch = state.listAllBook;
         },
         releaseRefreshBook(state, action) {

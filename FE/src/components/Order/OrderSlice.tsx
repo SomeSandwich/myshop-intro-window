@@ -8,7 +8,7 @@ import { addCateService, DeleteCateThunkService, getAllCate, updateCateService }
 import { IOrderDetailProduct, Order, OrderDetail } from '@/interfaces/Order';
 import { DeleteOrderService, addOrderService, getAllOrderService, updateOrderService } from '@/services/order.service';
 import { arraysEqual } from '@/features/Categories/CateSlice';
-import { Notificatrion, notification } from '../Book/AddBook';
+import { Notification, notification } from '../Book/AddBook';
 export interface IOrderState {
   listOrder: Order[];
   isLoading: boolean;
@@ -40,7 +40,7 @@ export const AddOrderThunk = createAsyncThunk(
     try {
       const response = await addOrderService(data.total,data.customerId,data.orderDetails);
       dispatch(getAllOrderThunk())
-      notification("Create Order Success Fully",Notificatrion.Success)
+      notification("Create Order Success Fully",Notification.Success)
       return response;
     } catch (error: any) {
       return rejectWithValue(error);

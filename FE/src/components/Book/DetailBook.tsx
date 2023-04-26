@@ -48,7 +48,7 @@ export default function () {
                 title: curBook?.title
             }
             console.log(newProduct)
-            notification("Add New Product into Order Success", Notificatrion.Success)
+            notification("Add New Product into Order Success", Notification.Success)
             dispatch(addProductToCurrentOrder(newProduct))
         }
         setShow(false);
@@ -56,17 +56,17 @@ export default function () {
     const handleDeleteBook = async (e: React.MouseEvent<HTMLButtonElement>) => {
         await DeleteBookService(id).then((res) => {
             if (res.message == "Success") {
-                notification("Xóa sách thành công", Notificatrion.Success);
+                notification("Xóa sách thành công", Notification.Success);
                 setTimeout(() => {
                     navigate("/home");
                 }, 1000);
             } else {
-                notification("Xóa sách thất bại", Notificatrion.Error);
+                notification("Xóa sách thất bại", Notification.Error);
             }
         });
     };
     const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-        notification("Thêm vào giỏ hàng thành công", Notificatrion.Success);
+        notification("Thêm vào giỏ hàng thành công", Notification.Success);
     };
 
     useEffect(() => {
@@ -264,13 +264,13 @@ export default function () {
     );
 }
 
-enum Notificatrion {
+enum Notification {
     Warn,
     Success,
     Error,
 }
-// const notification = (message: string, type: Notificatrion) => {
-//     if (type == Notificatrion.Warn) {
+// const notification = (message: string, type: Notification) => {
+//     if (type == Notification.Warn) {
 //         toast.warn(message, {
 //             position: "top-right",
 //             autoClose: 1000,
@@ -281,7 +281,7 @@ enum Notificatrion {
 //             progress: undefined,
 //             theme: "light",
 //         });
-//     } else if (type == Notificatrion.Success) {
+//     } else if (type == Notification.Success) {
 //         toast.success(message, {
 //             position: "top-right",
 //             autoClose: 1000,
@@ -292,7 +292,7 @@ enum Notificatrion {
 //             progress: undefined,
 //             theme: "light",
 //         });
-//     } else if (type == Notificatrion.Error) {
+//     } else if (type == Notification.Error) {
 //         toast.error(message, {
 //             position: "top-right",
 //             autoClose: 1000,

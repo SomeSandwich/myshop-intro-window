@@ -8,7 +8,7 @@ import Select from 'react-select'
 import { BookOption } from '@/interfaces/bookDetail';
 import { NumericFormat } from 'react-number-format';
 import AddCustomToOrder from '../Customer/AddCustomToOrder';
-import { Notificatrion, notification } from '../Book/AddBook';
+import { Notification, notification } from '../Book/AddBook';
 import { ToastContainer } from 'react-toastify';
 // const options = [
 //     { value: 'chocolate', label: 'Chocolate' },
@@ -47,7 +47,7 @@ export default function AddOrder() {
                 title: selected.label
             }
             console.log(newProduct)
-            notification("Add New Product Success", Notificatrion.Success)
+            notification("Add New Product Success", Notification.Success)
             dispatch(addProductToCurrentOrder(newProduct))
         }
 
@@ -67,9 +67,9 @@ export default function AddOrder() {
       }
     const handleFinishtOrder = ()=>{
         if(books.length ==0){
-            notification("Please Choose Product And Quantity",Notificatrion.Warn)
+            notification("Please Choose Product And Quantity",Notification.Warn)
         }else if(!currentCustomerId){
-            notification("Please Choose Customer",Notificatrion.Warn)
+            notification("Please Choose Customer",Notification.Warn)
         }else{
             const newOrder ={total:tong,customerId:currentCustomerId,orderDetails:books}
             console.log(newOrder)
