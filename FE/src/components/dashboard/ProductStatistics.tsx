@@ -6,11 +6,12 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductStatistics() {
+    const listAllBook = useAppSelector((state: RootState) => state.book.listAllBook)
     const listBookOutOfStock = useAppSelector((state: RootState) => state.book.listBookOutOfStock)
     const dispatch = useAppDispatch()
     useEffect(()=>{
         dispatch(filterlistBookOutOfStock(""))
-    },[])
+    },[listAllBook])
     return (
         <div>
             <h5><strong>Sản phẩm sắp hết hàng</strong></h5>

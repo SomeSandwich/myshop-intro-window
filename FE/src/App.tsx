@@ -49,6 +49,7 @@ function App() {
     });
     const dispatch = useAppDispatch();
     useEffect(() => {
+        
         dispatch(RefreshPrice(""));
         setStoreSelected("");
     }, []);

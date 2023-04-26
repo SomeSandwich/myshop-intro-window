@@ -24,7 +24,6 @@ export default function HomeLayout() {
       await dispatch(getAllCategoryThunk())
       await dispatch(getAllBookThunk())
       await dispatch(getAllCustomerThunk())
-      
     }
     getData();
   }, [])
