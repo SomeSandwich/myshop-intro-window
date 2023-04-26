@@ -186,6 +186,22 @@ body {
         background-color: #3f897d42;
     }
 }
+.clear-product-btn{
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+.clear-product-btn:focus{
+    outline: none;
+    box-shadow: none;
+    
+}
+.clear-product-btn:hover{
+    outline: none;
+    box-shadow: none;
+    color: orange;
+}
 table.scrolldown tbody, table.scrolldown thead {
     display: block;
  }   
@@ -211,6 +227,12 @@ table.scrolldown {
             // border: none;
         }
     }     
+ }
+ .delete-current-order:hover{
+    color: orange;
+ }
+ .delete-current-order:active{
+    color: orange;
  }
  .body-table-add-box{
     height: 150px; 

@@ -11,7 +11,7 @@ import { Notificatrion } from '../Book/AddBook';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function AddCustomToOrder() {
+export default function AddCustomToOrder(props:{setCurrentCustomerId:React.Dispatch<React.SetStateAction<Number | null>>}) {
     const listCustomer = useAppSelector((state: RootState) => state.customer.listAllCustomer)
     const [toggleBtn, setToggleBtn] = useState("old")
     const [selected, setSelected] = useState<CustomerOption | null>(null);
@@ -59,6 +59,7 @@ export default function AddCustomToOrder() {
                     if (customer.id == id) {
                         console.log(customer)
                         setCurrentCustomer(customer)
+                        props.setCurrentCustomerId(customer.id)
                     }
                 })
             }
