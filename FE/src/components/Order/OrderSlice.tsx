@@ -5,7 +5,7 @@ import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
 import { addCateService, DeleteCateThunkService, getAllCate, updateCateService } from '@/services/categories.service';
-import { IOrderDetailProduct, Order, OrderDetail } from '@/interfaces/Order';
+import { IOrderDetailProduct, Order, OrderDetail, OutputOrderDetail } from '@/interfaces/Order';
 import { DeleteOrderService, addOrderService, getAllOrderService, updateOrderService } from '@/services/order.service';
 import { arraysEqual } from '@/features/Categories/CateSlice';
 import { Notification, notification } from '../Book/AddBook';
@@ -49,9 +49,9 @@ export const AddOrderThunk = createAsyncThunk(
 );
 export const UpdateOrderThunk = createAsyncThunk(
   "order/updata",
-  async (data :{id:string,description:string}, { dispatch, rejectWithValue }) => {
+  async (data :{id:string,newOrder:OutputOrderDetail}, { dispatch, rejectWithValue }) => {
     try {
-      const response = await updateOrderService(data.id,data.description);
+      const response = await updateOrderService(data.id,data.newOrder);
       dispatch(getAllOrderThunk())
       return response;
     } catch (error: any) {

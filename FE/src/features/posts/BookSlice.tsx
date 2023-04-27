@@ -307,7 +307,6 @@ const BookSlice = createSlice({
         });
         builder.addCase(getAllBookThunk.fulfilled, (state, action) => {
             console.log("get all Books done");
-            console.log(state.total)
             if (arraysEqual(state.listAllBook, action.payload)) {
                 console.log("Not Change");
             } else {

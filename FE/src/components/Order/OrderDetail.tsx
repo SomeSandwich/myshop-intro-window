@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/Hooks/apphooks'
+import { useAppDispatch, useAppSelector } from '@/Hooks/apphooks'
 import { arraysEqual } from '@/features/Categories/CateSlice'
 import { IOrderDetailProduct } from '@/interfaces/Order'
 import { OutputOrderDetail } from '@/interfaces/Order'
@@ -8,6 +8,9 @@ import React, { useEffect, useState } from 'react'
 import { NumericFormat } from 'react-number-format'
 import Select, { components } from 'react-select'
 import { calculator } from './AddOrder'
+import { getOrderByIDService } from '@/services/order.service'
+import { useParams } from 'react-router-dom'
+import { UpdateOrderThunk } from './OrderSlice'
 const exampleOrder = {
   "id": 55,
   "total": 150000,
@@ -84,12 +87,20 @@ const IconOption = (props: any) => {
   )
 };
 export default function OrderDetail() {
+  const {id} = useParams()
+  if(!id) return <></>
   const booklist = useAppSelector((state: RootState) => state.book.listAllBook)
   const [order, setOrder] = useState<OutputOrderDetail>()
   const [listDetail, setListDetail] = useState<IOrderDetailProduct[]>()
   const [total, setTotal] = useState<Number>(order ? order.total : 0)
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    setOrder(exampleOrder)
+    const callApi=async()=>{
+      const data = await getOrderByIDService(+id)
+      console.log(data) 
+      setOrder(data)
+    }
+    callApi()
   }, [])
   useEffect(() => {
     const updateListProduct =async () => {
@@ -102,6 +113,8 @@ export default function OrderDetail() {
     }
     updateListProduct()
   }, [order,booklist])
+  
+  
   useEffect(() => {
     if (listDetail && order) {
       const newtotal = calculator(listDetail)
@@ -118,6 +131,7 @@ export default function OrderDetail() {
     if (order) {
       const curorder = { ...order, total: total }
       console.log(curorder)
+      dispatch(UpdateOrderThunk({id:id,newOrder:curorder}))
     }
   }
   const handleChange = (selectedOption: any) => {
@@ -146,6 +160,7 @@ export default function OrderDetail() {
             </div>
           </div>
           <div className='row '>
+            {order.customer?
             <div className='col d-flex'>
               <div className='pt-2 mt-2'>
                 <i className="fa-solid fa-user"></i>
@@ -158,6 +173,7 @@ export default function OrderDetail() {
                 {order.customer.phoneNumber}
               </div>
             </div>
+            :<></>}
           </div>
         </div>
       </div>

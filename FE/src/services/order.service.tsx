@@ -1,9 +1,15 @@
 import axiosClient from "@/Axios/AxiosClient";
-import { IOrderDetailProduct, Order, OrderDetail } from "@/interfaces/Order";
+import { IOrderDetailProduct, Order, OrderDetail, OutputOrderDetail } from "@/interfaces/Order";
 
 export const getAllOrderService = async () => {
     // console.log(data);
     const response = await axiosClient.get("/order");
+
+    return response.data;
+};
+export const getOrderByIDService = async (id:Number) => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/order/${id}`);
 
     return response.data;
 };
@@ -22,7 +28,7 @@ export const addOrderService = async (total: Number,customerId:Number,orderDetai
     const response = await axiosClient.post(`/order`, {total,customerId,orderDetails});
     return response.data;
 };
-export const updateOrderService = async (id: string, newOrder: string) => {
+export const updateOrderService = async (id: string, newOrder: OutputOrderDetail) => {
     // console.log(data);
     const response = await axiosClient.patch(`/order/${id}`, newOrder);
     return response.data;
