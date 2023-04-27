@@ -106,8 +106,8 @@ const arr_search = [{
 }]
 export const searchBookService = async (key : string) => {
 	
-	// const response = await axiosClient.get(`/product?query=${key}`);
-	return arr_search;
+	const response = await axiosClient.get(`/product/search?query=${key}`);
+	return response.data;
 };
 export const updateBookService = async (id:string,newBook : Book) => {
 	// console.log(data);

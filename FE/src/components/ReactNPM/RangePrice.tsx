@@ -6,9 +6,9 @@ import { RootState } from '@/store';
 import { RefreshPrice, changePageBookFilter, filterCurrentBook, filterCurrentBookWithMinMax, releaseRefreshBook } from '@/features/posts/BookSlice';
 import MultiRangeSlider from './MultiRange';
 export default function RangePrice() {
-    const [maxVlue, setMaxValue] = useState(100000)
+    const [maxVlue, setMaxValue] = useState(1000000)
     const [currentPriceMin, setCurrentPriceMin] = useState(0)
-    const [currentPriceMax, setCurrentPriceMax] = useState(100000)
+    const [currentPriceMax, setCurrentPriceMax] = useState(1000000)
     const numberPaging = useAppSelector((state: RootState) => state.book.numberPaging);
     const refresh = useAppSelector((state: RootState) => state.book.isRefresh);
     const genreList = useAppSelector((state: RootState) => state.book.currentGenre);

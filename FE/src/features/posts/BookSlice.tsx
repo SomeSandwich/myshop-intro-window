@@ -102,7 +102,7 @@ const BookSlice = createSlice({
         hasError: false,
         isRefresh: false,
         currentGenre: [],
-        currentPriceMax: 100000,
+        currentPriceMax: 1000000,
         currentPriceMin: 0,
         currentCategory: [],
         numberPaging: 8,
@@ -179,7 +179,7 @@ const BookSlice = createSlice({
             state.listFilter = state.listFilter.filter(
                 (book) => book.price <= state.currentPriceMax &&  book.price >= state.currentPriceMin
             );
-            state.total = state.listFilter.length;
+            state.total = state.listAllBook.length;
             state.sizeOfCurrentPage =
                 state.listFilter.length > +state.numberPaging
                     ? +state.numberPaging
@@ -307,21 +307,17 @@ const BookSlice = createSlice({
         });
         builder.addCase(getAllBookThunk.fulfilled, (state, action) => {
             console.log("get all Books done");
+            console.log(state.total)
             if (arraysEqual(state.listAllBook, action.payload)) {
                 console.log("Not Change");
             } else {
-                
+                console.log(action.payload.length)
+                state.total = action.payload.length
                 state.listAllBook = action.payload;
                 state.listSearch = action.payload;
                 state.listFilter = action.payload;
+                
             }
-            // state.total = state.listFilter.length
-            // state.sizeOfCurrentPage = (state.listFilter.length>numberPaging)?numberPaging:state.listFilter.length
-            // const size = state.sizeOfCurrentPage.valueOf()
-            // state.listPaging = state.listFilter.slice(0,size);
-            // state.maxPage = (state.listAllBook.length+numberPaging-1)/size
-            // state.isLoading = false;
-            // state.hasError = false;
         });
         builder.addCase(getAllBookThunk.rejected, (state, action) => {
             console.log("get all book reject");
