@@ -35,6 +35,7 @@ import OrderLayout from "./components/Order/OrderLayout";
 import OrderDashBoard from "./components/Order/OrderDashBoard";
 import AddOrder from "./components/Order/AddOrder";
 import UpdateDetailBook from "./components/Book/UpdateDetailBook";
+import OrderDetail from "./components/Order/OrderDetail";
 
 console.log(
     "[App.tsx]",
@@ -82,7 +83,7 @@ function App() {
                         {/* <Route path="/dashboard" element={<DashBoard />} /> */}
                         <Route path="order" element={<OrderLayout />}>
                             <Route index element={<OrderDashBoard />} />
-                            <Route path="view/:id" element={<ManageCate />} />
+                            <Route path="view/:id" element={<OrderDetail />} />
                             <Route path="add" element={<AddOrder />} />
                             <Route path="edit/:id" element={<EditCate />} />
                         </Route>

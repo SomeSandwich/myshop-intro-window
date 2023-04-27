@@ -214,7 +214,7 @@ const ProductDetail = (props: { product: IOrderDetailProduct }) => {
         </tr>
     )
 }
-const calculator = (booklist: IOrderDetailProduct[]) => {
+export const calculator = (booklist: IOrderDetailProduct[]) => {
     const sum = booklist.reduce(function (current, book) { return current + (book.unitPrice ? +book.unitPrice * +book.quantity : 0); }, 0)
     return sum
 }

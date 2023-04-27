@@ -42,14 +42,19 @@ export default function () {
             
         // }
         if(quantityRef.current && curBook){
-            const newProduct: IOrderDetailProduct = {
-                productId: parseInt(id),
-                quantity: +quantityRef.current?.value,
-                title: curBook?.title
+            if(+quantityRef.current?.value==0) {
+                notification("Please select quantity at least 1",Notification.Warn)
+            }else{
+                const newProduct: IOrderDetailProduct = {
+                    productId: parseInt(id),
+                    quantity: +quantityRef.current?.value,
+                    title: curBook?.title
+                }
+                console.log(newProduct)
+                notification("Add New Product into Order Success", Notification.Success)
+                dispatch(addProductToCurrentOrder(newProduct))
             }
-            console.log(newProduct)
-            notification("Add New Product into Order Success", Notification.Success)
-            dispatch(addProductToCurrentOrder(newProduct))
+            
         }
         setShow(false);
     }

@@ -8,6 +8,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import "react-datepicker/dist/react-datepicker.css";
 
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 export default function OrderList() {
     const [orderDetail, setOrderDetail] = React.useState<OrderDetailList[]>([]);
     const [startDate, setStartDate] = useState("");
@@ -148,8 +149,12 @@ export default function OrderList() {
 const widthColumn_detail = "120px";
 
 const ProductInfor = (props: { product: OrderDetailList }) => {
+    const navigate = useNavigate()
     return (
-        <tr>
+        <tr onClick={()=>{
+
+            navigate("/order/view/"+props.product.id)
+        }}>
             <td style={{ width: 500 }}>{props.product.id}</td>
             <td style={{ width: widthColumn_detail }}>
                 {props.product.createdAt?.toString()}
