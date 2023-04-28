@@ -38,3 +38,13 @@ export const updateOrderService = async (id: string, newOrder: OutputOrderDetail
     const response = await axiosClient.patch(`/order/${id}`, newOrder);
     return response.data;
 };
+export const getStatisticOrderYearService = async (year:Number) => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/statistic/year?year=${year}`);
+    return response.data;
+};
+export const getStatisticOrderCate = async () => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/statistic/category`);
+    return response.data;
+};
