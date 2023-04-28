@@ -134,7 +134,7 @@ const BookSlice = createSlice({
             state.currentGenre = []
             state.isRefresh = true;
             state.currentPriceMin=0;
-            state.currentPriceMax= 100000
+            state.currentPriceMax= 1000000
             state.listSearch = state.listAllBook;
         },
         releaseRefreshBook(state, action) {
@@ -159,7 +159,7 @@ const BookSlice = createSlice({
             state.sizeOfCurrentPage = state.listPaging.length;
         },
         RefreshPrice(state, action) {
-            state.currentPriceMax = 100000;
+            state.currentPriceMax = 1000000;
         },
         filterBookbyCate(state, action: PayloadAction<Category[]>) {
             const catelist = action.payload;

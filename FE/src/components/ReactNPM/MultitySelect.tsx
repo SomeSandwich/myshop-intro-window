@@ -67,7 +67,7 @@ const MultiSelectCategory = () => {
         const filterGenreRefresh = async () => {
             if (selected.length > 0) {
                 // setStoreSelected(JSON.stringify(selected))
-                await dispatch(filterCurrentBook({genrelist:selected,minPrice:0,maxPrice:100000}))
+                await dispatch(filterCurrentBook({genrelist:selected,minPrice:0,maxPrice:1000000}))
             }
         }
         filterGenreRefresh();

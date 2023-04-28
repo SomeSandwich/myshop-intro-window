@@ -1,0 +1,136 @@
+.card-member {
+    margin-top: 10px;
+    position: relative;
+    border-radius: 10px;  
+    width:250px;
+    height:124px;
+    transform: scale(1.5);
+    /* border-radius: 12px;
+    border-width: 1px;
+    border-style: solid;  */
+}
+
+.card-face {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transition: transform 1000ms ease-in-out;
+    backface-visibility: hidden;
+}
+.card-back,.card-frame{
+    position: absolute;
+    /* border-color: #FF6D00; */
+    padding: 10px; 
+    transform: rotateY(0); 
+    background: url("./assects/khung.png");
+    background-size: 265px;
+    background-repeat: no-repeat;
+    background-position-x: -10px;
+    background-position-y: -10px;
+    overflow: hidden;
+}
+.card-back .avatar{
+    width:90px;
+    height:90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid aqua;
+    box-shadow: 0px 0px 20px -8px rgba(100,100,100,0.55);
+}
+.card-back>div{
+    padding: 10px;
+}
+.card-back h3{
+    font-size: 15px;
+    color: aqua;
+}
+.card-back span{
+    font-size: 13px;
+    color: aqua;
+}
+
+
+  .card-front {
+    position: absolute;
+    border-color: #333;
+    color :#DD5E89;
+    transform: rotateY(180deg);
+    background: url("./assects/khung.png");
+    background-size: 265px;
+    background-repeat: no-repeat;
+    background-position-x: -10px;
+    background-position-y: -10px;
+    overflow: hidden;
+  }
+
+
+  .card-member:hover .card-back ,.card-member:hover .card-frame,.card-member:hover .card-frame::before {
+    transform: rotateY(-180deg); 
+  }
+  
+  .card-member:hover .card-front {
+    transform: rotateY(0); 
+  }
+  /* .card-back:hover {
+    transform: rotateY(-180deg); 
+  }
+  .card-back:hover ~ .card-front {
+    transform: rotateY(0); 
+  } */
+  .card-member:hover {
+    transform: scale(1.6);
+  } 
+  
+  /* .card-front:hover .card-value {
+    transform: scale(1);
+  } 
+  
+  .card-back:hover .spider {
+    transform: translateY(0);
+  } */
+/* .anima{
+  width: 200px;
+  height: 250px;
+  position: relative;
+  background-color: #000;
+  cursor: pointer;
+  overflow: hidden;
+} */
+.about-us{
+  background: #DD5E89;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #F7BB97, #DD5E89);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #F7BB97, #DD5E89); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
+.card-frame::before{
+  content: '';
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%) rotate(-280deg);
+  width: 130%;
+  height: 250%;
+  background-image: conic-gradient(transparent 0deg,aqua 45deg,aqua 90deg, transparent 130deg,transparent 180deg,white 225deg,white 270deg,transparent 310deg,transparent 360deg);
+  transition: transform 2s;
+  backface-visibility: show;
+}
+/* .anima:hover::before{
+  transform: translate(-50%,-50%) rotate(-100deg);
+} */
+
+@keyframes logo-spin {
+  from {
+    transform: translate(-50%,-50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%,-50%) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-frame::before {
+    animation: logo-spin infinite 20s linear;
+  }
+}
