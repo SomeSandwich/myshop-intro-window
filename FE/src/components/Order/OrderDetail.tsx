@@ -201,7 +201,7 @@ export default function OrderDetail() {
               <th scope="col">Price</th>
               <th scope="col">Quantity</th>
               <th scope="col">Total</th>
-              <th scope="col">Action</th>
+              {/* <th scope="col">Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -213,13 +213,13 @@ export default function OrderDetail() {
                 <td>{+detail.quantity}</td>
                 <td>{detail.unitPrice ? +detail.unitPrice * +detail.quantity : 0}</td>
                 <td colSpan={1} style={{ width: "30px" }}>
-                <span onClick={() => {
+                {/* <span onClick={() => {
                     handleDelete(detail.productId)
                 }}>
                     <button className='add-product-btn' >
                         <i className="fa-solid fa-trash"></i>
                     </button>
-                </span>
+                </span> */}
             </td>
               </tr>
             }) : <></>}

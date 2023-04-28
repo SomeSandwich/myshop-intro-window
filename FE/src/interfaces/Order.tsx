@@ -1,3 +1,5 @@
+import { Customer } from "./Customer";
+
 export interface Order {
     id: Number;
     total: Number;
@@ -24,9 +26,10 @@ export interface IOrderDetailProduct {
 
 export interface OrderDetailList {
     id: Number;
-    createdAt: String;
+    createAt: String;
     price: Number;
-    customerName: String;
+    customer: Customer;
+    total: Number
 }
 export interface OutputOrderDetail {
     id: Number;

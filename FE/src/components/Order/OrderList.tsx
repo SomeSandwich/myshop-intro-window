@@ -9,30 +9,82 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
+import { getAllOrderByUrlThunk, getAllOrderThunk } from "./OrderSlice";
+import { RootState } from "@/store";
+import useLocalStore from "@/Hooks/useLocalStore";
 export default function OrderList() {
+    const orderlist= useAppSelector((state:RootState)=> state.order.listOrder)
+    const urlCurrentPage= useAppSelector((state:RootState)=> state.order.urlCurrentPage)
+    const urlNextPage= useAppSelector((state:RootState)=> state.order.urlNextPage)
+    const urlPrePage= useAppSelector((state:RootState)=> state.order.urlPrePage)
+    const totalPage= useAppSelector((state:RootState)=> state.order.totalPage)
+    const currentPage= useAppSelector((state:RootState)=> state.order.currentPage)
+
+    const [lastUrlCurrentPage, setLastUrlCurrentPage] = useLocalStore({ key: "LastUrlCurrentPage", initialValue: "" })
+    const [lastDayFrom, setLastDayFrom] = useLocalStore({ key: "lastDayFrom", initialValue: "" })
+    const [lastDayTo, setLastDayTo] = useLocalStore({ key: "lastDayTo", initialValue: "" })
     const [orderDetail, setOrderDetail] = React.useState<OrderDetailList[]>([]);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
 
     const handleEndChange = (e:any) => {
-        setEndDate(e.target.value);
+        setLastDayTo(e.target.value);
     };
     const handleStartChange = (e:any) => {
-        setStartDate(e.target.value);
+        setLastDayFrom(e.target.value);
     };
+    const movePrePage = ()=>{
+        if(urlPrePage != ""){
+            setLastUrlCurrentPage(urlPrePage)
+            dispatch(getAllOrderByUrlThunk(urlPrePage))
+        }
+        
+    }
+    const moveNextPage = ()=>{
+        if(currentPage < totalPage){
+            setLastUrlCurrentPage(urlNextPage)
+            dispatch(getAllOrderByUrlThunk(urlNextPage))
+        }
+        
+    }
+    const dispatch = useAppDispatch()
+    const handleSearch = async()=>{
+        console.log(lastDayFrom)
+        console.log(lastDayTo)
+        if(!lastDayFrom && lastDayTo){
+            dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  lastDayTo, DateTo:  lastDayTo, PageNumber:  1, PageSize: null }))
+        }else if(lastDayFrom && !lastDayTo){
+            dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  lastDayFrom, DateTo:  lastDayFrom, PageNumber:  1, PageSize: null }))
+        }else if(lastDayFrom && lastDayTo){
+            dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  lastDayFrom, DateTo:  lastDayTo, PageNumber:  1, PageSize: null }))
+        }else if(!lastDayFrom && !lastDayTo){
+            dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  null, DateTo:  null, PageNumber:  1, PageSize: null }))
+        }
+    }
+    useEffect(()=>{
+        if(urlCurrentPage != ""){
+            setLastUrlCurrentPage(urlCurrentPage)
+        }
+    },[urlCurrentPage])
     React.useEffect(() => {
-        getAllOrderService().then((res) => {
-            const tmp: OrderDetailList[] = [];
-            res.data.forEach((ele: tmplist) => {
-                tmp.push({
-                    id: ele.id,
-                    createdAt: moment(ele.createAt).format("DD-MM-YYYY"),
-                    price: ele.total,
-                    customerName: ele.customer.name,
-                });
-            });
-            setOrderDetail(tmp); // Update state with the processed data
-        });
+        if(!lastUrlCurrentPage || lastUrlCurrentPage==""){
+            dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  null, DateTo:  null, PageNumber:  1, PageSize: null }))
+        }else{
+            console.log("use url")
+            dispatch(getAllOrderByUrlThunk(lastUrlCurrentPage))
+        }
+       
+        // .then((res) => {
+        //     const tmp: OrderDetailList[] = [];
+        //     res.data.forEach((ele: tmplist) => {
+        //         tmp.push({
+        //             id: ele.id,
+        //             createdAt: moment(ele.createAt).format("DD-MM-YYYY"),
+        //             price: ele.total,
+        //             customerName: ele.customer.name,
+        //         });
+        //     });
+        //     setOrderDetail(tmp); // Update state with the processed data
+        // });
     }, []);
 
     // useEffect(() => {
@@ -75,33 +127,34 @@ export default function OrderList() {
                         <th
                             scope="col"
                             style={{
-                                width: "100px",
+                                width: "120px",
                             }}
                         >
                             Start Day:
                             <input
-                                style={{width:"100px"}}
+                                style={{width:"120px"}}
                                 type="date"
                                 name="startDate"
-                                value={startDate}
-                                max={endDate}
+                                value={lastDayFrom}
+                                max={lastDayTo}
                                 onChange={handleStartChange}
+                                pattern="\d{4}-\d{2}-\d{2}"
                             />
 
                         </th>
                         <th
                             scope="col"
                             style={{
-                                width: "100px",
+                                width: "120px",
                             }}
                         >
                             End Day:
                             <input
-                                style={{width:"100px"}}
+                                style={{width:"120px"}}
                                 type="date"
                                 name="endDate"
-                                min={startDate}
-                                value={endDate}
+                                min={lastDayFrom}
+                                value={lastDayTo}
                                 onChange={handleEndChange}
                             />
 
@@ -112,7 +165,7 @@ export default function OrderList() {
                                 width: "100px",
                             }}
                         >
-                            <button className="btn btn-dark text-light">Search</button>
+                            <button onClick={()=>{handleSearch()}} className="btn btn-dark text-light">Search</button>
 
                         </th>
                     </tr>
@@ -132,16 +185,27 @@ export default function OrderList() {
                     </tr>
                 </thead>
                 <tbody className="body-table-detail-box">
-                    {orderDetail.map((order) => {
+                    {orderlist?orderlist.map((order) => {
                         return (
                             <ProductInfor
                                 product={order}
-                                key={order.id.toString()}
+                                key={+order.id}
                             />
                         );
-                    })}
+                    }):<></>}
                 </tbody>
             </table>
+            <div className="col d-flex justify-content-end">
+                <ul className="pagination justify-content-center">
+                    <li className={"page-item " + (urlPrePage == "" ? "disabled" : "")} onClick={movePrePage}>
+                        <a className="page-link" href="#" tabIndex={-1} >Previous</a>
+                    </li>
+                    <li className="page-item"><a className="page-link" href="#">{currentPage.toString()}</a></li>
+                    <li className={"page-item " + ( currentPage < totalPage ? "" : "disabled")} onClick={moveNextPage}>
+                        <a className="page-link" href="#" tabIndex={-1} >Next</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     );
 }
@@ -155,17 +219,17 @@ const ProductInfor = (props: { product: OrderDetailList }) => {
 
             navigate("/order/view/"+props.product.id)
         }}>
-            <td style={{ width: 500 }}>{props.product.id}</td>
+            <td style={{ width: 500 }}>{+props.product.id}</td>
             <td style={{ width: widthColumn_detail }}>
-                {props.product.createdAt?.toString()}
+                {props.product.createAt?.toString()}
             </td>
             <td style={{ width: widthColumn_detail }}>
-                {props.product.customerName.toString()}
+                {props.product.customer.name.toString()}
             </td>
             <td style={{ width: widthColumn_detail }}>
                 <NumericFormat
                     displayType="text"
-                    value={props.product.price.toString()}
+                    value={props.product.total.toString()}
                     thousandSeparator={true}
                     suffix="đ"
                 />

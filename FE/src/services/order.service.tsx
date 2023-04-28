@@ -1,10 +1,15 @@
 import axiosClient from "@/Axios/AxiosClient";
 import { IOrderDetailProduct, Order, OrderDetail, OutputOrderDetail } from "@/interfaces/Order";
+import axios from "axios";
 
-export const getAllOrderService = async () => {
+export const getAllOrderService = async (query:String) => {
     // console.log(data);
-    const response = await axiosClient.get("/order");
-
+    const response = await axiosClient.get("/order?"+query);
+    return response.data;
+};
+export const getAllOrderByUrlService = async (url:String) => {
+    // console.log(data);
+    const response = await axios.get(url.toString());
     return response.data;
 };
 export const getOrderByIDService = async (id:Number) => {

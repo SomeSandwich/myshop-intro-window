@@ -5,28 +5,70 @@ import {current } from '@reduxjs/toolkit'
 import { BookSliceState } from '@/interfaces/stateBookSlice';
 import { Category } from '@/interfaces/category';
 import { addCateService, DeleteCateThunkService, getAllCate, updateCateService } from '@/services/categories.service';
-import { IOrderDetailProduct, Order, OrderDetail, OutputOrderDetail } from '@/interfaces/Order';
-import { DeleteOrderService, addOrderService, getAllOrderService, updateOrderService } from '@/services/order.service';
+import { IOrderDetailProduct, Order, OrderDetail, OrderDetailList, OutputOrderDetail } from '@/interfaces/Order';
+import { DeleteOrderService, addOrderService, getAllOrderByUrlService, getAllOrderService, updateOrderService } from '@/services/order.service';
 import { arraysEqual } from '@/features/Categories/CateSlice';
 import { Notification, notification } from '../Book/AddBook';
 export interface IOrderState {
-  listOrder: Order[];
+  listOrder: OrderDetailList[];
   isLoading: boolean;
   hasError : boolean;
-  currentOrder: IOrderDetailProduct[]
+  currentOrder: IOrderDetailProduct[];
+  totalPage :Number;
+  urlPrePage: String;
+  urlNextPage: String;
+  currentPage: Number;
+  urlCurrentPage: String
 }
 const initialState: IOrderState = {
     listOrder: [],
     isLoading: false,
     hasError: false,
-    currentOrder: []
+    currentOrder: [],
+    totalPage: 1,
+    urlPrePage: "",
+    urlNextPage: "",
+    currentPage: 1,
+    urlCurrentPage: ""
 };
 export const getAllOrderThunk = createAsyncThunk(
   "order",
-  async (data, { dispatch, rejectWithValue }) => {
+  async (query :{
+    CustomerId: Number | null,
+    DateFrom: String | null,
+    DateTo:String | null,
+    PageNumber:Number| null,
+    PageSize:Number| null}, { dispatch, rejectWithValue }) => {
+    try {
+      var PerareQuery =""
+      if(query.CustomerId){
+        PerareQuery+= `CustomerId=${query.CustomerId}&`
+      }
+      if(query.DateFrom){
+        PerareQuery+= `DateFrom=${query.DateFrom}&`
+      }
+      if(query.DateTo){
+        PerareQuery+= `DateTo=${query.DateTo}&`
+      }
+      if(query.PageNumber){
+        PerareQuery+= `PageNumber=${query.PageNumber}&`
+      }
+      PerareQuery+= `PageSize=10`
+    //   dispatch(setLoading(true));
+    const response = await getAllOrderService(PerareQuery);
+    //   dispatch(setLoading(false));
+      return [response,"https://myshop.hieucckha.me/api/v1/order?"+PerareQuery];
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
+export const getAllOrderByUrlThunk = createAsyncThunk(
+  "order/url",
+  async (url:String, { dispatch, rejectWithValue }) => {
     try {
     //   dispatch(setLoading(true));
-    const response = await getAllOrderService();
+    const response = await getAllOrderByUrlService(url);
     //   dispatch(setLoading(false));
       return response;
     } catch (error: any) {
@@ -39,7 +81,6 @@ export const AddOrderThunk = createAsyncThunk(
   async (data:{total: Number,customerId:Number,orderDetails:IOrderDetailProduct[]}, { dispatch, rejectWithValue }) => {
     try {
       const response = await addOrderService(data.total,data.customerId,data.orderDetails);
-      dispatch(getAllOrderThunk())
       notification("Create Order Success Fully",Notification.Success)
       return response;
     } catch (error: any) {
@@ -52,7 +93,6 @@ export const UpdateOrderThunk = createAsyncThunk(
   async (data :{id:string,newOrder:OutputOrderDetail}, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateOrderService(data.id,data.newOrder);
-      dispatch(getAllOrderThunk())
       return response;
     } catch (error: any) {
       return rejectWithValue(error);
@@ -64,7 +104,6 @@ export const DeleteOrderThunk = createAsyncThunk(
   async (data : string, { dispatch, rejectWithValue }) => {
     try {
       const response = await DeleteOrderService(data);
-      dispatch(getAllOrderThunk())
       return {response,data};
     } catch (error: any) {
       return rejectWithValue(error);
@@ -106,14 +145,62 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllOrderThunk.fulfilled,
         (state, action) => {
-            console.log("Get all cate done");
             if(arraysEqual(state.listOrder,action.payload))
             {
               console.log("Not Change")
             }
             else{
               console.log("Change")
-              state.listOrder = action.payload
+              
+              const DetailOrderPaging = action.payload[0]
+              console.log(DetailOrderPaging)
+              state.urlCurrentPage = action.payload[1]
+              if(DetailOrderPaging.data.length > 0){
+                
+                if(!arraysEqual(DetailOrderPaging.data,state.listOrder)){
+                  state.listOrder = DetailOrderPaging.data
+                }
+                state.urlNextPage=DetailOrderPaging.nextPage?DetailOrderPaging.nextPage:""
+                state.urlPrePage=DetailOrderPaging.previousPage?DetailOrderPaging.previousPage:""
+                state.totalPage = DetailOrderPaging.totalPages
+                state.currentPage = DetailOrderPaging.pageNumber
+              }else{
+                state.listOrder =[]
+                state.urlPrePage=""
+                state.urlNextPage = ""
+                state.totalPage=1
+                state.currentPage=1
+              }
+            }
+            state.isLoading = false;
+            state.hasError = false;
+        }
+      );
+      builder.addCase(
+        getAllOrderByUrlThunk.fulfilled,
+        (state, action) => {
+            if(arraysEqual(state.listOrder,action.payload))
+            {
+              console.log("Not Change")
+            }
+            else{
+              console.log("Change")
+              const DetailOrderPaging = action.payload
+              if(DetailOrderPaging.data.length > 0){
+                if(!arraysEqual(DetailOrderPaging.data,state.listOrder)){
+                  state.listOrder = DetailOrderPaging.data
+                }
+                state.urlNextPage=DetailOrderPaging.nextPage?DetailOrderPaging.nextPage:""
+                state.urlPrePage=DetailOrderPaging.previousPage?DetailOrderPaging.previousPage:""
+                state.totalPage = DetailOrderPaging.totalPages
+                state.currentPage = DetailOrderPaging.pageNumber
+              }else{
+                state.listOrder =[]
+                state.urlPrePage=""
+                state.urlNextPage = ""
+                state.totalPage=1
+                state.currentPage=1
+              }
             }
             state.isLoading = false;
             state.hasError = false;

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Genre } from "@/interfaces/Genre";
 import OrderList from "./OrderList";
 import { NumericFormat } from "react-number-format";
+import useLocalStore from "@/Hooks/useLocalStore";
 
 export default function OrderDashBoard() {
   const listBook = useAppSelector(
@@ -21,6 +22,7 @@ export default function OrderDashBoard() {
     (state: RootState) => state.order.currentOrder
   );
   const [books, setBooks] = useState<IOrderDetailProduct[]>(listProduct);
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   console.log("boook");
@@ -122,11 +124,11 @@ const ProductDetail = (props: { product: IOrderDetailProduct, handleDelete: Func
           suffix="đ"
         />
       </td>
-      <td style={{ width: widthColumn_detail }}>{props.product.quantity}</td>
+      <td style={{ width: widthColumn_detail }}>{+props.product.quantity}</td>
       <td style={{ width: widthColumn_detail }}>
         <NumericFormat
           displayType="text"
-          value={(props.product.unitPrice * props.product.quantity)}
+          value={(props.product.unitPrice? +props.product.unitPrice* +props.product.quantity:0)}
           thousandSeparator={true}
           suffix="đ"
         />
