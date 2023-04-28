@@ -142,8 +142,11 @@ body {
         margin-top: 30px;
     }
     .filter-year{
-        margin-left: 100px;
         max-width: 150px;
+    }
+    .filter-month{
+        max-width: 150px;
+        width: 50px;
     }
 }
 .home-view,.editcate-view,.add-order,.order-dashboard,.order-detail-full{
@@ -251,3 +254,13 @@ table.scrolldown {
  .toggle-switch{
     background-color: white;
  }
+.filter-dashboard{
+    // background-color: #149ddd;
+    padding: 15px;
+    thead{
+        // background-color: red;
+        tr th{
+            
+        }
+    }
+}
