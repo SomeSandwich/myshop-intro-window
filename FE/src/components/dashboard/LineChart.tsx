@@ -56,5 +56,5 @@ export function LineChart(props: { data: Number[] , label: String[] }) {
             }
         ],
     };
-    return <Line options={options} data={data} />;
+    return <Line style={{width:"600px",maxWidth:"600px",minWidth:"600px"}} options={options} data={data} />;
 }

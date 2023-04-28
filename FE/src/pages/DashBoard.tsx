@@ -16,12 +16,14 @@ import TotalMoney from '@/components/dashboard/TotalMoney';
 import ToTalAmout from '@/components/dashboard/ToTalAmout';
 import { LineChart } from '@/components/dashboard/LineChart';
 import ProductStatistics from '@/components/dashboard/ProductStatistics';
-import { getStatisticOrderCate, getStatisticOrderYearService } from '@/services/order.service';
+import { getStatisticOrdeDayService, getStatisticOrdeMonthService, getStatisticOrdeWeekService, getStatisticOrderCate, getStatisticOrderYearService } from '@/services/order.service';
 import { useAppSelector } from '@/Hooks/apphooks';
 import { RootState } from '@/store';
 import { Book } from '@/interfaces/bookDetail';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from "react-bootstrap";
+import { Notification, notification } from '@/components/Book/AddBook';
+import { ToastContainer } from 'react-toastify';
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -63,11 +65,74 @@ export default function DashBoard() {
     const handleShow = () => {
         setShow(true)
     };
-    
+
     const handleClose = () => setShow(false);
     const handleStartChange = (e: any) => {
         setLastDayFrom(e.target.value);
     };
+    const handleStatisDay = ()=>{
+        console.log(lastDayFrom)
+        console.log(lastDayTo)
+        if(!lastDayFrom || !lastDayTo) {
+            notification("Please Input Both Of DayForm and DayTo ", Notification.Warn);
+        }else{
+            const getStatisticBarChart = async () => {
+                const data = await getStatisticOrdeDayService(lastDayFrom,lastDayTo)
+                setlabeLBarORLineChart(data.month)
+                setDataBarORLineChart(data.revenue)
+                setRevenue(calculateSum(data.revenue))
+                setCost(calculateSum(data.cost))
+                setProfit(calculateSum(data.profit))
+            }
+            getStatisticBarChart()
+            setcurrentTypeofStatistic(Statistic.Day)
+        }
+    }
+    const handleStatisWeek = ()=>{
+        console.log(curWeekrChoosen)
+        const getStatisticBarChart = async () => {
+            const data = await getStatisticOrdeWeekService(curWeekrChoosen,curYearChoosen)
+            setlabeLBarORLineChart(data.month)
+            setDataBarORLineChart(data.revenue)
+            setRevenue(calculateSum(data.revenue))
+            setCost(calculateSum(data.cost))
+            setProfit(calculateSum(data.profit))
+        }
+        getStatisticBarChart()
+        setcurrentTypeofStatistic(Statistic.Week)
+    }
+    const handleStatisMonth = ()=>{
+        console.log(curMonthrChoosen)
+        const getStatisticBarChart = async () => {
+            const data = await getStatisticOrdeMonthService(curMonthrChoosen,curYearChoosen)
+            setlabeLBarORLineChart(data.month)
+            setDataBarORLineChart(data.revenue)
+            setRevenue(calculateSum(data.revenue))
+            setCost(calculateSum(data.cost))
+            setProfit(calculateSum(data.profit))
+        }
+        getStatisticBarChart()
+        setcurrentTypeofStatistic(Statistic.Month)
+    }
+    const handleStatisYear = ()=>{
+        console.log(curYearChoosen)
+        const getStatisticBarChart = async () => {
+            const data = await getStatisticOrderYearService(curYearChoosen)
+            setlabeLBarORLineChart(data.month)
+            setDataBarORLineChart(data.revenue)
+            setRevenue(calculateSum(data.revenue))
+            setCost(calculateSum(data.cost))
+            setProfit(calculateSum(data.profit))
+        }
+        const getStatisticPieChart = async () => {
+            const data = await getStatisticOrderCate()
+            setLabelPieChart(data.id)
+            setDataPieChart(data.quantity)
+        }
+        getStatisticPieChart()
+        getStatisticBarChart()
+        setcurrentTypeofStatistic(Statistic.Year)
+    }
     useEffect(() => {
         if (booklist.length > 0) {
             setAmoutBook(calAmountSellBook(booklist))
@@ -79,8 +144,6 @@ export default function DashBoard() {
             const data = await getStatisticOrderYearService(curYearChoosen)
             setlabeLBarORLineChart(data.month)
             setDataBarORLineChart(data.revenue)
-            console.log(data.month)
-            console.log(data.revenue)
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
             setProfit(calculateSum(data.profit))
@@ -97,10 +160,11 @@ export default function DashBoard() {
 
     return (
         <div className='dash-board'>
+            <ToastContainer />
             <div className='row d-flex flex-wrap justify-content-between'>
                 <ToTalAmout title='Tổng sách nhập kho' amount={amountBook.toString()} iconClass="fa-solid fa-book" bg_color={{ left: 'darkorchid', right: 'pink' }} />
                 <div className=' d-flex flex-wrap justify-content-between align-items-center'>
-                    <h2><strong>Doash board</strong></h2>
+                    <h2><strong>Dash board</strong></h2>
                 </div>
                 <div className=' d-flex flex-wrap justify-content-between align-items-center'>
                     <button className='btn btn-info text-white' onClick={handleShow}>
@@ -165,7 +229,7 @@ export default function DashBoard() {
                                         onChange={handleEndChange}
                                     />
                                 </th>
-                                <th className='text-left'>
+                                <th className='text-left' onClick={()=>{handleStatisDay()}}>
                                     <button className='btn btn-info text-white'>Statistic By Day</button>
                                 </th>
                             </tr>
@@ -188,7 +252,7 @@ export default function DashBoard() {
                                     </div>
                                 </th>
                                 <th className='text-left'>
-                                    <button className='btn btn-info text-white'>Statistic By Week</button>
+                                    <button onClick={()=>{handleStatisWeek()}} className='btn btn-info text-white'>Statistic By Week</button>
                                 </th>
                             </tr>
                             <tr>
@@ -208,7 +272,7 @@ export default function DashBoard() {
                                     </div>
                                 </th>
                                 <th className='text-left'>
-                                    <button className='btn btn-info text-white'>Statistic By Month</button>
+                                    <button onClick={()=>{handleStatisMonth()}} className='btn btn-info text-white'>Statistic By Month</button>
                                 </th>
                             </tr>
                             <tr>
@@ -227,7 +291,7 @@ export default function DashBoard() {
                                     </div>
                                 </th>
                                 <th className='text-left'>
-                                    <button className='btn btn-info text-white'>Statistic By Year</button>
+                                    <button onClick={()=>{handleStatisYear()}} className='btn btn-info text-white'>Statistic By Year</button>
                                 </th>
                             </tr>
                         </tbody>

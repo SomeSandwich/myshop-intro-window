@@ -43,6 +43,21 @@ export const getStatisticOrderYearService = async (year:Number) => {
     const response = await axiosClient.get(`/order/statistic/year?year=${year}`);
     return response.data;
 };
+export const getStatisticOrdeMonthService = async (month:Number,year:Number) => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/statistic/month?month=${month}&year=${year}`);
+    return response.data;
+};
+export const getStatisticOrdeWeekService = async (week:Number,year:Number) => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/statistic/week?week=${week}&year=${year}`);
+    return response.data;
+};
+export const getStatisticOrdeDayService = async (DayFrom:String,DayTo:String) => {
+    // console.log(data);
+    const response = await axiosClient.get(`/order/statistic/day?DayFrom=${DayFrom}&DayTo=${DayTo}`);
+    return response.data;
+};
 export const getStatisticOrderCate = async () => {
     // console.log(data);
     const response = await axiosClient.get(`/order/statistic/category`);
