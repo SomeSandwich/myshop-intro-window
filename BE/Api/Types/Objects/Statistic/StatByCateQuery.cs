@@ -2,7 +2,7 @@
 
 public class StatByCateQuery
 {
-    public DateOnly? DateFrom { get; set; }
+    public DateOnly DateFrom { get; set; } = default;
 
-    public DateOnly? DateTo { get; set; }
+    public DateOnly DateTo { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 }

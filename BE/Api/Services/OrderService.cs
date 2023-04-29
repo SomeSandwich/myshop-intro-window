@@ -1,4 +1,7 @@
-﻿using Api.Context;
+﻿using System.Collections;
+using System.Diagnostics;
+using System.Globalization;
+using Api.Context;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
 using API.Types.Objects.Filter;
@@ -24,6 +27,13 @@ public interface IOrderService
 
     Task<StatByCateRes> GetStatisticByCate(StatByCateQuery query);
     Task<StatByYearRes> GetStatisticByYear(StatByYearQuery query);
+    Task<StatByMonthRes> GetStatisticByMonth(StatByMonthQuery query);
+    Task<StatByWeekRes> GetStatisticByWeek(StatByWeekQuery query);
+    Task<StatByDateRes> GetStatisticByDate(StatByDateQuery query);
+
+
+    public Task<DateTime> _firstDateOfWeek(int year, int weekNum,
+        CalendarWeekRule rule = CalendarWeekRule.FirstFullWeek);
 }
 
 public class OrderService : IOrderService
@@ -218,16 +228,24 @@ public class OrderService : IOrderService
             {
                 Id = e.Key,
                 Quantity = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
-                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Where(orderDetail =>
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
                     .Sum(od => od.Quantity))),
                 Cost = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
-                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Where(orderDetail =>
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
                     .Sum(od => od.Cost * od.Quantity))),
                 Profit = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
-                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Where(orderDetail =>
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
                     .Sum(od => od.UnitPrice * od.Quantity))),
                 Revenue = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
-                    .Where(orderDetail => orderDetail.Order.CreateAt != default)
+                    .Where(orderDetail =>
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
                     .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
             }).ToList();
 
@@ -252,7 +270,7 @@ public class OrderService : IOrderService
             .Include(o => o.OrderDetails)
             .Where(o => o.CreateAt.Year == DateTime.Now.Year)
             .GroupBy(o => o.CreateAt.Month)
-            .Select(o => new StatRes
+            .Select(o => new StatByYearDto()
             {
                 Month = o.Key,
                 Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
@@ -261,7 +279,7 @@ public class OrderService : IOrderService
                 Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
             }).ToList();
 
-        result = _mapper.Map<ICollection<StatRes>, StatByYearRes>(listOrder, opt=>
+        result = _mapper.Map<ICollection<StatByYearDto>, StatByYearRes>(listOrder, opt =>
             opt.AfterMap((src, des) =>
             {
                 for (int i = 1; i <= 12; i++)
@@ -278,20 +296,196 @@ public class OrderService : IOrderService
             }));
         return result;
     }
+
+    public async Task<StatByMonthRes> GetStatisticByMonth(StatByMonthQuery query)
+    {
+        var listStatOrderByMonth = _context.Orders
+            .Include(o => o.OrderDetails)
+            .Where(o => o.CreateAt.Year == query.Year && o.CreateAt.Month == query.Month)
+            .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
+            .Select(o => new StatByMonthDto()
+            {
+                Date = o.Key,
+                Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
+                Cost = o.Sum(od => od.OrderDetails.Sum(ord => ord.Cost * ord.Quantity)),
+                Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
+                Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
+            })
+            .AsEnumerable();
+
+        var dateFrom = new DateOnly(query.Year, query.Month, 1); // Day begin of month
+        var lastDate = DateTime.DaysInMonth(dateFrom.Year, dateFrom.Month); // Get last day of month
+        var dateTo = new DateOnly(dateFrom.Year, dateFrom.Month, lastDate);
+
+        var dates = new List<DateOnly>();
+
+        for (var dt = dateFrom; dateTo >= dt; dt = dt.AddDays(1)) // List day from 'dateFrom' to 'dateTo'
+        {
+            dates.Add(dt);
+        }
+
+        var listSortedDto = new SortedList<DateOnly, StatByMonthDto>();
+        foreach (var statOrderByMonth in listStatOrderByMonth) // Add day in db 
+        {
+            listSortedDto.Add(statOrderByMonth.Date, statOrderByMonth);
+        }
+
+        foreach (var day in
+                 dates.Where(day => !listSortedDto.ContainsKey(day))) // Add day not found in db but in list 'dates'
+        {
+            listSortedDto.Add(day, new StatByMonthDto
+            {
+                Date = day,
+                Quantity = 0,
+                Cost = 0,
+                Revenue = 0,
+                Profit = 0,
+            });
+        }
+
+        var result = _mapper.Map<IList<StatByMonthDto>, StatByMonthRes>(listSortedDto.Values);
+        return result;
+    }
+
+    public async Task<StatByWeekRes> GetStatisticByWeek(StatByWeekQuery query)
+    {
+        var dateFrom = DateOnly.FromDateTime(await _firstDateOfWeek(query.Year, query.Week)); // Day begin of month
+        var dateTo = dateFrom.AddDays(7);
+
+        var listStatOrderByMonth = _context.Orders
+            .Include(o => o.OrderDetails)
+            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo)
+            .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
+            .Select(o => new StatByWeekDto()
+            {
+                Date = o.Key,
+                Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
+                Cost = o.Sum(od => od.OrderDetails.Sum(ord => ord.Cost * ord.Quantity)),
+                Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
+                Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
+            })
+            .AsEnumerable();
+
+        var dates = new List<DateOnly>();
+
+
+        for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1)) // List day from 'dateFrom' to 'dateTo'
+        {
+            dates.Add(dt);
+        }
+
+        var listSortedDto = new SortedList<DateOnly, StatByWeekDto>();
+        foreach (var statOrderByMonth in listStatOrderByMonth) // Add day in db 
+        {
+            listSortedDto.Add(statOrderByMonth.Date, statOrderByMonth);
+        }
+
+        foreach (var day in
+                 dates.Where(day => !listSortedDto.ContainsKey(day))) // Add day not found in db but in list 'dates'
+        {
+            listSortedDto.Add(day, new StatByWeekDto()
+            {
+                Date = day,
+                Quantity = 0,
+                Cost = 0,
+                Revenue = 0,
+                Profit = 0,
+            });
+        }
+
+        var result = _mapper.Map<IList<StatByWeekDto>, StatByWeekRes>(listSortedDto.Values);
+        return result;
+    }
+
+    public async Task<StatByDateRes> GetStatisticByDate(StatByDateQuery query)
+    {
+        var dateFrom = query.DateFrom; // Day begin of month
+        var dateTo = query.DateTo;
+        var abc = dateTo.DayNumber - dateFrom.DayNumber;
+        if (abc > 30)
+            dateTo = dateFrom.AddDays(30);
+
+        var listStatOrderByMonth = _context.Orders
+            .Include(o => o.OrderDetails)
+            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo)
+            .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
+            .Select(o => new StatByDateDto()
+            {
+                Date = o.Key,
+                Quantity = o.Sum(od => od.OrderDetails.Sum(ord => ord.Quantity)),
+                Cost = o.Sum(od => od.OrderDetails.Sum(ord => ord.Cost * ord.Quantity)),
+                Revenue = o.Sum(od => od.OrderDetails.Sum(ord => ord.UnitPrice * ord.Quantity)),
+                Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
+            })
+            .AsEnumerable();
+
+        var dates = new List<DateOnly>();
+
+
+        for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1)) // List day from 'dateFrom' to 'dateTo'
+        {
+            dates.Add(dt);
+        }
+
+        var listSortedDto = new SortedList<DateOnly, StatByDateDto>();
+        foreach (var statOrderByMonth in listStatOrderByMonth) // Add day in db 
+        {
+            listSortedDto.Add(statOrderByMonth.Date, statOrderByMonth);
+        }
+
+        foreach (var day in
+                 dates.Where(day => !listSortedDto.ContainsKey(day))) // Add day not found in db but in list 'dates'
+        {
+            listSortedDto.Add(day, new StatByDateDto()
+            {
+                Date = day,
+                Quantity = 0,
+                Cost = 0,
+                Revenue = 0,
+                Profit = 0,
+            });
+        }
+
+        var result = _mapper.Map<IList<StatByDateDto>, StatByDateRes>(listSortedDto.Values);
+        return result;
+    }
+
+    public async Task<DateTime> _firstDateOfWeek(int year, int weekNum,
+        CalendarWeekRule rule = CalendarWeekRule.FirstFullWeek)
+    {
+        Debug.Assert(weekNum >= 1);
+        DateTime jan1 = new DateTime(year, 1, 1);
+        int daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+        DateTime firstMonday = jan1.AddDays(daysOffset);
+        Debug.Assert(firstMonday.DayOfWeek == DayOfWeek.Monday);
+
+        var cal = CultureInfo.CurrentCulture.Calendar;
+        int firstWeek = cal.GetWeekOfYear(firstMonday, rule, DayOfWeek.Monday);
+
+        if (firstWeek <= 1)
+        {
+            weekNum -= 1;
+        }
+
+        DateTime result = firstMonday.AddDays(weekNum * 7);
+        return result;
+    }
 }
 
-public class StatRes
-{
-    public int Month { get; set; } = 0;
+// public class StatRes
+// {
+//     public int Month { get; set; } = 0;
+//
+//     public int Quantity { get; set; } = 0;
+//
+//     public int Cost { get; set; } = 0;
+//
+//     public int Revenue { get; set; } = 0;
+//
+//     public int Profit { get; set; } = 0;
+// }
 
-    public int Quantity { get; set; } = 0;
 
-    public int Cost { get; set; } = 0;
-
-    public int Revenue { get; set; } = 0;
-
-    public int Profit { get; set; } = 0;
-}
 //
 // public class OrderDetailRes
 // {
