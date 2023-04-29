@@ -279,21 +279,26 @@ public class OrderService : IOrderService
                 Profit = o.Sum(od => od.OrderDetails.Sum(ord => (ord.UnitPrice - ord.Cost) * ord.Quantity)),
             }).ToList();
 
-        result = _mapper.Map<ICollection<StatByYearDto>, StatByYearRes>(listOrder, opt =>
-            opt.AfterMap((src, des) =>
-            {
-                for (int i = 1; i <= 12; i++)
+        var listSortedDto = new SortedList<int, StatByYearDto>();
+        foreach (var order in listOrder) // Add day in db 
+        {
+            listSortedDto.Add(order.Month, order);
+        }
+
+        for (var i = 1; i <= 12; i++)
+        {
+            if (!listSortedDto.ContainsKey(i))
+                listSortedDto.Add(i, new StatByYearDto
                 {
-                    if (!des.Month.Contains(i))
-                    {
-                        des.Month.Add(i);
-                        des.Cost.Add(0);
-                        des.Quantity.Add(0);
-                        des.Profit.Add(0);
-                        des.Revenue.Add(0);
-                    }
-                }
-            }));
+                    Month = i,
+                    Quantity = 0,
+                    Cost = 0,
+                    Revenue = 0,
+                    Profit = 0,
+                });
+        }
+
+        result = _mapper.Map<IList<StatByYearDto>, StatByYearRes>(listSortedDto.Values);
         return result;
     }
 
