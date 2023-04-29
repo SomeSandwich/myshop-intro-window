@@ -24,20 +24,17 @@ public class OrderController : ControllerBase
 {
     private readonly IOrderService _orSer;
     private readonly IProductService _prodSer;
+    private readonly ICustomerService _customerService;
 
-    public OrderController(IProductService prodSer, IOrderService orSer)
+    public OrderController(IProductService prodSer, IOrderService orSer, ICustomerService customerService)
     {
         _orSer = orSer;
         _prodSer = prodSer;
+        _customerService = customerService;
     }
 
     [HttpGet]
-    [Route("")]
-    [SwaggerOperation(
-        Summary = "Get All Order",
-        Description = "",
-        OperationId = "Get")]
-    // [SwaggerResponse(200, "List information order", typeof(IEnumerable<OrderRes>))]
+    [Route("all")]
     public async Task<ActionResult<PagedResponse<OrderRes>>> GetFilter([FromQuery] OrderPagingFilter page)
     {
         if (page.DateFrom is not null && page.DateTo is not null)
@@ -51,20 +48,24 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     [Route("customer/{customerId:int}")]
-    [SwaggerOperation(
-        Summary = "Get By Customer Id",
-        Description = "",
-        OperationId = "Get")]
-    // [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
-    [HttpGet]
-    [Route("order/{id:int}")]
-    // [SwaggerResponse(200, "Order information", typeof(OrderRes))]
-    public async Task<ActionResult<OrderRes>> GetOne([FromRoute] int id)
+    public async Task<ActionResult<IEnumerable<OrderRes>>> GetByCustomerId([FromRoute] int customerId)
     {
-        var order = await _orSer.GetAsync(id);
+        var checkCustomer = await _customerService.CheckCustomerExists(customerId);
+        if (checkCustomer == false)
+            return BadRequest(new ResFailure { Message = $"Not found Customer with Id: {customerId}" });
+        
+        var result = await _orSer.GetByCustomerAsync(customerId);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("{orderId:int}")]
+    public async Task<ActionResult<OrderRes>> GetOne([FromRoute] int orderId)
+    {
+        var order = await _orSer.GetAsync(orderId);
 
         if (order is null)
-            return BadRequest(new ResFailure { Message = $"Not found orderId:{id}" });
+            return BadRequest(new ResFailure { Message = $"Not found orderId:{orderId}" });
 
         return Ok(order);
     }
@@ -75,7 +76,6 @@ public class OrderController : ControllerBase
         Summary = "Create a order",
         Description = "",
         OperationId = "Post")]
-    // [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<string>> Create([FromBody] CreateOrderReq req)
     {
         var selfIdStr = User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name)?.Value;
@@ -123,16 +123,28 @@ public class OrderController : ControllerBase
         if (result is FailureResult)
             return BadRequest(new ResFailure { Message = result.Message });
 
-        return Ok();
+        return Ok(new ResSuccess());
+    }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        var result = await _orSer.DeleteAsync(id);
+
+        if (result is FailureResult)
+            return BadRequest(new ResFailure { Message = result.Message });
+
+        return Ok(new ResSuccess());
     }
 
     [HttpGet]
     [Route("statistic/category")]
     public async Task<ActionResult<StatByCateRes>> GetStatisticByCategory([FromQuery] StatByCateQuery query)
     {
-        if(query.DateFrom.CompareTo(query.DateTo) > 0)
+        if (query.DateFrom.CompareTo(query.DateTo) > 0)
             return BadRequest(new ResFailure { Message = "Invalid input data" });
-        
+
         var result = await _orSer.GetStatisticByCate(query);
         return Ok(result);
     }
@@ -174,9 +186,9 @@ public class OrderController : ControllerBase
     [Route("statistic/date")]
     public async Task<ActionResult> GetStatisticByDate([FromQuery] StatByDateQuery query)
     {
-        if(query.DateFrom.CompareTo(query.DateTo) > 0)
+        if (query.DateFrom.CompareTo(query.DateTo) > 0)
             return BadRequest(new ResFailure { Message = "Invalid input data" });
-        
+
         var result = await _orSer.GetStatisticByDate(query);
         return Ok(result);
     }

@@ -70,13 +70,13 @@ public class ProductService : IProductService
     public async Task<IEnumerable<ProductRes>> SearchProduct(string query)
     {
         var listProduct = _context.Products
-            .Include(p => p.Category)
-            .Where(p => p.Title.Trim().Contains(query)
-                        ||
-                        p.Description.Trim().Contains(query))
+            .Include(p => p.Category).AsEnumerable();
+        
+        var abc = listProduct
+            .Where(p => p.Title.Trim().Contains(query))
             .AsEnumerable();
 
-        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(listProduct);
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(abc);
     }
 
     public async Task<bool> CheckProductExists(int id)

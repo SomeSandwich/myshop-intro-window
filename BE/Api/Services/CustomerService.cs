@@ -10,8 +10,8 @@ namespace Api.Services;
 
 public interface ICustomerService
 {
-    Task<bool> Exist(string phoneNumber);
-
+    Task<bool> CheckCustomerExistsByPhoneNumber(string phoneNumber);
+    Task<bool> CheckCustomerExists(int id);
     Task<IEnumerable<CustomerRes>> GetAsync();
     Task<CustomerRes?> GetAsync(int id);
     Task<CustomerRes?> GetByPhoneNumber(string phoneNum);
@@ -36,9 +36,14 @@ public class CustomerService : ICustomerService
         _mapper = config.CreateMapper();
     }
 
-    public async Task<bool> Exist(string phoneNumber)
+    public async Task<bool> CheckCustomerExistsByPhoneNumber(string phoneNumber)
     {
         return await _context.Customers.AnyAsync(e => e.PhoneNumber == phoneNumber.Trim());
+    }
+
+    public async Task<bool> CheckCustomerExists(int id)
+    {
+        return await _context.Customers.AnyAsync(e =>e.Id == id);
     }
 
     public async Task<IEnumerable<CustomerRes>> GetAsync()
