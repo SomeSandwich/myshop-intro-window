@@ -51,6 +51,7 @@ export default function DashBoard() {
     const [cost, setCost] = useState<Number>(0)
     const [revenue, setRevenue] = useState<Number>(0)
     const [profit, setProfit] = useState<Number>(0)
+    const [quantity, setQuantity] = useState<Number>(0)
     const [show, setShow] = useState(false);
     const [dataBarORLineChart, setDataBarORLineChart] = useState([])
     const [dataPieChart, setDataPieChart] = useState([])
@@ -78,11 +79,12 @@ export default function DashBoard() {
         }else{
             const getStatisticBarChart = async () => {
                 const data = await getStatisticOrdeDayService(lastDayFrom,lastDayTo)
-                setlabeLBarORLineChart(data.month)
+                setlabeLBarORLineChart(data.date)
                 setDataBarORLineChart(data.revenue)
                 setRevenue(calculateSum(data.revenue))
                 setCost(calculateSum(data.cost))
                 setProfit(calculateSum(data.profit))
+                setQuantity(calculateSum(data.quantity))
             }
             getStatisticBarChart()
             setcurrentTypeofStatistic(Statistic.Day)
@@ -92,11 +94,12 @@ export default function DashBoard() {
         console.log(curWeekrChoosen)
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrdeWeekService(curWeekrChoosen,curYearChoosen)
-            setlabeLBarORLineChart(data.month)
+            setlabeLBarORLineChart(data.date)
             setDataBarORLineChart(data.revenue)
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
             setProfit(calculateSum(data.profit))
+            setQuantity(calculateSum(data.quantity))
         }
         getStatisticBarChart()
         setcurrentTypeofStatistic(Statistic.Week)
@@ -105,7 +108,7 @@ export default function DashBoard() {
         console.log(curMonthrChoosen)
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrdeMonthService(curMonthrChoosen,curYearChoosen)
-            setlabeLBarORLineChart(data.month)
+            setlabeLBarORLineChart(data.date)
             setDataBarORLineChart(data.revenue)
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
@@ -123,6 +126,7 @@ export default function DashBoard() {
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
             setProfit(calculateSum(data.profit))
+            setQuantity(calculateSum(data.quantity))
         }
         const getStatisticPieChart = async () => {
             const data = await getStatisticOrderCate()
@@ -147,6 +151,7 @@ export default function DashBoard() {
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
             setProfit(calculateSum(data.profit))
+            setQuantity(calculateSum(data.quantity))
         }
         const getStatisticPieChart = async () => {
             const data = await getStatisticOrderCate()
@@ -163,15 +168,18 @@ export default function DashBoard() {
             <ToastContainer />
             <div className='row d-flex flex-wrap justify-content-between'>
                 <ToTalAmout title='Tổng sách nhập kho' amount={amountBook.toString()} iconClass="fa-solid fa-book" bg_color={{ left: 'darkorchid', right: 'pink' }} />
-                <div className=' d-flex flex-wrap justify-content-between align-items-center'>
+                {/* <div className=' d-flex flex-wrap justify-content-between align-items-center'>
                     <h2><strong>Dash board</strong></h2>
+                </div> */}
+                <div  style={{marginRight:"120px"}}>
+                    <ToTalAmout title='Số lượng sách bán' amount={quantity.toString()} iconClass="fa-solid fa-cart-shopping" bg_color={{left:'#2fafe2',right:'#88ebe2'}}/>
                 </div>
-                <div className=' d-flex flex-wrap justify-content-between align-items-center'>
+                <div className=' d-flex flex-wrap justify-content-between align-items-center  ml-5'>
                     <button className='btn btn-info text-white' onClick={handleShow}>
                         Statistic
                     </button>
                 </div>
-                {/* <ToTalAmout title='Tổng đơn hàng' amount='32' iconClass="fa-solid fa-cart-shopping" bg_color={{left:'#2fafe2',right:'#88ebe2'}}/> */}
+                
 
             </div>
             <div className='row d-flex flex-wrap justify-content-between'>

@@ -93,8 +93,10 @@ export const UpdateOrderThunk = createAsyncThunk(
   async (data :{id:string,newOrder:OutputOrderDetail}, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateOrderService(data.id,data.newOrder);
+      notification("Update Success",Notification.Success)
       return response;
     } catch (error: any) {
+      if(error) notification(error.response.data.message, Notification.Error)
       return rejectWithValue(error);
     }
   }

@@ -55,7 +55,7 @@ export const getStatisticOrdeWeekService = async (week:Number,year:Number) => {
 };
 export const getStatisticOrdeDayService = async (DayFrom:String,DayTo:String) => {
     // console.log(data);
-    const response = await axiosClient.get(`/order/statistic/day?DayFrom=${DayFrom}&DayTo=${DayTo}`);
+    const response = await axiosClient.get(`/order/statistic/date?DateFrom=${DayFrom}&DateTo=${DayTo}`);
     return response.data;
 };
 export const getStatisticOrderCate = async () => {

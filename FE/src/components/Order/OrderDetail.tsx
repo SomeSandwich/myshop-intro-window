@@ -8,53 +8,11 @@ import React, { useEffect, useState } from 'react'
 import { NumericFormat } from 'react-number-format'
 import Select, { components } from 'react-select'
 import { calculator } from './AddOrder'
-import { getOrderByIDService } from '@/services/order.service'
-import { useParams } from 'react-router-dom'
+import { DeleteOrderService, getOrderByIDService } from '@/services/order.service'
+import { useNavigate, useParams } from 'react-router-dom'
 import { UpdateOrderThunk } from './OrderSlice'
-const exampleOrder = {
-  "id": 55,
-  "total": 150000,
-  "status": "Processing",
-  "createAt": "2023-04-26T10:40:14.922863",
-  "updateAt": "2023-04-26T10:40:14.922863",
-  "customerId": 3,
-  "sellerId": 3,
-  "customer": {
-    "id": 3,
-    "name": "Bejamin",
-    "phoneNumber": "0123456789",
-    "joinDate": "2023-04-13",
-    "orders": null
-  },
-  "orderDetails": [
-    {
-      "productId": 11,
-      "cost": 25000,
-      "unitPrice": 100000,
-      "discount": 0,
-      "quantity": 1
-    }, {
-      "productId": 12,
-      "cost": 100000,
-      "unitPrice": 20000,
-      "discount": 0,
-      "quantity": 1
-    }, {
-      "productId": 3,
-      "cost": 100000,
-      "unitPrice": 20000,
-      "discount": 0,
-      "quantity": 1
-    }
-    , {
-      "productId": 6,
-      "cost": 100000,
-      "unitPrice": 20000,
-      "discount": 0,
-      "quantity": 1
-    }
-  ]
-}
+import { Notification, notification } from '../Book/AddBook'
+import { ToastContainer } from 'react-toastify'
 const options = [
   {
     label: "Processing",
@@ -94,6 +52,7 @@ export default function OrderDetail() {
   const [listDetail, setListDetail] = useState<IOrderDetailProduct[]>()
   const [total, setTotal] = useState<Number>(order ? order.total : 0)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     const callApi=async()=>{
       const data = await getOrderByIDService(+id)
@@ -134,6 +93,18 @@ export default function OrderDetail() {
       dispatch(UpdateOrderThunk({id:id,newOrder:curorder}))
     }
   }
+  const handleDeleteOrder =async ()=>{
+    if(order){
+      await DeleteOrderService(order.id.toString()).then(()=>{
+        notification("Delete Success",Notification.Success)
+        navigate("/order")
+      }).catch(()=>{
+        notification("Delete Fail",Notification.Error)
+      })
+    }
+    
+  }
+
   const handleChange = (selectedOption: any) => {
     if (selectedOption && order) {
       console.log(selectedOption.value)
@@ -145,6 +116,7 @@ export default function OrderDetail() {
   if (!order) return <></>
   return (
     <div className='order-detail-full m-4 p-2'>
+      <ToastContainer />
       <div className='d-flex justify-content-start'>
         <h1><strong>Order </strong><span className='ml-1 text-secondary'>#{+order.id}</span></h1>
       </div>
@@ -239,7 +211,10 @@ export default function OrderDetail() {
         </div>
       </div>
       <div className='row d-flex justify-content-end'>
-        <button onClick={handleSave} className='btn btn-success text-white'> Save Change</button>
+        {order.status == Status.Deleted ?
+          <button onClick={handleDeleteOrder} className='btn btn-danger text-white'> ConFirm Delete</button>:
+          <button onClick={handleSave} className='btn btn-success text-white'> Save Change</button>
+        }
       </div>
     </div>
   )
