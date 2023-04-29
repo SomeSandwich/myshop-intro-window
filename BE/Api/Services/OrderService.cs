@@ -18,6 +18,7 @@ public interface IOrderService
 {
     Task<PagedResponse<OrderRes>> GetAsync(OrderPagingFilter filter);
     Task<OrderRes?> GetAsync(int id);
+    Task<IEnumerable<OrderRes>> GetByCustomerAsync(int customerId);
 
     Task<int> CreateAsync(int sellerId, CreateOrderReq req);
 
@@ -60,6 +61,7 @@ public class OrderService : IOrderService
             .OrderByDescending(e => e.CreateAt)
             .Include(e => e.OrderDetails)
             .Include(e => e.Customer)
+            .Where(e=>e.Status != OrderStatus.Deleted)
             .AsEnumerable();
 
         if (filter.CustomerId is not null)
@@ -154,6 +156,17 @@ public class OrderService : IOrderService
         return order is null ? null : _mapper.Map<Order, OrderRes>(order);
     }
 
+    public async Task<IEnumerable<OrderRes>> GetByCustomerAsync(int customerId)
+    {
+        var order = _context.Orders
+            .Include(e => e.OrderDetails)
+            .Include(e => e.Customer)
+            .Where(e => e.CustomerId == customerId && e.Status != OrderStatus.Deleted)
+            .AsEnumerable();
+
+        return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderRes>>(order);
+    }
+
     public async Task<int> CreateAsync(int sellerId, CreateOrderReq req)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
@@ -229,23 +242,35 @@ public class OrderService : IOrderService
                 Id = e.Key,
                 Quantity = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
                     .Where(orderDetail =>
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0
+                        &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0
+                        &&
+                        orderDetail.Order.Status != OrderStatus.Deleted)
                     .Sum(od => od.Quantity))),
                 Cost = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
                     .Where(orderDetail =>
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0
+                        &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0
+                        &&
+                        orderDetail.Order.Status != OrderStatus.Deleted)
                     .Sum(od => od.Cost * od.Quantity))),
                 Profit = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
                     .Where(orderDetail =>
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0
+                        &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0
+                        &&
+                        orderDetail.Order.Status != OrderStatus.Deleted)
                     .Sum(od => od.UnitPrice * od.Quantity))),
                 Revenue = e.Sum(ef => ef.Products.Sum(p => p.OrderDetails
                     .Where(orderDetail =>
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0 &&
-                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0)
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateFrom) >= 0
+                        &&
+                        DateOnly.FromDateTime(orderDetail.Order.CreateAt).CompareTo(query.DateTo) <= 0
+                        &&
+                        orderDetail.Order.Status != OrderStatus.Deleted)
                     .Sum(od => (od.UnitPrice - od.Cost) * od.Quantity))),
             }).ToList();
 
@@ -268,7 +293,7 @@ public class OrderService : IOrderService
         var result = new StatByYearRes();
         var listOrder = _context.Orders
             .Include(o => o.OrderDetails)
-            .Where(o => o.CreateAt.Year == DateTime.Now.Year)
+            .Where(o => o.CreateAt.Year == DateTime.Now.Year && o.Status != OrderStatus.Deleted)
             .GroupBy(o => o.CreateAt.Month)
             .Select(o => new StatByYearDto()
             {
@@ -306,7 +331,8 @@ public class OrderService : IOrderService
     {
         var listStatOrderByMonth = _context.Orders
             .Include(o => o.OrderDetails)
-            .Where(o => o.CreateAt.Year == query.Year && o.CreateAt.Month == query.Month)
+            .Where(o => o.CreateAt.Year == query.Year && o.CreateAt.Month == query.Month &&
+                        o.Status != OrderStatus.Deleted)
             .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
             .Select(o => new StatByMonthDto()
             {
@@ -359,7 +385,8 @@ public class OrderService : IOrderService
 
         var listStatOrderByMonth = _context.Orders
             .Include(o => o.OrderDetails)
-            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo)
+            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo &&
+                        o.Status != OrderStatus.Deleted)
             .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
             .Select(o => new StatByWeekDto()
             {
@@ -412,7 +439,8 @@ public class OrderService : IOrderService
 
         var listStatOrderByMonth = _context.Orders
             .Include(o => o.OrderDetails)
-            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo)
+            .Where(o => DateOnly.FromDateTime(o.CreateAt) >= dateFrom && DateOnly.FromDateTime(o.CreateAt) <= dateTo &&
+                        o.Status != OrderStatus.Deleted)
             .GroupBy(o => DateOnly.FromDateTime(o.CreateAt))
             .Select(o => new StatByDateDto()
             {

@@ -84,7 +84,7 @@ public class CustomerController : ControllerBase
     [SwaggerResponse(400, "Exists customer with phone number")]
     public async Task<ActionResult<string>> Create([FromBody] CreateCustomerReq req)
     {
-        if (await _cusSer.Exist(req.PhoneNumber))
+        if (await _cusSer.CheckCustomerExistsByPhoneNumber(req.PhoneNumber))
             return BadRequest(new FailureResult
             {
                 Message = "The phone number is exist. Please using another phone number"
