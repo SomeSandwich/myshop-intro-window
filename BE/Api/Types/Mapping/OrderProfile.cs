@@ -16,7 +16,7 @@ public class OrderProfile : Profile
         CreateMap<CreateOrderDetailReq, OrderDetail>();
         CreateMap<CreateOrderReq, Order>();
 
-        CreateMap<ICollection<StatRes>, StatByYearRes>()
+        CreateMap<ICollection<StatByYearDto>, StatByYearRes>()
             .ForMember(des => des.Month, opt =>
                 opt.MapFrom(src => src.Select(e => e.Month)))
             .ForMember(des => des.Quantity, opt =>
@@ -26,7 +26,43 @@ public class OrderProfile : Profile
             .ForMember(des => des.Profit, opt =>
                 opt.MapFrom(src => src.Select(e => e.Profit)))
             .ForMember(des => des.Cost, opt =>
-                opt.MapFrom(src => src.Select(e => e.Cost)))
-            ;
+                opt.MapFrom(src => src.Select(e => e.Cost)));
+        
+        
+        CreateMap<ICollection<StatByMonthDto>, StatByMonthRes>()
+            .ForMember(des => des.Date, opt =>
+                opt.MapFrom(src => src.Select(e => e.Date)))
+            .ForMember(des => des.Quantity, opt =>
+                opt.MapFrom(src => src.Select(e => e.Quantity)))
+            .ForMember(des => des.Revenue, opt =>
+                opt.MapFrom(src => src.Select(e => e.Revenue)))
+            .ForMember(des => des.Profit, opt =>
+                opt.MapFrom(src => src.Select(e => e.Profit)))
+            .ForMember(des => des.Cost, opt =>
+                opt.MapFrom(src => src.Select(e => e.Cost)));
+        
+        CreateMap<ICollection<StatByWeekDto>, StatByWeekRes>()
+            .ForMember(des => des.Date, opt =>
+                opt.MapFrom(src => src.Select(e => e.Date)))
+            .ForMember(des => des.Quantity, opt =>
+                opt.MapFrom(src => src.Select(e => e.Quantity)))
+            .ForMember(des => des.Revenue, opt =>
+                opt.MapFrom(src => src.Select(e => e.Revenue)))
+            .ForMember(des => des.Profit, opt =>
+                opt.MapFrom(src => src.Select(e => e.Profit)))
+            .ForMember(des => des.Cost, opt =>
+                opt.MapFrom(src => src.Select(e => e.Cost)));
+        
+        CreateMap<ICollection<StatByDateDto>, StatByDateRes>()
+            .ForMember(des => des.Date, opt =>
+                opt.MapFrom(src => src.Select(e => e.Date)))
+            .ForMember(des => des.Quantity, opt =>
+                opt.MapFrom(src => src.Select(e => e.Quantity)))
+            .ForMember(des => des.Revenue, opt =>
+                opt.MapFrom(src => src.Select(e => e.Revenue)))
+            .ForMember(des => des.Profit, opt =>
+                opt.MapFrom(src => src.Select(e => e.Profit)))
+            .ForMember(des => des.Cost, opt =>
+                opt.MapFrom(src => src.Select(e => e.Cost)));
     }
 }

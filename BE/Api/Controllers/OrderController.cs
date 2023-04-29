@@ -56,8 +56,6 @@ public class OrderController : ControllerBase
         Description = "",
         OperationId = "Get")]
     // [SwaggerResponse(200, "List information order by userId", typeof(IEnumerable<OrderRes>))]
-   
-
     [HttpGet]
     [Route("order/{id:int}")]
     // [SwaggerResponse(200, "Order information", typeof(OrderRes))]
@@ -130,8 +128,11 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     [Route("statistic/category")]
-    public async Task<ActionResult<StatByCateRes>> GetStatisticByCategory([FromRoute] StatByCateQuery query)
+    public async Task<ActionResult<StatByCateRes>> GetStatisticByCategory([FromQuery] StatByCateQuery query)
     {
+        if(query.DateFrom.CompareTo(query.DateTo) > 0)
+            return BadRequest(new ResFailure { Message = "Invalid input data" });
+        
         var result = await _orSer.GetStatisticByCate(query);
         return Ok(result);
     }
@@ -140,7 +141,43 @@ public class OrderController : ControllerBase
     [Route("statistic/year")]
     public async Task<ActionResult<StatByYearRes>> GetStatistisByYear([FromQuery] StatByYearQuery query)
     {
+        if (query.Year < 1)
+            return BadRequest(new ResFailure { Message = "Invalid input data" });
+
         var result = await _orSer.GetStatisticByYear(query);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("statistic/month")]
+    public async Task<ActionResult> GetStatisticByMonth([FromQuery] StatByMonthQuery query)
+    {
+        if (query.Year < 1 || query.Month < 1 || query.Month > 12)
+            return BadRequest(new ResFailure { Message = "Invalid input data" });
+
+        var result = await _orSer.GetStatisticByMonth(query);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("statistic/week")]
+    public async Task<ActionResult> GetStatisticByWeek([FromQuery] StatByWeekQuery query)
+    {
+        if (query.Year < 1 || query.Week < 1 || query.Week > 52)
+            return BadRequest(new ResFailure { Message = "Invalid input data" });
+
+        var result = await _orSer.GetStatisticByWeek(query);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("statistic/date")]
+    public async Task<ActionResult> GetStatisticByDate([FromQuery] StatByDateQuery query)
+    {
+        if(query.DateFrom.CompareTo(query.DateTo) > 0)
+            return BadRequest(new ResFailure { Message = "Invalid input data" });
+        
+        var result = await _orSer.GetStatisticByDate(query);
         return Ok(result);
     }
 }
