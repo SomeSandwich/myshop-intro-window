@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getAllOrderService = async (query:String) => {
     // console.log(data);
-    const response = await axiosClient.get("/order?"+query);
+    const response = await axiosClient.get("/order/all?"+query);
     return response.data;
 };
 export const getAllOrderByUrlService = async (url:String) => {
@@ -14,7 +14,7 @@ export const getAllOrderByUrlService = async (url:String) => {
 };
 export const getOrderByIDService = async (id:Number) => {
     // console.log(data);
-    const response = await axiosClient.get(`/order/order/${id}`);
+    const response = await axiosClient.get(`/order/${id}`);
 
     return response.data;
 };
