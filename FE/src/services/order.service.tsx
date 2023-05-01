@@ -58,8 +58,25 @@ export const getStatisticOrdeDayService = async (DayFrom:String,DayTo:String) =>
     const response = await axiosClient.get(`/order/statistic/date?DateFrom=${DayFrom}&DateTo=${DayTo}`);
     return response.data;
 };
-export const getStatisticOrderCate = async () => {
+export const getStatisticOrderCate = async (DateFrom:String= "",DateTo:String = "") => {
     // console.log(data);
-    const response = await axiosClient.get(`/order/statistic/category`);
+    var query = ""
+    if(DateFrom || DateTo){
+        query+="?"
+        if(DateFrom){
+            query+="DateFrom="+DateFrom+"&"
+            if(!DateTo){
+                query+="DateTo="+DateFrom
+            }else{
+                query+="DateTo="+DateTo
+            }
+        }else{
+            if(DateTo){
+                query+="DateFrom="+DateTo+"&"+"DateTo="+DateTo
+            }
+        }
+    }
+    console.log("Query"+query)
+    const response = await axiosClient.get(`/order/statistic/category${query}`);
     return response.data;
 };

@@ -87,21 +87,36 @@ export default function DashBoard() {
                 setQuantity(calculateSum(data.quantity))
             }
             getStatisticBarChart()
+            const getStatisticPieChart = async () => {
+                const data = await getStatisticOrderCate(lastDayFrom,lastDayTo)
+                setLabelPieChart(data.id)
+                setDataPieChart(data.quantity)
+            }
+            getStatisticPieChart()
             setcurrentTypeofStatistic(Statistic.Day)
         }
     }
-    const handleStatisWeek = ()=>{
+    const handleStatisWeek =async ()=>{
         console.log(curWeekrChoosen)
+        var week:any = []
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrdeWeekService(curWeekrChoosen,curYearChoosen)
             setlabeLBarORLineChart(data.date)
+            week = data.date
+            console.log(week)
             setDataBarORLineChart(data.revenue)
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
             setProfit(calculateSum(data.profit))
             setQuantity(calculateSum(data.quantity))
         }
-        getStatisticBarChart()
+        await getStatisticBarChart()
+        const getStatisticPieChart = async () => {
+            const data = await getStatisticOrderCate(week[0],week[6])
+            setLabelPieChart(data.id)
+            setDataPieChart(data.quantity)
+        }
+        getStatisticPieChart()
         setcurrentTypeofStatistic(Statistic.Week)
     }
     const handleStatisMonth = ()=>{
@@ -115,6 +130,18 @@ export default function DashBoard() {
             setProfit(calculateSum(data.profit))
         }
         getStatisticBarChart()
+        const getStatisticPieChart = async () => {
+            var firstdate = new Date(curYearChoosen, curMonthrChoosen-1, 1);
+            var lastdate = new Date(curYearChoosen, curMonthrChoosen-1+1, 0);
+            var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            console.log(firstDateFormat)
+            console.log(lastDateFormat)
+            const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
+            setLabelPieChart(data.id)
+            setDataPieChart(data.quantity)
+        }
+        getStatisticPieChart()
         setcurrentTypeofStatistic(Statistic.Month)
     }
     const handleStatisYear = ()=>{
@@ -129,7 +156,13 @@ export default function DashBoard() {
             setQuantity(calculateSum(data.quantity))
         }
         const getStatisticPieChart = async () => {
-            const data = await getStatisticOrderCate()
+            var firstdate = new Date(curYearChoosen, 0, 1);
+            var lastdate = new Date(curYearChoosen, 12, 0);
+            var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            console.log(firstDateFormat)
+            console.log(lastDateFormat)
+            const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
             setLabelPieChart(data.id)
             setDataPieChart(data.quantity)
         }
@@ -154,7 +187,14 @@ export default function DashBoard() {
             setQuantity(calculateSum(data.quantity))
         }
         const getStatisticPieChart = async () => {
-            const data = await getStatisticOrderCate()
+            var firstdate = new Date(curYearChoosen, 0, 1);
+            var lastdate = new Date(curYearChoosen, 12, 0);
+            var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
+            console.log(firstDateFormat)
+            console.log(lastDateFormat)
+            const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
+            console.log(data)
             setLabelPieChart(data.id)
             setDataPieChart(data.quantity)
         }
