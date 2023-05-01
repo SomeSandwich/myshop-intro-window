@@ -14,13 +14,17 @@ import { notification } from "./AddBook";
 import { Button } from "react-bootstrap";
 import { IOrderDetailProduct } from "@/interfaces/Order";
 import { addProductToCurrentOrder } from "../Order/OrderSlice";
-import { useAppDispatch } from "@/Hooks/apphooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks/apphooks";
+import { getPotentialNumberProduct } from "../Order/AddOrder";
+import { RootState } from "@/store";
 export default function () {
     const { id } = useParams();
     if (!id) return <></>;
+    const listBook = useAppSelector((state: RootState) => state.book.listAllBook)
+    const listProduct = useAppSelector((state: RootState) => state.order.currentOrder)
     const quantityRef = React.useRef<HTMLInputElement>(null);
     const [show, setShow] = useState(false);
-    
+    const [maxQuantity,setMaxQuantity] = useState(0);
     const [curBook, setCurBook] = useState<Book>();
     const navigate = useNavigate();
     const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,10 +32,13 @@ export default function () {
     };
     const dispatch = useAppDispatch()
     const handleShow = () => {  
+        const potential = getPotentialNumberProduct(listBook,listProduct,+id)
+        setMaxQuantity(pre=>+potential)
         setShow(true)
     };
     const handleClose = () => setShow(false);
     const handleAddNewProduct =async ()=>{
+        
         // if(nameRef.current &&  phoneRef.current){
         //     const newCustomer: InputCustomer= {
         //         name: nameRef.current?.value,
@@ -51,8 +58,14 @@ export default function () {
                     title: curBook?.title
                 }
                 console.log(newProduct)
-                notification("Add New Product into Order Success", Notification.Success)
-                dispatch(addProductToCurrentOrder(newProduct))
+                
+                if(+newProduct.quantity>maxQuantity){
+                    notification(`Current Quatity has only ${maxQuantity}`,Notification.Warn)
+                }else{
+                    
+                    notification("Add New Product Success", Notification.Success)
+                    dispatch(addProductToCurrentOrder(newProduct))
+                }
             }
             
         }
@@ -94,7 +107,7 @@ export default function () {
                     <Modal.Title>Add To Card</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Quantity: <input ref={quantityRef} type="number" min={1} max={curBook.quantity.toString()} className="form-control" required id="inputPhone" placeholder={"Quantity"} />
+                    Quantity: <input ref={quantityRef} type="number" min={1} max={maxQuantity} className="form-control" required id="inputPhone" placeholder={"Quantity"} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
