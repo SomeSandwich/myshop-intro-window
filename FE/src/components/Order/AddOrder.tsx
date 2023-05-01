@@ -5,7 +5,7 @@ import { AddOrderThunk, addProductToCurrentOrder, removeProductToCurrentOrder, r
 import { RootState } from '@/store';
 import { getDetailBook } from './OrderDashBoard';
 import Select from 'react-select'
-import { BookOption } from '@/interfaces/bookDetail';
+import { Book, BookOption } from '@/interfaces/bookDetail';
 import { NumericFormat } from 'react-number-format';
 import AddCustomToOrder from '../Customer/AddCustomToOrder';
 import { Notification, notification } from '../Book/AddBook';
@@ -23,6 +23,7 @@ export default function AddOrder() {
     const [options, setOptions] = useState<BookOption[]>([]);
     const [tong, setTong] = useState(0);
     const [currentCustomerId, setCurrentCustomerId] = useState<Number|null>(null);
+    const [maxQuantity,setMaxQuantity] = useState(0);
     const quantityRef = React.useRef<HTMLInputElement>(null);
 
     const dispatch = useAppDispatch()
@@ -32,6 +33,10 @@ export default function AddOrder() {
         console.log("change")
         const temp = getDetailBook(listProduct, listBook)
         setBooks(temp);
+        if(selected){
+            const potential = getPotentialNumberProduct(listBook,listProduct,selected.value)
+            setMaxQuantity(pre=>+potential)
+        }
     }, [listProduct])
     useEffect(()=>{
         setTong(calculator(books))
@@ -47,8 +52,16 @@ export default function AddOrder() {
                 title: selected.label
             }
             console.log(newProduct)
-            notification("Add New Product Success", Notification.Success)
-            dispatch(addProductToCurrentOrder(newProduct))
+            console.log(maxQuantity)
+            if(+newProduct.quantity>maxQuantity){
+                notification(`Current Quatity has only ${maxQuantity}`,Notification.Warn)
+            }else{
+                
+                notification("Add New Product Success", Notification.Success)
+                dispatch(addProductToCurrentOrder(newProduct))
+            }
+           
+            
         }
 
     }
@@ -77,6 +90,12 @@ export default function AddOrder() {
         }
 
     }
+    useEffect(()=>{
+        if(selected){
+            const potential = getPotentialNumberProduct(listBook,listProduct,selected.value)
+            setMaxQuantity(pre=>+potential)
+        }
+    },[selected])
     useEffect(() => {
         console.log("catelist multy")
         const changeOption = async () => {
@@ -107,7 +126,8 @@ export default function AddOrder() {
                                         name="test_name"
                                         min="1"
                                         placeholder=" Quantity"
-                                        ref={quantityRef} />
+                                        ref={quantityRef}
+                                        max={maxQuantity} />
                                 </th>
                                 <th colSpan={1} style={{ width: "30px", paddingBottom: "15px" }}>
                                     <button className='add-product-btn' onClick={() => handleAdd()}>
@@ -219,3 +239,19 @@ export const calculator = (booklist: IOrderDetailProduct[]) => {
     return sum
 }
 const widthColumn_detail = "125px"
+export const getPotentialNumberProduct = (bookList : Book[],listProductInOrder :IOrderDetailProduct[],ProductIdCheck: Number)=>{
+    var PotentialQuantity = 0
+    const indexCurrentBook = bookList.findIndex(book=>book.id== ProductIdCheck)
+
+    if(indexCurrentBook== -1) return 0
+
+    const maxQuantity = bookList[indexCurrentBook].quantity
+    const indexCurrentBookInOrder = listProductInOrder.findIndex(book=>book.productId== ProductIdCheck)
+    
+    if(indexCurrentBookInOrder== -1) return maxQuantity
+
+    const quantityBookInOrder = listProductInOrder[indexCurrentBookInOrder].quantity
+    PotentialQuantity = +maxQuantity - +quantityBookInOrder
+
+    return PotentialQuantity
+}
