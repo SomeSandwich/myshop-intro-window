@@ -381,7 +381,7 @@ public class OrderService : IOrderService
     public async Task<StatByWeekRes> GetStatisticByWeek(StatByWeekQuery query)
     {
         var dateFrom = DateOnly.FromDateTime(await _firstDateOfWeek(query.Year, query.Week)); // Day begin of month
-        var dateTo = dateFrom.AddDays(7);
+        var dateTo = dateFrom.AddDays(6);
 
         var listStatOrderByMonth = _context.Orders
             .Include(o => o.OrderDetails)
