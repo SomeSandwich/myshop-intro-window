@@ -62,7 +62,6 @@ const authSlice = createSlice({
       window.location.href = "/login";
     },
     getMe: (state, action: PayloadAction<any>) => {
-      console.log("GetMe:::", action.payload);
       state.name = action.payload.name;
       state.role = action.payload.role;
       sessionStorage.setItem("name", action.payload.name);
@@ -70,7 +69,6 @@ const authSlice = createSlice({
     },
     refreshToken: (state, action: PayloadAction<ILoginResponse>) => {
       state.token = action.payload.token;
-      console.log(state);
       sessionStorage.setItem("token", action.payload.token);
     },
   },
@@ -79,7 +77,6 @@ const authSlice = createSlice({
       login.fulfilled,
       (state, action: PayloadAction<ILoginResponse>) => {
         sessionStorage.setItem("token", action.payload.token);
-        console.log("logged");
         state.isLogin = true;
         state.token = action.payload.token;
         state.isLoading = false;
@@ -89,7 +86,6 @@ const authSlice = createSlice({
     builder.addCase(
         login.pending,
         (state, action) => {
-            console.log("Login loading");
             state.isLoading = true;
             state.hasError = false;
         }

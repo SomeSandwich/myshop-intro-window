@@ -12,7 +12,6 @@ export const ExistCate = (array:Category[],des:string)=>{
 export default function EditCate() {
     const cateinfor = useAppSelector(state=>state.cate.editCate)
     const catelist = useAppSelector(state=>state.cate.listCate)
-    console.log(cateinfor)
     const {id} = useParams()
     if(!id) return <></>
     const [des,setDes] = useState(cateinfor? cateinfor.description:"")

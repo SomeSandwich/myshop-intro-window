@@ -23,7 +23,6 @@ import CateLayout from "./features/Categories/CateLayout";
 import DetailBook from "./components/Book/DetailBook";
 import CardBook from "./components/Book/CardBook";
 import BookLayout from "./features/posts/BookLayout";
-import Help from "./pages/Help";
 import EditCate from "./features/Categories/EditCate";
 import AddCate from "./features/Categories/AddCate";
 import OrderForm from "./components/Order/OrderForm";
@@ -62,7 +61,7 @@ function App() {
                 <Route element={<RequireLogin />}>
                     <Route path="/" element={<HomeLayout />}>
                         <Route index element={<DashBoard />} />
-                        <Route path="/help" element={<Help />} />
+                        <Route path="/help" element={<div>Help</div>} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/about-us" element={<AboutUs/>} />
                         <Route path="categories" element={<CateLayout />}>

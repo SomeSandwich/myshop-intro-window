@@ -2,7 +2,6 @@ import axiosClient from "@/Axios/AxiosClient";
 
 export const getAllCate = async () => {
 	// console.log(data);
-	console.log("Get All Cate")
 	const response = await axiosClient.get("/category");
 	return response.data;
 };

@@ -14,7 +14,6 @@ export default function HomeLayout() {
   const bookList = useAppSelector((state: RootState) => state.book.listAllBook);
   const cateList = useAppSelector((state: RootState) => state.cate.listCate);
   
-  console.log(location)
   useEffect(() => {
     setLastDomand(location.pathname)
   }, [location])

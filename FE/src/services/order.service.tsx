@@ -76,7 +76,6 @@ export const getStatisticOrderCate = async (DateFrom:String= "",DateTo:String = 
             }
         }
     }
-    console.log("Query"+query)
     const response = await axiosClient.get(`/order/statistic/category${query}`);
     return response.data;
 };

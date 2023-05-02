@@ -125,8 +125,6 @@ const CateSlice = createSlice({
             else{
                 state.currentOrder = [...state.currentOrder,({productId: action.payload.productId,quantity: action.payload.quantity,title})]
             }
-
-            console.log(state.currentOrder)
         },
         resetProductinOrder(state,action){
           state.currentOrder = []
@@ -139,7 +137,6 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllOrderThunk.pending,
         (state, action) => {
-            console.log("loading");
             state.isLoading = true;
             state.hasError = false;
         }
@@ -149,13 +146,11 @@ const CateSlice = createSlice({
         (state, action) => {
             if(arraysEqual(state.listOrder,action.payload))
             {
-              console.log("Not Change")
+
             }
             else{
-              console.log("Change")
               
               const DetailOrderPaging = action.payload[0]
-              console.log(DetailOrderPaging)
               state.urlCurrentPage = action.payload[1]
               if(DetailOrderPaging.data.length > 0){
                 
@@ -183,10 +178,8 @@ const CateSlice = createSlice({
         (state, action) => {
             if(arraysEqual(state.listOrder,action.payload))
             {
-              console.log("Not Change")
             }
             else{
-              console.log("Change")
               const DetailOrderPaging = action.payload
               if(DetailOrderPaging.data.length > 0){
                 if(!arraysEqual(DetailOrderPaging.data,state.listOrder)){
@@ -211,7 +204,6 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllOrderThunk.rejected,
         (state, action) => {
-            console.log("reject");
             state.isLoading = false;
             state.hasError = true;
         }
@@ -219,19 +211,16 @@ const CateSlice = createSlice({
       builder.addCase(
         DeleteOrderThunk.fulfilled,
         (state, action) => {
-          console.log("Delete Success")
         }
       );
       builder.addCase(
         AddOrderThunk.fulfilled,
         (state, action) => {
-          console.log("Add Success")
         }
       );
       builder.addCase(
         UpdateOrderThunk.fulfilled,
         (state, action) => {
-          console.log("Update Success")
         }
       );
     }

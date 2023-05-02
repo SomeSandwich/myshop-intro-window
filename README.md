@@ -17,7 +17,7 @@
 |---|:---:|---|
 | Nguyễn Tấn Hiếu      | 20127159 | hieucckha@gmail.com          |
 | Võ Thanh Sương       | 20127312 | vothanhsuong123@gmail.com       |
-| Võ Minh Thông        | 20127*** |  |
+| Võ Minh Thông        | 20127638 | thong89x@gmail.com |
 | Nguyễn Văn Hậu       | 20127*** |     |
 
 ## Các chức năng đã làm được

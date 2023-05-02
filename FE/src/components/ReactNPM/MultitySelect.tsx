@@ -25,11 +25,6 @@ const MultiSelectCategory = () => {
     const [options, setOptions] = useState<Genre[]>([]);
     
     const dispatch = useAppDispatch()
-    // console.log("storeSelected "+ JSON.stringify(storeSelected))
-    // console.log("storeSelected "+ storeSelected)
-    console.log("Seleted "+ selected)
-    console.log("Seleted "+ JSON.stringify(selected))
-    // console.log("Seleted "+ selectedClone)
     useEffect(() => {
         if(refresh){
             setSelected([])
@@ -37,7 +32,6 @@ const MultiSelectCategory = () => {
         }
     }, [refresh])
     useEffect(() => {
-        console.log("catelist multy")
         const changeOption = async () => {
             const newoptions: Genre[] = [];
             cateList.map(cate => {
@@ -48,9 +42,7 @@ const MultiSelectCategory = () => {
         }
         changeOption();
     }, [cateList])
-    useEffect(() => {
-        console.log("change")
-        
+    useEffect(() => {    
         const filterGenre = async () => {
             // setStoreSelected(selected)
             await dispatch(filterCurrentBook({genrelist:selected,minPrice:currentPriceMin,maxPrice:currentPriceMax}))
@@ -62,7 +54,6 @@ const MultiSelectCategory = () => {
         filterGenre();
     }, [selected])
     useEffect(() => {
-        console.log("reset")
         
         const filterGenreRefresh = async () => {
             if (selected.length > 0) {

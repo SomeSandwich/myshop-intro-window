@@ -72,8 +72,6 @@ export default function DashBoard() {
         setLastDayFrom(e.target.value);
     };
     const handleStatisDay = ()=>{
-        console.log(lastDayFrom)
-        console.log(lastDayTo)
         if(!lastDayFrom || !lastDayTo) {
             notification("Please Input Both Of DayForm and DayTo ", Notification.Warn);
         }else{
@@ -97,13 +95,11 @@ export default function DashBoard() {
         }
     }
     const handleStatisWeek =async ()=>{
-        console.log(curWeekrChoosen)
         var week:any = []
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrdeWeekService(curWeekrChoosen,curYearChoosen)
             setlabeLBarORLineChart(data.date)
             week = data.date
-            console.log(week)
             setDataBarORLineChart(data.revenue)
             setRevenue(calculateSum(data.revenue))
             setCost(calculateSum(data.cost))
@@ -120,7 +116,6 @@ export default function DashBoard() {
         setcurrentTypeofStatistic(Statistic.Week)
     }
     const handleStatisMonth = ()=>{
-        console.log(curMonthrChoosen)
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrdeMonthService(curMonthrChoosen,curYearChoosen)
             setlabeLBarORLineChart(data.date)
@@ -135,8 +130,6 @@ export default function DashBoard() {
             var lastdate = new Date(curYearChoosen, curMonthrChoosen-1+1, 0);
             var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
             var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
-            console.log(firstDateFormat)
-            console.log(lastDateFormat)
             const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
             setLabelPieChart(data.id)
             setDataPieChart(data.quantity)
@@ -145,7 +138,6 @@ export default function DashBoard() {
         setcurrentTypeofStatistic(Statistic.Month)
     }
     const handleStatisYear = ()=>{
-        console.log(curYearChoosen)
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrderYearService(curYearChoosen)
             setlabeLBarORLineChart(data.month)
@@ -160,8 +152,6 @@ export default function DashBoard() {
             var lastdate = new Date(curYearChoosen, 12, 0);
             var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
             var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
-            console.log(firstDateFormat)
-            console.log(lastDateFormat)
             const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
             setLabelPieChart(data.id)
             setDataPieChart(data.quantity)
@@ -176,7 +166,6 @@ export default function DashBoard() {
         }
     }, [booklist])
     useEffect(() => {
-        console.log("get Data")
         const getStatisticBarChart = async () => {
             const data = await getStatisticOrderYearService(curYearChoosen)
             setlabeLBarORLineChart(data.month)
@@ -191,10 +180,7 @@ export default function DashBoard() {
             var lastdate = new Date(curYearChoosen, 12, 0);
             var firstDateFormat = firstdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
             var lastDateFormat = lastdate.toLocaleDateString('vi-vn').split( '/' ).reverse( ).join( '-' )
-            console.log(firstDateFormat)
-            console.log(lastDateFormat)
             const data = await getStatisticOrderCate(firstDateFormat,lastDateFormat)
-            console.log(data)
             setLabelPieChart(data.id)
             setDataPieChart(data.quantity)
         }
