@@ -70,7 +70,9 @@ public class ProductService : IProductService
     public async Task<IEnumerable<ProductRes>> SearchProduct(string query)
     {
         var listProduct = _context.Products
-            .Include(p => p.Category).AsEnumerable();
+            .Include(p => p.Category)
+            .Where(p=>p.Status == ProductStatus.Default)
+            .AsEnumerable();
         
         var abc = listProduct
             .Where(p => p.Title.Trim().Contains(query))
