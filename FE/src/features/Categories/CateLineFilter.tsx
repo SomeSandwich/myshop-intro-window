@@ -9,7 +9,6 @@ export default function CateLineFilter() {
     const cateList = useSelector((state:RootState)=>state.cate.listCate) 
     const dispatch = useDispatch()
     const handleClickCheckBox = (genre:string) => {
-        console.log(genre)
         if(listGenre.some(type=>type==genre))
         {
             setlistGenre(pre=>{

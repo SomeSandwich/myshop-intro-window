@@ -13,7 +13,6 @@ export default function RangePrice() {
     const refresh = useAppSelector((state: RootState) => state.book.isRefresh);
     const genreList = useAppSelector((state: RootState) => state.book.currentGenre);
     const dispatch = useAppDispatch()
-    console.log(genreList)
     useEffect(() => {
         setCurrentPriceMax(maxVlue)
     }, [maxVlue])
@@ -43,7 +42,6 @@ export default function RangePrice() {
                     onChange={({ min, max }: { min: number; max: number }) =>{
                         setCurrentPriceMax(max)
                         setCurrentPriceMin(min)
-                        console.log(`min = ${min}, max = ${max}`)
                     }}
                 />
             </div>

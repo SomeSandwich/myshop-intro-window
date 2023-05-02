@@ -36,7 +36,6 @@ export const AddCustomerThunk = createAsyncThunk(
             dispatch(getAllCustomerThunk())
             return response;
         } catch (error: any) {
-            console.log(error.response.data.message)
             if(error) notification(error.response.data.message, Notification.Error)
             return rejectWithValue(error);
         }
@@ -51,7 +50,6 @@ const CustomerSlice = createSlice({
         builder.addCase(
             getAllCustomerThunk.pending,
             (state, action) => {
-                console.log("loading");
                 state.isLoading = true;
                 state.hasError = false;
             }
@@ -59,12 +57,9 @@ const CustomerSlice = createSlice({
         builder.addCase(
             getAllCustomerThunk.fulfilled,
             (state, action) => {
-                console.log("Get all customer done");
                 if (arraysEqual(state.listAllCustomer, action.payload)) {
-                    console.log("Not Change")
                 }
                 else {
-                    console.log("Change")
                     state.listAllCustomer = action.payload
                 }
                 state.isLoading = false;
@@ -74,7 +69,6 @@ const CustomerSlice = createSlice({
         builder.addCase(
             getAllCustomerThunk.rejected,
             (state, action) => {
-                console.log("reject");
                 state.isLoading = false;
                 state.hasError = true;
             }
@@ -82,7 +76,6 @@ const CustomerSlice = createSlice({
         builder.addCase(
             AddCustomerThunk.fulfilled,
             (state, action) => {
-                console.log("Add Success")
             }
         );
     }

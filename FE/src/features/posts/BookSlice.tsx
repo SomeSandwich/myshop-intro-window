@@ -209,14 +209,12 @@ const BookSlice = createSlice({
             if (genrelist.length == 0) {
                 state.currentGenre = [];
                 state.currentCategory.forEach((cate) => {
-                    console.log("cate")
                     const subarr = state.listSearch.filter(
                         (book) => book.categoryId == cate.id
                     );
                     subarr.forEach((book) => arrayfilter.push(book));
                 });
             } else {
-                console.log("genre")
                 state.currentGenre = genrelist;
                 genrelist.forEach((genre) => {
                     const subarr = state.listSearch.filter(
@@ -259,14 +257,12 @@ const BookSlice = createSlice({
             );
             if (genrelist.length == 0) {
                 state.currentCategory.forEach((cate) => {
-                    console.log("cate")
                     const subarr = state.listSearch.filter(
                         (book) => book.categoryId == cate.id
                     );
                     subarr.forEach((book) => arrayfilter.push(book));
                 });
             } else {
-                console.log("genre")
                 state.currentGenre = genrelist;
                 genrelist.forEach((genre) => {
                     const subarr = state.listSearch.filter(
@@ -301,16 +297,12 @@ const BookSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getAllBookThunk.pending, (state, action) => {
-            console.log("loading get all Books");
             state.isLoading = true;
             state.hasError = false;
         });
         builder.addCase(getAllBookThunk.fulfilled, (state, action) => {
-            console.log("get all Books done");
             if (arraysEqual(state.listAllBook, action.payload)) {
-                console.log("Not Change");
             } else {
-                console.log(action.payload.length)
                 state.total = action.payload.length
                 state.listAllBook = action.payload;
                 state.listSearch = action.payload;
@@ -319,22 +311,16 @@ const BookSlice = createSlice({
             }
         });
         builder.addCase(getAllBookThunk.rejected, (state, action) => {
-            console.log("get all book reject");
             state.isLoading = false;
             state.hasError = true;
         });
         builder.addCase(DeleteBookThunk.fulfilled, (state, action) => {
-            console.log("Delete Book Success");
         });
         builder.addCase(AddBookThunk.fulfilled, (state, action) => {
-            console.log("Add Book Success");
         });
         builder.addCase(searchBookThunk.fulfilled, (state, action) => {
             if (arraysEqual(state.listSearch, action.payload)) {
-                console.log("Not Change");
             } else {
-                console.log("search Book Success");
-                
                 state.listSearch = action.payload;
                 state.isRefresh = true;
             }

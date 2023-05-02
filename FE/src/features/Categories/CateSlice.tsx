@@ -106,7 +106,6 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllCategoryThunk.pending,
         (state, action) => {
-            console.log("loading");
             state.isLoading = true;
             state.hasError = false;
         }
@@ -114,13 +113,10 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllCategoryThunk.fulfilled,
         (state, action) => {
-            console.log("Get all cate done");
             if(arraysEqual(state.listCate,action.payload))
             {
-              console.log("Not Change")
             }
             else{
-              console.log("Change")
               state.listCate = action.payload
             }
             state.isLoading = false;
@@ -130,7 +126,6 @@ const CateSlice = createSlice({
       builder.addCase(
         getAllCategoryThunk.rejected,
         (state, action) => {
-            console.log("reject");
             state.isLoading = false;
             state.hasError = true;
         }
@@ -138,13 +133,11 @@ const CateSlice = createSlice({
       builder.addCase(
         DeleteCateThunk.fulfilled,
         (state, action) => {
-          console.log("Delete Success")
         }
       );
       builder.addCase(
         AddCateThunk.fulfilled,
         (state, action) => {
-          console.log("Add Success")
         }
       );
     }

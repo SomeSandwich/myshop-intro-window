@@ -48,8 +48,6 @@ export default function OrderList() {
     }
     const dispatch = useAppDispatch()
     const handleSearch = async()=>{
-        console.log(lastDayFrom)
-        console.log(lastDayTo)
         if(!lastDayFrom && lastDayTo){
             dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  lastDayTo, DateTo:  lastDayTo, PageNumber:  1, PageSize: null }))
         }else if(lastDayFrom && !lastDayTo){
@@ -69,7 +67,6 @@ export default function OrderList() {
         if(!lastUrlCurrentPage || lastUrlCurrentPage==""){
             dispatch(getAllOrderThunk({ CustomerId: null, DateFrom:  null, DateTo:  null, PageNumber:  1, PageSize: null }))
         }else{
-            console.log("use url")
             dispatch(getAllOrderByUrlThunk(lastUrlCurrentPage))
         }
        

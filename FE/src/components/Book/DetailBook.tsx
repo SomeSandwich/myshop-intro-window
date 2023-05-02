@@ -57,7 +57,6 @@ export default function () {
                     quantity: +quantityRef.current?.value,
                     title: curBook?.title
                 }
-                console.log(newProduct)
                 
                 if(+newProduct.quantity>maxQuantity){
                     notification(`Current Quatity has only ${maxQuantity}`,Notification.Warn)
@@ -96,8 +95,6 @@ export default function () {
         };
         getDetail();
     }, []);
-    console.log(curBook?.mediaPath);
-    console.log("https://s3.hieucckha.me/public/" + curBook?.mediaPath[0]);
     if(!curBook) return <></>
     return (
         <div className="detail-book-1">

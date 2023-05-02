@@ -25,10 +25,6 @@ export default function OrderDashBoard() {
   
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  console.log("boook");
-  console.log(books);
-
-  console.log(getDetailBook(books, listBook));
   const handleCreateNewOrder = ()=>{
     dispatch(resetProductinOrder(""));
     navigate("/order/add");
@@ -39,8 +35,6 @@ export default function OrderDashBoard() {
     }
   };
   useEffect(() => {
-    console.log("change");
-    console.log(listProduct);
     const temp = getDetailBook(listProduct, listBook);
     setBooks(temp);
   }, [listProduct]);

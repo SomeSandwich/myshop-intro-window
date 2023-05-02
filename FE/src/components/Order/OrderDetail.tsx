@@ -56,7 +56,6 @@ export default function OrderDetail() {
   useEffect(() => {
     const callApi=async()=>{
       const data = await getOrderByIDService(+id)
-      console.log(data) 
       setOrder(data)
     }
     callApi()
@@ -89,7 +88,6 @@ export default function OrderDetail() {
   const handleSave = () => {
     if (order) {
       const curorder = { ...order, total: total }
-      console.log(curorder)
       dispatch(UpdateOrderThunk({id:id,newOrder:curorder}))
     }
   }
@@ -107,12 +105,11 @@ export default function OrderDetail() {
 
   const handleChange = (selectedOption: any) => {
     if (selectedOption && order) {
-      console.log(selectedOption.value)
+
       setOrder({ ...order, status: selectedOption.value });
       // setOrder({...order,status:selectedOption.value});
     }
   };
-  console.log(order);
   if (!order) return <></>
   return (
     <div className='order-detail-full m-4 p-2'>
