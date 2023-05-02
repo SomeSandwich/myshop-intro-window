@@ -36,6 +36,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/dashboard_1.png" width="516"/>
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/dashboard_2.png" width="516"/>
 </div>
+
 #### 3. Quản lí hàng hóa
 
 - [x] Import dữ liệu gốc ban đầu (loại sản phẩm, danh sách các sản phẩm) từ tập tin Excel hoặc Access.
@@ -52,9 +53,10 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Cate_3.png" width="516"/>
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/CreateBook_2.png" width="516"/>
 </div>
+
 #### 4. Quản lí các đơn hàng
 
-* [x] Tạo ra các đơn hàng
+- [x] Tạo ra các đơn hàng
 - [x] Cho phép xóa một đơn hàng, cập nhật một đơn hàng
 - [x] Cho phép xem danh sách các đơn hàng có phân trang, xem chi tiết một đơn hàng
 - [x] Tìm kiếm các đơn hàng từ ngày đến ngày
@@ -64,6 +66,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/DeleteOrder.png" width="516"/>
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/OrderDashboard.png" width="516"/>
 </div>
+
 #### 5. Báo cáo thống kê
 
 - [x] Báo cáo doanh thu và lợi nhuận theo ngày đến ngày, theo tuần, theo tháng, theo năm (vẽ biểu đồ)
@@ -71,6 +74,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 <div>
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Statistic.png" width="516"/>
 </div>
+
 #### 6. Cấu hình
 - [x] Cho phép hiệu chỉnh số lượng sản phẩm mỗi trang
 - [x] Cho phép khi chạy chương trình lên thì mở lại màn hình cuối mà lần trước tắt
