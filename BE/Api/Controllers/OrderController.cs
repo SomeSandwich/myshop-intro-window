@@ -107,7 +107,7 @@ public class OrderController : ControllerBase
 
         return CreatedAtAction(
             nameof(GetOne),
-            new { id = orderId },
+            new { orderId = orderId },
             new ResSuccess());
     }
 
