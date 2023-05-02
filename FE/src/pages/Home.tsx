@@ -63,7 +63,6 @@ export default function Home() {
         }
         updateSearch();
     },[bookListSearch])
-   console.log(bookListPaging)
     const navigate = useNavigate();
     const moveNextPage = async ()=>{
         if((curentPage<maxPage)){
@@ -90,7 +89,6 @@ export default function Home() {
     }
     const handleRefresh = async (e:React.MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault()
-        console.log("refresh")
         notification("Refresh Successfully",Notification.Success)
         await dispatch(refreshBook(""))
         // await dispatch(getAllCategoryThunk())

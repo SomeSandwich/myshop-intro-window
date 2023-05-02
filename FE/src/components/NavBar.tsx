@@ -67,12 +67,6 @@ export default function NavBar() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={"/help"} className="nav-link scrollto">
-                                <i className="fa-solid fa-circle-question"></i>
-                                <span>Help</span>
-                            </NavLink>
-                        </li>
-                        <li>
                             <NavLink
                                 to={"/about-us"}
                                 className="nav-link scrollto"

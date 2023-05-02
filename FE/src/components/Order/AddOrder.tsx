@@ -27,10 +27,7 @@ export default function AddOrder() {
     const quantityRef = React.useRef<HTMLInputElement>(null);
 
     const dispatch = useAppDispatch()
-    console.log(listProduct)
-    console.log(books)
     useEffect(() => {
-        console.log("change")
         const temp = getDetailBook(listProduct, listBook)
         setBooks(temp);
         if(selected){
@@ -43,16 +40,12 @@ export default function AddOrder() {
     },[books])
     const handleAdd = () => {
 
-        console.log(selected)
         if (selected != null && quantityRef.current && quantityRef.current.value) {
-            console.log("push")
             const newProduct: IOrderDetailProduct = {
                 productId: selected.value,
                 quantity: parseInt(quantityRef.current?.value),
                 title: selected.label
             }
-            console.log(newProduct)
-            console.log(maxQuantity)
             if(+newProduct.quantity>maxQuantity){
                 notification(`Current Quatity has only ${maxQuantity}`,Notification.Warn)
             }else{
@@ -67,7 +60,6 @@ export default function AddOrder() {
     }
     const handleChange = (selectedOption: any) => {
         setSelected(selectedOption);
-        console.log(`Option selected:`, selectedOption);
     };
     const HandleDelete = (id: Number) => {
         if (id) {
@@ -75,7 +67,6 @@ export default function AddOrder() {
         }
     }
     const handleDeleteCurrentOrder = ()=>{
-        console.log("clear")
         dispatch(resetProductinOrder(""));
       }
     const handleFinishtOrder = ()=>{
@@ -85,7 +76,6 @@ export default function AddOrder() {
             notification("Please Choose Customer",Notification.Warn)
         }else{
             const newOrder ={total:tong,customerId:currentCustomerId,orderDetails:books}
-            console.log(newOrder)
             dispatch(AddOrderThunk(newOrder))
         }
 
@@ -97,7 +87,6 @@ export default function AddOrder() {
         }
     },[selected])
     useEffect(() => {
-        console.log("catelist multy")
         const changeOption = async () => {
             const newoptions: BookOption[] = [];
             listBook.map(book => {

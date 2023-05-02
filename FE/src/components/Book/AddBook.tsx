@@ -22,7 +22,6 @@ export default function AddBook() {
         e.preventDefault();
         const data = e.target.files;
         if (data && data.length > 0) {
-            console.log(data);
             setFormImportExcel({
                 ...FormImportExcel,
                 excelFile: data[0],
@@ -45,7 +44,6 @@ export default function AddBook() {
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then((res) => {
-                console.log(res);
                 if (res.data.status == "Success") {
                     notification(res.data.message, Notification.Success);
                 } else {
@@ -70,7 +68,6 @@ export default function AddBook() {
     ) => {
         const files = event.target.files;
         if (files && files.length > 0) {
-            console.log(files[0]);
             setFormAddBook({ ...FormAddBook, mediaPath: files[0] });
         }
     };
@@ -81,7 +78,6 @@ export default function AddBook() {
         >
     ) => {
         const { name, value } = e.target;
-        console.log(name, value);
         setFormAddBook({ ...FormAddBook, [name]: value });
     };
 
@@ -145,7 +141,6 @@ export default function AddBook() {
         );
         formData.append("description", FormAddBook.description);
 
-        console.log(formData);
 
         // fetch("https://myshop.hieucckha.me/api/v1/product", {
         //     mode: "no-cors",

@@ -4,7 +4,6 @@ import { Customer, InputCustomer } from "@/interfaces/Customer";
 
 export const getAllCustomerService = async () => {
 	// console.log(data);
-	console.log("Get All Cate")
 	const response = await axiosClient.get("/customer");
 	return response.data;
 };

@@ -37,7 +37,6 @@ export default function UpdateDetailBook() {
     ) => {
         const files = event.target.files;
         if (files && files.length > 0) {
-            console.log(files[0]);
             setFormAddBook({ ...FormAddBook, mediaPath: files[0] });
         }
     };
@@ -48,7 +47,6 @@ export default function UpdateDetailBook() {
         >
     ) => {
         const { name, value } = e.target;
-        console.log(name, value);
         setFormAddBook({ ...FormAddBook, [name]: value });
     };
 
@@ -133,8 +131,7 @@ export default function UpdateDetailBook() {
             });
     };
 
-    // api
-    console.log(FormAddBook.publicationDate);
+
 
     const listCate = useAppSelector((state) => state.cate.listCate);
     const isLoading = useAppSelector((state) => state.cate.isLoading);

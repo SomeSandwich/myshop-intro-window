@@ -28,7 +28,6 @@ export default function AddCustomToOrder(props:{setCurrentCustomerId:React.Dispa
                 name: nameRef.current?.value,
                 phoneNumber: phoneRef.current?.value
             }
-            console.log(newCustomer)
             await dispatch(AddCustomerThunk(newCustomer))
             setShow(false);
         }
@@ -49,7 +48,6 @@ export default function AddCustomToOrder(props:{setCurrentCustomerId:React.Dispa
     }, [listCustomer])
     const handleChange = (selectedOption: any) => {
         setSelected(selectedOption);
-        console.log(`Option selected:`, selectedOption);
     };
     useEffect(() => {
         const uploadData = async () => {
@@ -57,7 +55,6 @@ export default function AddCustomToOrder(props:{setCurrentCustomerId:React.Dispa
                 const id = selected.value
                 listCustomer.forEach(customer => {
                     if (customer.id == id) {
-                        console.log(customer)
                         setCurrentCustomer(customer)
                         props.setCurrentCustomerId(customer.id)
                     }
