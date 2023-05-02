@@ -16,6 +16,7 @@ export interface Book {
     coverType: string;
     categoryDescription: string;
     numPages: Number;
+    cost?: Number;
 }
 export interface AddBookWithForm {
     id: Number;

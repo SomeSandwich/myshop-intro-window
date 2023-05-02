@@ -21,6 +21,7 @@ export interface IOrderDetailProduct {
     price?: Number;
     discount?: Number;
     unitPrice?: Number;
+    cost?: Number;
     quantity: Number;
 }
 

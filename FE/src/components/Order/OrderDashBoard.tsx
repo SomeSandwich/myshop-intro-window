@@ -92,7 +92,7 @@ export const getDetailBook = (
       const newTitle = listbook[indexinListAll].title;
       const price = listbook[indexinListAll].price;
       const discount = listbook[indexinListAll].discount;
-
+      const cost = listbook[indexinListAll].cost;
       subbook.title = JSON.parse(JSON.stringify(newTitle));
       subbook.unitPrice = JSON.parse(JSON.stringify(price));
       subbook.unitPrice =
@@ -100,6 +100,7 @@ export const getDetailBook = (
           (100 - JSON.parse(JSON.stringify(discount)))) /
         100;
       subbook.discount = JSON.parse(JSON.stringify(discount));
+      subbook.cost = JSON.parse(JSON.stringify(cost));
       // theArray[index] = {...book,title:listbook[indexinListAll].title}
     }
     bookClone.push(subbook);

@@ -28,9 +28,10 @@ export const GetDetailOrderService = async (id: string) => {
     const response = await axiosClient.get(`/order/${id}`);
     return response.data;
 };
-export const addOrderService = async (total: Number,customerId:Number,orderDetails:IOrderDetailProduct[]) => {
+export const addOrderService = async (total: Number,customerId:Number,orderDetails:IOrderDetailProduct[],totalCost:Number) => {
     // console.log(data);
-    const response = await axiosClient.post(`/order`, {total,customerId,orderDetails});
+    console.log({totalPrice:total,customerId,orderDetails,totalCost})
+    const response = await axiosClient.post(`/order`, {totalPrice:total,customerId,orderDetails,totalCost});
     return response.data;
 };
 export const updateOrderService = async (id: string, newOrder: OutputOrderDetail) => {

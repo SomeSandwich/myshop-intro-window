@@ -28,15 +28,6 @@ export default function BarChart(props:{data:Number[],labels:String[]}) {
           },
         },
         scales:{
-            x:{
-                title :{
-                    display :true,
-                    text:"Month",
-                    font: {
-                        size: 10
-                    }
-                }
-            },
             y:{
                 title :{
                     display :true,

@@ -78,9 +78,9 @@ export const getAllOrderByUrlThunk = createAsyncThunk(
 );
 export const AddOrderThunk = createAsyncThunk(
   "order/add",
-  async (data:{total: Number,customerId:Number,orderDetails:IOrderDetailProduct[]}, { dispatch, rejectWithValue }) => {
+  async (data:{total: Number,customerId:Number,orderDetails:IOrderDetailProduct[],totalCost: Number}, { dispatch, rejectWithValue }) => {
     try {
-      const response = await addOrderService(data.total,data.customerId,data.orderDetails);
+      const response = await addOrderService(data.total,data.customerId,data.orderDetails,data.totalCost);
       notification("Create Order Success Fully",Notification.Success)
       return response;
     } catch (error: any) {

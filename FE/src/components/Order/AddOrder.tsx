@@ -22,10 +22,11 @@ export default function AddOrder() {
     const [selected, setSelected] = useState<BookOption | null>(null);
     const [options, setOptions] = useState<BookOption[]>([]);
     const [tong, setTong] = useState(0);
+    const [tongCost, setTongCost] = useState(0);
     const [currentCustomerId, setCurrentCustomerId] = useState<Number|null>(null);
     const [maxQuantity,setMaxQuantity] = useState(0);
     const quantityRef = React.useRef<HTMLInputElement>(null);
-
+    
     const dispatch = useAppDispatch()
     useEffect(() => {
         const temp = getDetailBook(listProduct, listBook)
@@ -37,6 +38,8 @@ export default function AddOrder() {
     }, [listProduct])
     useEffect(()=>{
         setTong(calculator(books))
+        console.log(calculatorCost(books))
+        setTongCost(calculatorCost(books))
     },[books])
     const handleAdd = () => {
 
@@ -75,10 +78,10 @@ export default function AddOrder() {
         }else if(!currentCustomerId){
             notification("Please Choose Customer",Notification.Warn)
         }else{
-            const newOrder ={total:tong,customerId:currentCustomerId,orderDetails:books}
+            const newOrder ={total:tong,customerId:currentCustomerId,orderDetails:books,totalCost:tongCost}
+            
             dispatch(AddOrderThunk(newOrder))
         }
-
     }
     useEffect(()=>{
         if(selected){
@@ -225,6 +228,10 @@ const ProductDetail = (props: { product: IOrderDetailProduct }) => {
 }
 export const calculator = (booklist: IOrderDetailProduct[]) => {
     const sum = booklist.reduce(function (current, book) { return current + (book.unitPrice ? +book.unitPrice * +book.quantity : 0); }, 0)
+    return sum
+}
+export const calculatorCost = (booklist: IOrderDetailProduct[]) => {
+    const sum = booklist.reduce(function (current, book) { return current + (book.cost ? +book.cost * +book.quantity : 0); }, 0)
     return sum
 }
 const widthColumn_detail = "125px"
