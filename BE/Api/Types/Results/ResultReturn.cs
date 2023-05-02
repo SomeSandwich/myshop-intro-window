@@ -34,3 +34,22 @@ public class FailureResult : BaseResult
 
     public override string Message { get; set; } = "Failure";
 }
+
+
+public class SuccessWithDataResult : BaseResult
+{
+    public override StatusReturn Status => StatusReturn.SuccessWithValue;
+
+    public override string Message { get; set; } = "Success";
+
+    public object Data { get; set; }
+}
+
+public class FailureWithData : BaseResult
+{
+    public override StatusReturn Status => StatusReturn.FailureWithValue;
+
+    public override string Message { get; set; } = "Failure";
+
+    public object Data { get; set; }
+}

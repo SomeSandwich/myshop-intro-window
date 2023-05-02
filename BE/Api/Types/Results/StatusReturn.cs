@@ -4,5 +4,7 @@ public enum StatusReturn
 {
     None,
     Success,
-    Failure
+    Failure,
+    SuccessWithValue,
+    FailureWithValue,
 }

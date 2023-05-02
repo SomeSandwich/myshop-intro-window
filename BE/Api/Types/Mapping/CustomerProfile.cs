@@ -8,7 +8,9 @@ public class CustomerProfile : Profile
 {
     public CustomerProfile()
     {
-        CreateMap<Customer, CustomerRes>().ForMember(des => des.Orders, opt => opt.Ignore());
+        CreateMap<Customer, CustomerRes>()
+            .ForMember(des => des.Orders, 
+                opt => opt.Ignore());
         CreateMap<CreateCustomerReq, Customer>();
     }
 }
