@@ -33,8 +33,8 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 -   Có tổng cộng bao nhiêu sản phẩm đang bán
 -   Liệt kê top 5 sản phẩm đang sắp hết hàng (số lượng < 5)
 <div>
-<img src="https://github.com/SomeSandwich/myshop-intro-window.git/blob/main/Img/dashboard_1.png" width="516"/>
-<img src="https://github.com/SomeSandwich/myshop-intro-window.git/blob/main/Img/dashboard_2.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/dashboard_1.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/dashboard_2.png" width="516"/>
 </div>
 #### 3. Quản lí hàng hóa
 
@@ -44,19 +44,33 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 - [x] Cho phép thêm một sản phẩm, xóa một sản phẩm, hiệu chỉnh thông tin sản phẩm
 - [x] Cho phép tìm kiếm sản phẩm theo tên
 - [x] Cho phép lọc lại sản phẩm theo khoảng giá
-
+<div>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/CreateBook_1.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/home_1.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Cate_1.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Cate_2.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Cate_3.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/CreateBook_2.png" width="516"/>
+</div>
 #### 4. Quản lí các đơn hàng
 
 * [x] Tạo ra các đơn hàng
 - [x] Cho phép xóa một đơn hàng, cập nhật một đơn hàng
 - [x] Cho phép xem danh sách các đơn hàng có phân trang, xem chi tiết một đơn hàng
 - [x] Tìm kiếm các đơn hàng từ ngày đến ngày
-
+<div>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/CreateOrder.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/UpdateOrder.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/DeleteOrder.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/OrderDashboard.png" width="516"/>
+</div>
 #### 5. Báo cáo thống kê
 
 - [x] Báo cáo doanh thu và lợi nhuận theo ngày đến ngày, theo tuần, theo tháng, theo năm (vẽ biểu đồ)
 - [x]  Xem các sản phẩm và số lượng bán theo ngày đến ngày, theo tuần, theo tháng, theo năm (vẽ biểu đồ)
-
+<div>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/Statistic.png" width="516"/>
+</div>
 #### 6. Cấu hình
 - [x] Cho phép hiệu chỉnh số lượng sản phẩm mỗi trang
 - [x] Cho phép khi chạy chương trình lên thì mở lại màn hình cuối mà lần trước tắt
@@ -86,6 +100,8 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 - [ ] Sử dụng thư viện WinUI mới (1 điểm)
 - [x] Kết nối API Rest API (2 điểm)
 - [ ] Kết nối GraphQL API (2 điểm)
+**1. Thêm bánh vào hóa đơn hiện tại**
+- Khi xem chi tiết một sách nào đó, người dùng có thể thêm nhanh chúng vào hóa đơn và sau đó có thể cân nhắc mua hay không mua ở mục Order. 
 
 - Link to other pages:
   - Project Management: **Dùng Github Project**
