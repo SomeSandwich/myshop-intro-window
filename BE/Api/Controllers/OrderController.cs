@@ -53,7 +53,7 @@ public class OrderController : ControllerBase
         var checkCustomer = await _customerService.CheckCustomerExists(customerId);
         if (checkCustomer == false)
             return BadRequest(new ResFailure { Message = $"Not found Customer with Id: {customerId}" });
-        
+
         var result = await _orSer.GetByCustomerAsync(customerId);
         return Ok(result);
     }
@@ -103,11 +103,19 @@ public class OrderController : ControllerBase
             return BadRequest(new ResFailure { Message = $"Product not found:{ls}" });
         }
 
-        var orderId = await _orSer.CreateAsync(sellerId, req);
+
+        var result = await _orSer.CreateAsync(sellerId, req);
+
+        if (result is FailureWithData ord)
+        {
+            return StatusCode(400, ord.Data);
+        }
+
+        var order = result as SuccessWithDataResult;
 
         return CreatedAtAction(
             nameof(GetOne),
-            new { orderId = orderId },
+            order?.Data,
             new ResSuccess());
     }
 

@@ -10,6 +10,7 @@ using API.Types.Objects.Statistic;
 using Api.Types.Results;
 using AutoMapper;
 using System.Web;
+using API.Types.Objects.OrderDetail;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
@@ -20,7 +21,7 @@ public interface IOrderService
     Task<OrderRes?> GetAsync(int id);
     Task<IEnumerable<OrderRes>> GetByCustomerAsync(int customerId);
 
-    Task<int> CreateAsync(int sellerId, CreateOrderReq req);
+    Task<BaseResult> CreateAsync(int sellerId, CreateOrderReq req);
 
     Task<BaseResult> UpdateAsync(int id, UpdateOrderReq req);
 
@@ -61,7 +62,7 @@ public class OrderService : IOrderService
             .OrderByDescending(e => e.CreateAt)
             .Include(e => e.OrderDetails)
             .Include(e => e.Customer)
-            .Where(e=>e.Status != OrderStatus.Deleted)
+            .Where(e => e.Status != OrderStatus.Deleted)
             .AsEnumerable();
 
         if (filter.CustomerId is not null)
@@ -150,6 +151,7 @@ public class OrderService : IOrderService
     public async Task<OrderRes?> GetAsync(int id)
     {
         var order = await _context.Orders
+            .Include(e => e.Customer)
             .Include(e => e.OrderDetails)
             .FirstOrDefaultAsync(e => e.Status != OrderStatus.Deleted && e.Id == id);
 
@@ -167,11 +169,34 @@ public class OrderService : IOrderService
         return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderRes>>(order);
     }
 
-    public async Task<int> CreateAsync(int sellerId, CreateOrderReq req)
+    public async Task<BaseResult> CreateAsync(int sellerId, CreateOrderReq req)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
+            var listProdId = (req.OrderDetails).ToDictionary(p => p.ProductId, detailReq => detailReq.Quantity);
+
+            var listKey = listProdId.Keys;
+            var listProduct = _context.Products
+                .Where(p => listKey.Contains(p.Id))
+                .ToList();
+
+            var lackingProducts = (
+                    from product in listProdId.Where(product => true)
+                    select listProduct.FirstOrDefault(p => p.Id == product.Key && p.Quantity - product.Value < 0)
+                    into product
+                    where product != null
+                    select product.Id)
+                .ToList();
+
+            if (lackingProducts.Count > 0)
+                return new FailureWithData() { Data = new { LackingProducts = lackingProducts } };
+
+            foreach (var product in listProduct)
+            {
+                product.Quantity -= listProdId[product.Id];
+            }
+
             var now = DateTime.Now;
             var order = _mapper.Map<CreateOrderReq, Order>(req, opt
                 => opt.AfterMap((src, des) =>
@@ -186,9 +211,10 @@ public class OrderService : IOrderService
             await _context.SaveChangesAsync();
 
             await _orderDetailService.AddAsync(order.Id, req.OrderDetails);
+            await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();
-            return order.Id;
+            return new SuccessWithDataResult() { Data = new { orderId = order.Id } };
         }
         catch (Exception ex)
         {
@@ -215,12 +241,23 @@ public class OrderService : IOrderService
     public async Task<BaseResult> DeleteAsync(int id)
     {
         var order = await _context.Orders
+            .Include(o=>o.OrderDetails)
             .FirstOrDefaultAsync(e => e.Id == id && e.Status != OrderStatus.Deleted);
 
         if (order is null)
             return new FailureResult { Message = $"Not found order with Id: {id}" };
 
         order.Status = OrderStatus.Deleted;
+        
+        var listProdId = (order.OrderDetails).ToDictionary(p => p.ProductId, detailReq => detailReq.Quantity);
+        var listKey = listProdId.Keys;
+        var listProduct = _context.Products
+            .Where(p => listKey.Contains(p.Id))
+            .ToList();
+        foreach (var product in listProduct)
+        {
+            product.Quantity += listProdId[product.Id];
+        }
 
         await _context.SaveChangesAsync();
 
