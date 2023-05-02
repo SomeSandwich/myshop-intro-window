@@ -144,6 +144,7 @@ public class ProductService : IProductService
                 product.MediaPath.Add(filePath);
             }
         }
+        product.UpdateAt = DateTime.Now;
 
         await _context.SaveChangesAsync();
 

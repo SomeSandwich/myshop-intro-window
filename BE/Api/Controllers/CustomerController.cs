@@ -95,7 +95,7 @@ public class CustomerController : ControllerBase
         if (customerId is null)
             return BadRequest(new ResFailure { Message = $"Exists customer with phone number: {req.PhoneNumber}" });
 
-        return CreatedAtAction(nameof(GetByPhone), new { id = customerId }, new ResSuccess());
+        return CreatedAtAction(nameof(GetById), new { id = customerId }, new ResSuccess());
     }
 
     [HttpPatch]
