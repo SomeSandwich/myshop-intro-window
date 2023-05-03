@@ -84,7 +84,7 @@ export default function AddBook() {
     const handleFormAddBookSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         //validate
-
+        console.log(FormAddBook)
         if (!FormAddBook.mediaPath) {
             notification("Please choose image", Notification.Warn);
             return;
@@ -127,7 +127,7 @@ export default function AddBook() {
         }
 
         const formData = new FormData();
-
+        
         formData.append("title", FormAddBook.title);
         formData.append("author", FormAddBook.author);
         formData.append("publisher", FormAddBook.publisher);
@@ -138,11 +138,12 @@ export default function AddBook() {
         formData.append("quantity", FormAddBook.quantity as unknown as string);
         formData.append("MediaFiles", FormAddBook.mediaPath);
         formData.append("cost", FormAddBook.originalPrice as unknown as string);
+        formData.append("discount", FormAddBook.discount as unknown as string);
         formData.append(
             "categoryId",
             FormAddBook.categoryId as unknown as string
         );
-        formData.append("description", FormAddBook.description);
+        formData.append("Description", FormAddBook.description);
 
 
         // fetch("https://myshop.hieucckha.me/api/v1/product", {
@@ -160,7 +161,7 @@ export default function AddBook() {
         //             notification("Thêm sách thất bại", Notification.Error);
         //         }
         //     });
-            console.log(formData)
+          
         axiosClient
             .post("/product", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -175,7 +176,7 @@ export default function AddBook() {
             })
             .catch((err) => {
                 console.log(err);
-                notification(err.response.data.message, Notification.Error);
+                notification("Add book error", Notification.Error);
             });
     };
 
