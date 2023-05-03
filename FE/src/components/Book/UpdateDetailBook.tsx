@@ -231,7 +231,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                value={FormAddBook.price}
+                                                value={+FormAddBook.price}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -261,7 +261,7 @@ export default function UpdateDetailBook() {
                                                     }
                                                     className="custom-select"
                                                     value={
-                                                        FormAddBook.categoryId
+                                                        +FormAddBook.categoryId
                                                     }
                                                     name="categoryId"
                                                 >
@@ -271,7 +271,7 @@ export default function UpdateDetailBook() {
                                                     {listCate.map((cate) => {
                                                         return (
                                                             <option
-                                                                value={cate.id}
+                                                                value={+cate.id}
                                                             >
                                                                 {
                                                                     cate.description
@@ -314,7 +314,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                value={FormAddBook.quantity}
+                                                value={+FormAddBook.quantity}
                                                 name="quantity"
                                                 onChange={
                                                     handleFormAddBookChange
@@ -368,7 +368,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                value={FormAddBook.numPages}
+                                                value={+FormAddBook.numPages}
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }
@@ -387,7 +387,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                value={FormAddBook.discount}
+                                                value={+FormAddBook.discount}
                                                 name="discount"
                                                 onChange={
                                                     handleFormAddBookChange
@@ -406,7 +406,7 @@ export default function UpdateDetailBook() {
                                                 </span>
                                             </label>
                                             <input
-                                                value={FormAddBook.cost}
+                                                value={+FormAddBook.cost}
                                                 name="cost"
                                                 onChange={
                                                     handleFormAddBookChange

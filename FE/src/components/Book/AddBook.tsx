@@ -352,7 +352,7 @@ export default function AddBook() {
                                                     }
                                                     className="custom-select"
                                                     value={
-                                                        FormAddBook.categoryId
+                                                        +FormAddBook.categoryId
                                                     }
                                                     name="categoryId"
                                                 >
@@ -362,7 +362,7 @@ export default function AddBook() {
                                                     {listCate.map((cate) => {
                                                         return (
                                                             <option
-                                                                value={cate.id}
+                                                                value={+cate.id}
                                                             >
                                                                 {
                                                                     cate.description

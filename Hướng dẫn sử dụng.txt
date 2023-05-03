@@ -1,0 +1,62 @@
+Hướng dẫn sử dụng
+
+Cách chạy ứng dụng
+	- Bật terminal
+	- di chuyển vô Folder FE
+	- Chạy npm run dev
+
+Tài khoản đăng nhập
+Tài khoảng 1:
+	user: root
+	pass: 123
+Tài khoảng 2:
+	user: thong
+	pass: 123
+
+Dashboard : 
+	- xem số lượng sách đã nhập
+	- Thống kê lợi nhuận , chi phi, doanh thu
+	- Thống kê sách đẫ bán
+	- Thống kê số lượng sách đã bán theo loại sách
+	- Statistic : hiện bảng chọn theo ngày, Tuần , tháng , năm
+	- Xem các quyển sách sắp hết hàng ( số lượng < 5)
+	- Ngày chọn từ 30/4 -> 3/5 
+	- Tháng chọn tháng 4 hoặc 5
+	- Năm chọn 2023 ( mặc định vô app là thống kê theo năm 2023)
+Home: 
+	- Xem danh sách các quyển sách được phân trang
+	- Refresh để cật nhật lại sách mới nhất
+	- Search : nhập tên sách muốn tìm kiếm
+	- Filter :
+		+ Filter theo loại sách 
+		+ Filter theo khoảng gía
+	- Chỉnh số lượng sách của 1 trang
+AddBook:
+	- Import file exel
+		+ Button download : tải template mẫu của file exel
+		+ Chọn file cần import
+		+ Ấn save ở trên để import
+	- Điền thông tin vào form bên dưới:
+		+ điền và chọn thông tin cơ banr
+		+ chọn hình của sách
+		+ điền mô tả
+		+ Ấn nút save ở ngay trên form để thêm sách
+Manage Cate: 
+	- Hiển thị danh sách category
+	- ấn edit để chỉnh sửa thông tin category
+	- Nút ADD để thêm category mới
+Order: 
+	- Xem danh sách các đơn hàng tìm kiếm theo ngày được phân trang 
+	- ấn search refresh khi ngày bắt đầu và ngày kết thúc chưa chọn
+	- Chọn ngày bắt đầu và ngày kết thúc rồi ấn search
+	- Xem danh sách sản phẩm trong đơn hàng hiện tại
+	- Chọn Create New để xóa thông tin đơn hàng hiện tại và tạo đơn hàng mới
+	- Ấn create with current để tạo đơn hàng với những sản phẩm đã chọn 
+	- AddOrder:
+		+ Chọn tên sách và số lượng
+		+ Chọn tên khách hàng 
+		+ Có thể tạo khách hàng mới bằng nút create Customer rồi nhập thông tin
+		+ Có thêm xóa sản phẩm hiện tại trong đơn hàng
+		+ Ấn hình cục gôm để xóa tất cả sản phẩm trong đơn hàng
+		+ Ấn Finish order để tạo đơn hàng
+AboutUs: Thông tin của các thành viên trong nhóm

@@ -8,7 +8,7 @@ import {
     GetDetailBookService,
     DeleteBookService,
 } from "@/services/book.service";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 import { Book } from "@/interfaces/bookDetail";
 import { notification } from "./AddBook";
 import { Button } from "react-bootstrap";
@@ -20,27 +20,30 @@ import { RootState } from "@/store";
 export default function () {
     const { id } = useParams();
     if (!id) return <></>;
-    const [isLoading,setIsLoading] = useState<boolean>(true)
-    
-    const listBook = useAppSelector((state: RootState) => state.book.listAllBook)
-    const listProduct = useAppSelector((state: RootState) => state.order.currentOrder)
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const listBook = useAppSelector(
+        (state: RootState) => state.book.listAllBook
+    );
+    const listProduct = useAppSelector(
+        (state: RootState) => state.order.currentOrder
+    );
     const quantityRef = React.useRef<HTMLInputElement>(null);
     const [show, setShow] = useState(false);
-    const [maxQuantity,setMaxQuantity] = useState(0);
+    const [maxQuantity, setMaxQuantity] = useState(0);
     const [curBook, setCurBook] = useState<Book>();
     const navigate = useNavigate();
     const handleUpdateBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/books/update/" + id);
     };
-    const dispatch = useAppDispatch()
-    const handleShow = () => {  
-        const potential = getPotentialNumberProduct(listBook,listProduct,+id)
-        setMaxQuantity(pre=>+potential)
-        setShow(true)
+    const dispatch = useAppDispatch();
+    const handleShow = () => {
+        const potential = getPotentialNumberProduct(listBook, listProduct, +id);
+        setMaxQuantity((pre) => +potential);
+        setShow(true);
     };
     const handleClose = () => setShow(false);
-    const handleAddNewProduct =async ()=>{
-        
+    const handleAddNewProduct = async () => {
         // if(nameRef.current &&  phoneRef.current){
         //     const newCustomer: InputCustomer= {
         //         name: nameRef.current?.value,
@@ -48,30 +51,37 @@ export default function () {
         //     }
         //     console.log(newCustomer)
         //     await dispatch(AddCustomerThunk(newCustomer))
-            
+
         // }
-        if(quantityRef.current && curBook){
-            if(+quantityRef.current?.value==0) {
-                notification("Please select quantity at least 1",Notification.Warn)
-            }else{
+        if (quantityRef.current && curBook) {
+            if (+quantityRef.current?.value == 0) {
+                notification(
+                    "Please select quantity at least 1",
+                    Notification.Warn
+                );
+            } else {
                 const newProduct: IOrderDetailProduct = {
                     productId: parseInt(id),
                     quantity: +quantityRef.current?.value,
-                    title: curBook?.title
-                }
-                
-                if(+newProduct.quantity>maxQuantity){
-                    notification(`Current Quatity has only ${maxQuantity}`,Notification.Warn)
-                }else{
-                    
-                    notification("Add New Product Success", Notification.Success)
-                    dispatch(addProductToCurrentOrder(newProduct))
+                    title: curBook?.title,
+                };
+
+                if (+newProduct.quantity > maxQuantity) {
+                    notification(
+                        `Current Quatity has only ${maxQuantity}`,
+                        Notification.Warn
+                    );
+                } else {
+                    notification(
+                        "Add New Product Success",
+                        Notification.Success
+                    );
+                    dispatch(addProductToCurrentOrder(newProduct));
                 }
             }
-            
         }
         setShow(false);
-    }
+    };
     const handleDeleteBook = async (e: React.MouseEvent<HTMLButtonElement>) => {
         await DeleteBookService(id).then((res) => {
             if (res.message == "Success") {
@@ -87,35 +97,47 @@ export default function () {
     const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
         notification("Thêm vào giỏ hàng thành công", Notification.Success);
     };
-   
+
     useEffect(() => {
         const getDetail = async () => {
             const respone = await GetDetailBookService(id).catch((err) => {
                 navigate("/*");
             });
             setCurBook(respone);
-            
         };
         getDetail();
     }, []);
-    useEffect(()=>{
-        setIsLoading(pre=>false)
-    },[curBook])
-    if(!curBook) return <></>
-    
+    useEffect(() => {
+        setIsLoading((pre) => false);
+    }, [curBook]);
+    if (!curBook) return <></>;
+
     return (
         <div className="detail-book-1">
-            {
-                isLoading==true?
-                <><i className="fa fa-refresh fa-spin"></i>Loading</>:<></>
-            }
+            {isLoading == true ? (
+                <>
+                    <i className="fa fa-refresh fa-spin"></i>Loading
+                </>
+            ) : (
+                <></>
+            )}
             <ToastContainer />
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add To Card</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Quantity: <input ref={quantityRef} type="number" min={1} max={maxQuantity} className="form-control" required id="inputPhone" placeholder={"Quantity"} />
+                    Quantity:{" "}
+                    <input
+                        ref={quantityRef}
+                        type="number"
+                        min={1}
+                        max={maxQuantity}
+                        className="form-control"
+                        required
+                        id="inputPhone"
+                        placeholder={"Quantity"}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -127,7 +149,15 @@ export default function () {
                 </Modal.Footer>
             </Modal>
             <div className="row d-flex justify-content-start">
-                <button className='btn btn-primary' onClick={()=>{navigate("/home")}} > Back</button>
+                <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                        navigate("/home");
+                    }}
+                >
+                    {" "}
+                    Back
+                </button>
             </div>
             <div className="card">
                 {curBook ? (
@@ -200,14 +230,14 @@ export default function () {
                                         </strong>
                                     </h6>
                                     <h6 className="p-1 flex-fill bd-highlight">
-                                        Discount price: 
+                                        Discount price:
                                         <strong>
                                             <NumericFormat
                                                 displayType="text"
                                                 value={(
-                                                    curBook.price -
-                                                    (curBook.discount *
-                                                        curBook.price) /
+                                                    +curBook.price -
+                                                    (+curBook.discount *
+                                                        +curBook.price) /
                                                         100
                                                 ).toString()}
                                                 thousandSeparator={true}
@@ -216,13 +246,16 @@ export default function () {
                                         </strong>
                                     </h6>
                                 </div>
-                                {curBook.cost? 
-                                <div className="d-flex bd-highlight">
-                                    <p className="p-1 flex-fill bd-highlight">
-                                        Cost:{" "}
-                                        <strong>{+curBook.cost}</strong>
-                                    </p>
-                                </div>:<></>}
+                                {curBook.cost ? (
+                                    <div className="d-flex bd-highlight">
+                                        <p className="p-1 flex-fill bd-highlight">
+                                            Cost:{" "}
+                                            <strong>{+curBook.cost}</strong>
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
                                         Quantity:{" "}
