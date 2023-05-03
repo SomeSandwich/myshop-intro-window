@@ -98,7 +98,7 @@ public class Product
 
     /// <summary>
     /// Dimensions of book
-    /// </summary>
+    /// </summary>d
     [NotMapped]
     public Dimensions? Dimension { get; set; }
 
