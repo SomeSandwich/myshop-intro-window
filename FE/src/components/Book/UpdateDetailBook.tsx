@@ -90,8 +90,7 @@ export default function UpdateDetailBook() {
         } else if (!FormAddBook.discount) {
             notification("Please input discount", Notification.Warn);
             return;
-        }
-        else if (!FormAddBook.cost) {
+        } else if (!FormAddBook.cost) {
             notification("Please input original price", Notification.Warn);
             return;
         }
@@ -134,8 +133,6 @@ export default function UpdateDetailBook() {
                 notification("Add book error", Notification.Error);
             });
     };
-
-
 
     const listCate = useAppSelector((state) => state.cate.listCate);
     const isLoading = useAppSelector((state) => state.cate.isLoading);
@@ -347,14 +344,18 @@ export default function UpdateDetailBook() {
                                                     Open this select menu
                                                 </option>
                                                 <option value="Hardcover">
-                                                    Hardcover
+                                                    Hard cover
                                                 </option>
                                                 <option value="Paperback">
-                                                    Paperback
+                                                    Paper back
                                                 </option>
                                                 <option value="FoldingCover">
-                                                    FoldingCover
+                                                    Folding Cover
                                                 </option>
+                                                <option value="Combo">
+                                                    Combo
+                                                </option>
+                                                <option value="Box">Box</option>
                                             </select>
                                         </div>
                                     </div>

@@ -84,7 +84,7 @@ export default function AddBook() {
     const handleFormAddBookSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         //validate
-        console.log(FormAddBook)
+        console.log(FormAddBook);
         if (!FormAddBook.mediaPath) {
             notification("Please choose image", Notification.Warn);
             return;
@@ -121,30 +121,29 @@ export default function AddBook() {
         } else if (!FormAddBook.originalPrice) {
             notification("Please input original price", Notification.Warn);
             return;
-        }else if (!FormAddBook.discount) {
+        } else if (!FormAddBook.discount) {
             notification("Please input discount", Notification.Warn);
             return;
         }
 
         const formData = new FormData();
-        
-        formData.append("title", FormAddBook.title);
-        formData.append("author", FormAddBook.author);
-        formData.append("publisher", FormAddBook.publisher);
-        formData.append("publicationDate", FormAddBook.publicationDate);
-        formData.append("coverType", FormAddBook.coverType);
-        formData.append("numPages", FormAddBook.numPages as unknown as string);
-        formData.append("price", FormAddBook.price as unknown as string);
-        formData.append("quantity", FormAddBook.quantity as unknown as string);
+
+        formData.append("Title", FormAddBook.title);
+        formData.append("Author", FormAddBook.author);
+        formData.append("Publisher", FormAddBook.publisher);
+        formData.append("PublicationDate", FormAddBook.publicationDate);
+        formData.append("CoverType", FormAddBook.coverType);
+        formData.append("NumPages", FormAddBook.numPages as unknown as string);
+        formData.append("Price", FormAddBook.price as unknown as string);
+        formData.append("Quantity", FormAddBook.quantity as unknown as string);
         formData.append("MediaFiles", FormAddBook.mediaPath);
-        formData.append("cost", FormAddBook.originalPrice as unknown as string);
-        formData.append("discount", FormAddBook.discount as unknown as string);
+        formData.append("Cost", FormAddBook.originalPrice as unknown as string);
+        formData.append("Discount", FormAddBook.discount as unknown as string);
         formData.append(
             "categoryId",
             FormAddBook.categoryId as unknown as string
         );
         formData.append("Description", FormAddBook.description);
-
 
         // fetch("https://myshop.hieucckha.me/api/v1/product", {
         //     mode: "no-cors",
@@ -161,7 +160,7 @@ export default function AddBook() {
         //             notification("Thêm sách thất bại", Notification.Error);
         //         }
         //     });
-          
+
         axiosClient
             .post("/product", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -430,15 +429,17 @@ export default function AddBook() {
                                                 <option selected>
                                                     Open this select menu
                                                 </option>
-                                                <option value="Hardcover">
+                                                <option value="0">
                                                     Hard cover
                                                 </option>
-                                                <option value="Paperback">
+                                                <option value="1">
                                                     Paper back
                                                 </option>
-                                                <option value="FoldingCover">
+                                                <option value="2">
                                                     Folding Cover
                                                 </option>
+                                                <option value="3">Combo</option>
+                                                <option value="4">Box</option>
                                             </select>
                                         </div>
                                     </div>
