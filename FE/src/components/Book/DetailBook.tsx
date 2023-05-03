@@ -20,6 +20,8 @@ import { RootState } from "@/store";
 export default function () {
     const { id } = useParams();
     if (!id) return <></>;
+    const [isLoading,setIsLoading] = useState<boolean>(true)
+    
     const listBook = useAppSelector((state: RootState) => state.book.listAllBook)
     const listProduct = useAppSelector((state: RootState) => state.order.currentOrder)
     const quantityRef = React.useRef<HTMLInputElement>(null);
@@ -85,19 +87,28 @@ export default function () {
     const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
         notification("Thêm vào giỏ hàng thành công", Notification.Success);
     };
-
+   
     useEffect(() => {
         const getDetail = async () => {
             const respone = await GetDetailBookService(id).catch((err) => {
                 navigate("/*");
             });
             setCurBook(respone);
+            
         };
         getDetail();
     }, []);
+    useEffect(()=>{
+        setIsLoading(pre=>false)
+    },[curBook])
     if(!curBook) return <></>
+    
     return (
         <div className="detail-book-1">
+            {
+                isLoading==true?
+                <><i className="fa fa-refresh fa-spin"></i>Loading</>:<></>
+            }
             <ToastContainer />
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -205,6 +216,13 @@ export default function () {
                                         </strong>
                                     </h6>
                                 </div>
+                                {curBook.cost? 
+                                <div className="d-flex bd-highlight">
+                                    <p className="p-1 flex-fill bd-highlight">
+                                        Cost:{" "}
+                                        <strong>{+curBook.cost}</strong>
+                                    </p>
+                                </div>:<></>}
                                 <div className="d-flex bd-highlight">
                                     <p className="p-1 flex-fill bd-highlight">
                                         Quantity:{" "}

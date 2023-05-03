@@ -121,6 +121,9 @@ export default function AddBook() {
         } else if (!FormAddBook.originalPrice) {
             notification("Please input original price", Notification.Warn);
             return;
+        }else if (!FormAddBook.discount) {
+            notification("Please input discount", Notification.Warn);
+            return;
         }
 
         const formData = new FormData();
@@ -157,7 +160,7 @@ export default function AddBook() {
         //             notification("Thêm sách thất bại", Notification.Error);
         //         }
         //     });
-
+            console.log(formData)
         axiosClient
             .post("/product", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -172,7 +175,7 @@ export default function AddBook() {
             })
             .catch((err) => {
                 console.log(err);
-                notification("Add book error", Notification.Error);
+                notification(err.response.data.message, Notification.Error);
             });
     };
 
@@ -466,6 +469,24 @@ export default function AddBook() {
                                             </label>
                                             <input
                                                 name="originalPrice"
+                                                onChange={
+                                                    handleFormAddBookChange
+                                                }
+                                                type="text"
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Discount{" "}
+                                                <span className="text-danger">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <input
+                                                name="discount"
                                                 onChange={
                                                     handleFormAddBookChange
                                                 }

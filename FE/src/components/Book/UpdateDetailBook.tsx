@@ -88,6 +88,10 @@ export default function UpdateDetailBook() {
             notification("Please input description", Notification.Warn);
             return;
         } else if (!FormAddBook.discount) {
+            notification("Please input discount", Notification.Warn);
+            return;
+        }
+        else if (!FormAddBook.cost) {
             notification("Please input original price", Notification.Warn);
             return;
         }
