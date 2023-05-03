@@ -80,7 +80,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 - [x] Cho phép khi chạy chương trình lên thì mở lại màn hình cuối mà lần trước tắt
 
 #### 7. Đóng gói thành file cài đặt
-- [x] Cần đóng gói thành file exe để tự cài chương trình vào hệ thống
+- [ ] Cần đóng gói thành file exe để tự cài chương trình vào hệ thống
 
 
 ### Các chức năng chưa làm được theo yêu cầu của thầy
@@ -109,9 +109,17 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 - [ ] Sử dụng thư viện WinUI mới (1 điểm)
 - [x] Kết nối API Rest API (2 điểm)
 - [ ] Kết nối GraphQL API (2 điểm)
+
 **1. Thêm bánh vào hóa đơn hiện tại**
 - Khi xem chi tiết một sách nào đó, người dùng có thể thêm nhanh chúng vào hóa đơn và sau đó có thể cân nhắc mua hay không mua ở mục Order. 
 
+## Điểm đề nghị cho bài tập
+
+- **Điểm đề nghị: 10đ.**
+
+- **Điểm cộng đề nghị: 2đ.**
+
+## Các thông tin cần thiết
 - Link to other pages:
   - Project Management: **Dùng Github Project**
 
@@ -123,14 +131,6 @@ Cung cấp tổng quan về hệ thống, ví dụ:
   - Database: database.hieucckha.me | 7600 | postgres | 123@qwerty
 
 - Frontend: Electron
-
-## Điểm đề nghị cho bài tập
-
-- **Điểm đề nghị: 10đ.**
-
-- **Điểm cộng đề nghị: 2đ.**
-
-  
 
 ### Link demo
 
