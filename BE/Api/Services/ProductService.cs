@@ -71,9 +71,9 @@ public class ProductService : IProductService
     {
         var listProduct = _context.Products
             .Include(p => p.Category)
-            .Where(p=>p.Status == ProductStatus.Default)
+            .Where(p => p.Status == ProductStatus.Default)
             .AsEnumerable();
-        
+
         var abc = listProduct
             .Where(p => p.Title.Trim().Contains(query))
             .AsEnumerable();
@@ -129,6 +129,10 @@ public class ProductService : IProductService
         product.PublicationDate = arg.PublicationDate ?? product.PublicationDate;
         product.NumPages = arg.NumPages ?? product.NumPages;
         product.CoverType = arg.CoverType ?? product.CoverType;
+        if (arg.MediaFilesDel is not null && arg.MediaFilesDel.Count > 0)
+            product.MediaPath.Remove(arg.MediaFilesDel.First());
+        if (arg.MediaFilesAdd is not null && arg.MediaFilesAdd.Count > 0)
+            product.MediaPath.Remove(arg.MediaFilesAdd.First());
 
         if (arg.Dimension is { Width: not null, Height: not null, Length: not null })
             product.DimensionJSON = JsonSerializer.Serialize(arg.Dimension);
@@ -146,6 +150,7 @@ public class ProductService : IProductService
                 product.MediaPath.Add(filePath);
             }
         }
+
         product.UpdateAt = DateTime.Now;
 
         await _context.SaveChangesAsync();

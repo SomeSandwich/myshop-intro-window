@@ -155,13 +155,9 @@ public class ProductController : ControllerBase
         {
             return Unauthorized();
         }
-
-        // todo upload file
-        var listUpload = new List<string>();
-
+        
         var filesSuccess = new List<string>();
         var filesFail = new List<string>();
-
 
         if (req.MediaFiles is not null)
         {
@@ -192,7 +188,22 @@ public class ProductController : ControllerBase
                 });
         }
 
+        var listDelete = new List<string>();
         var arg = _mapper.Map<UpdateProductReq, UpdateProductArg>(req);
+        arg.MediaFilesAdd = filesSuccess;
+
+        var product = await _productSer.GetAsync(id);
+
+        if (product is { MediaPath.Count: > 0 })
+        {
+            await _fileSer.DeleteFileAsync(product.MediaPath[0]);
+            listDelete.Add(product.MediaPath[0]);
+            
+        }
+
+        arg.MediaFilesDel = listDelete;
+
+        
 
         var result = await _productSer.UpdateAsync(id, arg);
 
