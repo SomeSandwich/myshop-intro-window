@@ -88,8 +88,8 @@ public class UpdateProductReq
     /// </summary>
     public IFormFileCollection? MediaFiles { get; set; }
 
-    /// <summary>
-    /// List File Delete 
-    /// </summary>
-    public ICollection<string>? MediaFileDeletes { get; set; }
+    // /// <summary>
+    // /// List File Delete 
+    // /// </summary>
+    // public ICollection<string>? MediaFileDeletes { get; set; }
 }
