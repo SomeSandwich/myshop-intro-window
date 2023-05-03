@@ -134,7 +134,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 
 ### Link demo
 
->***not yet***
+>***https://drive.google.com/file/d/1mMN-qJc9VIYd-CRSJXDlSgyHweMX5QfS/view?usp=share_link***
 
 ### Link drive bài nộp
 
