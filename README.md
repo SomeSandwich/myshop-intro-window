@@ -18,7 +18,7 @@
 | Nguyễn Tấn Hiếu      | 20127159 | hieucckha@gmail.com          |
 | Võ Thanh Sương       | 20127312 | vothanhsuong123@gmail.com       |
 | Võ Minh Thông        | 20127638 | thong89x@gmail.com |
-| Nguyễn Văn Hậu       | 20127*** |     |
+| Nguyễn Văn Hậu       | 20127493 |     |
 
 ## Các chức năng đã làm được
 
@@ -88,6 +88,11 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 
 ### Các chức năng, đặc điểm đặc sắc của bài tập đề nghị cộng điểm
 - [x]  Sử dụng một thiết kế giao diện tốt lấy từ pinterest (0.5 điểm):
+<div>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/priterest.png" width="516"/>
+<img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/orderDetail.png" width="516"/>
+</div>
+
 - [ ]  Làm rối mã nguồn (obfuscator) chống dịch ngược (0.5 điểm)
 - [ ] Thêm chế độ dùng thử - cho phép xài full phần mềm trong 15 ngày. Hết 15 ngày bắt đăng kí (mã code hay cách kích hoạt nào đó) (0.5 điểm)
 - [ ] Báo cáo các sản phẩm bán chạy trong tuần, trong tháng, trong năm (1 điểm)
