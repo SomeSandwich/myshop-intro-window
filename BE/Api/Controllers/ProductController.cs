@@ -158,7 +158,39 @@ public class ProductController : ControllerBase
 
         // todo upload file
         var listUpload = new List<string>();
-        // todo delete file
+
+        var filesSuccess = new List<string>();
+        var filesFail = new List<string>();
+
+
+        if (req.MediaFiles is not null)
+        {
+            foreach (var file in req.MediaFiles)
+            {
+                var key = $"product/{ShortId.Generate(GenHashOptions.FileKey)}";
+
+                if (await _fileSer.UploadSmallFileAsync(new UploadFileDto
+                    {
+                        Key = key,
+                        Stream = file.OpenReadStream(),
+                        ContentType = file.ContentType,
+                        Metadata = new Dictionary<string, string>
+                        {
+                            { "OldName", HttpUtility.UrlEncode(file.FileName) }
+                        }
+                    }))
+                    filesSuccess.Add(key);
+                else
+                    filesFail.Add(file.FileName);
+            }
+
+            if (filesFail.Count > 0)
+                return StatusCode(500, new ResFailureWithData
+                {
+                    Messsage = "Some File Upload Failed, Please ReUpload",
+                    Data = filesFail
+                });
+        }
 
         var arg = _mapper.Map<UpdateProductReq, UpdateProductArg>(req);
 
