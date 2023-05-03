@@ -110,7 +110,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 - [x] Kết nối API Rest API (2 điểm)
 - [ ] Kết nối GraphQL API (2 điểm)
 
-**1. Thêm bánh vào hóa đơn hiện tại**
+**1. Thêm sách vào hóa đơn hiện tại**
 - Khi xem chi tiết một sách nào đó, người dùng có thể thêm nhanh chúng vào hóa đơn và sau đó có thể cân nhắc mua hay không mua ở mục Order. 
 
 ## Điểm đề nghị cho bài tập
@@ -131,6 +131,7 @@ Cung cấp tổng quan về hệ thống, ví dụ:
   - Database: database.hieucckha.me | 7600 | postgres | 123@qwerty
 
 - Frontend: Electron
+  - Chạy frontend: npm run dev
 
 ### Link demo
 
