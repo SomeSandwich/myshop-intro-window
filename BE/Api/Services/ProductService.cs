@@ -2,6 +2,7 @@
 using Api.Context;
 using Api.Context.Constants.Enums;
 using Api.Context.Entities;
+using Api.Helper;
 using Api.Types.Objects.Product;
 using Api.Types.Results;
 using AutoMapper;
@@ -69,16 +70,20 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductRes>> SearchProduct(string query)
     {
+        query = query.NonUnicode();
+        
         var listProduct = _context.Products
             .Include(p => p.Category)
             .Where(p => p.Status == ProductStatus.Default)
-            .AsEnumerable();
+            .ToList();
 
-        var abc = listProduct
-            .Where(p => p.Title.Trim().Contains(query))
-            .AsEnumerable();
+        var listTitleNonUnicode = listProduct.ToDictionary(p => p.Id, p => p.Title.NonUnicode());
 
-        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(abc);
+        var listIdMatchQuery = (from b in listTitleNonUnicode where b.Value.Contains(query) select b.Key).ToList();
+
+        var result = listProduct.Where(p => listIdMatchQuery.Contains(p.Id));
+
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductRes>>(result);
     }
 
     public async Task<bool> CheckProductExists(int id)
