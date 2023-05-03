@@ -145,4 +145,4 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 > ***https://github.com/SomeSandwich/myshop-intro-window.git***
 
 ### License
-
+MIT
