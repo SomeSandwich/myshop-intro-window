@@ -93,13 +93,13 @@ Cung cấp tổng quan về hệ thống, ví dụ:
 <img src="https://github.com/SomeSandwich/myshop-intro-window/blob/main/Img/orderDetail.png" width="516"/>
 </div>
 
-- [ ]  Làm rối mã nguồn (obfuscator) chống dịch ngược (0.5 điểm)
+- [X]  Làm rối mã nguồn (obfuscator) chống dịch ngược (0.5 điểm)
 - [ ] Thêm chế độ dùng thử - cho phép xài full phần mềm trong 15 ngày. Hết 15 ngày bắt đăng kí (mã code hay cách kích hoạt nào đó) (0.5 điểm)
 - [ ] Báo cáo các sản phẩm bán chạy trong tuần, trong tháng, trong năm (1 điểm)
 - [x] Bổ sung khuyến mãi giảm giá (1 điểm)
 - [x] Quản lí khách hàng : Tạo và Thêm khách hàng vô đơn hàngg(0.5 điểm)
 - [ ] Sử dụng giao diện Ribbon (0.5 điểm)
-- [ ]  Backup / restore database (0.5 điểm)
+- [x]  Backup / restore database (0.5 điểm)
 - [x] Tổ chức theo mô hình 3 lớp (1 điểm)
 - [ ] Chương trình có khả năng mở rộng động theo kiến trúc plugin (1 điểm)
 - [ ] Sử dụng mô hình MVVM (1 điểm)
@@ -120,9 +120,9 @@ Cung cấp tổng quan về hệ thống, ví dụ:
     - Direct IP: [139.59.248.73:7772](http://139.59.248.73:7772/)
     - Domain: [myshop.hieucckha.me](http://myshop.hieucckha.me/)
 
-  - Database: **Ib vùng kín để biết thêm thông tin chi tiết**
+  - Database: database.hieucckha.me | 7600 | postgres | 123@qwerty
 
-- Frontend: Chưa biết dùng gì hết
+- Frontend: Electron
 
 ## Điểm đề nghị cho bài tập
 
