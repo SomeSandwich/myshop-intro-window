@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 var env = builder.Environment;
 
+// Using Services 
 builder.Services.ConfigureDatabase(config, env);
 builder.Services.ConfigureMinio(config, env);
 builder.Services.ConfigureVersion();
@@ -32,6 +33,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Logging.ConfigureLogger(config, env);
 
+// Using Middleware
 var app = builder.Build();
 
 app.ConfigureErrorResponse();
