@@ -10,6 +10,8 @@
 
 </p>
 
+[![CI/CD](https://github.com/SomeSandwich/myshop-intro-window/actions/workflows/main.yml/badge.svg)](https://github.com/SomeSandwich/myshop-intro-window/actions/workflows/main.yml)
+
 ## Thông tin nhóm
 
 
